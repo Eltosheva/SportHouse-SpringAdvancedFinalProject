@@ -50,6 +50,7 @@ public class UserOrderHistoryServiceImpl implements UserOrderHistoryService {
                 .stream()
                 .map(p -> modelMapper.map(p, UserOrderHistory.class))
                 .collect(Collectors.toList());
+
         for (UserOrderHistory element : historyList) {
             Product product = productRepository
                     .findById(element.getProductId())
@@ -87,34 +88,28 @@ public class UserOrderHistoryServiceImpl implements UserOrderHistoryService {
         List<UserOrdersServiceModel> userOrdersServiceModels = new ArrayList<>();
         Map<Integer, List<UserOrderHistoryServiceModel>> orderMap = new HashMap<>();
 
-        userOrderHistoryRepository
-                .findAll()
-                .stream()
-                .filter(o -> o.getUser().getEmail()
-                        .equals(SecurityContextHolder.getContext().getAuthentication().getName()))
-                .map(o -> {
-                    UserOrderHistoryServiceModel uhsm =
-                            modelMapper.map(o, UserOrderHistoryServiceModel.class);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-                    if (!orderMap.containsKey(uhsm.getOrderId())) {
-                        orderMap.put(uhsm.getOrderId(), new ArrayList<>());
-                    }
-                    orderMap.get(uhsm.getOrderId()).add(uhsm);
-                    return uhsm;
-                });
+        userOrderHistoryRepository.findAll().stream()
+            .forEach(o -> {
+                if(!o.getUser().getEmail().equals(email))
+                    return;
+                UserOrderHistoryServiceModel uhsm =
+                    modelMapper.map(o, UserOrderHistoryServiceModel.class);
+                if (!orderMap.containsKey(uhsm.getOrderId())) {
+                    orderMap.put(uhsm.getOrderId(), new ArrayList<>());
+                }
+                orderMap.get(uhsm.getOrderId()).add(uhsm);
+            });
 
-        // Обръщаме мапа в List<UserOrdersServiceModel>
-        orderMap.entrySet().stream().map(entry -> {
+        orderMap.entrySet().forEach(entry -> {
             UserOrdersServiceModel userOrdersServiceModel = new UserOrdersServiceModel();
             userOrdersServiceModel.setOrderList(entry.getValue());
             userOrdersServiceModel.setOrderId(entry.getKey());
             userOrdersServiceModel.setTotalOrderPrice(entry.getValue().stream()
                     .map(UserOrderHistoryServiceModel::getTotalPrice).reduce(BigDecimal.ZERO, BigDecimal::add));
-//            userOrdersServiceModel.setOrderDate(entry.getValue().stream()
-//                    .map(UserOrderHistoryServiceModel::getOrderDate)
-//                    .reduce(LocalDate.MIN, LocalDate::);
-
-            return userOrdersServiceModel;
+            userOrdersServiceModel.setOrderDate(entry.getValue().get(0).getOrderDate());
+            userOrdersServiceModels.add(userOrdersServiceModel);
         });
         return userOrdersServiceModels;
     }

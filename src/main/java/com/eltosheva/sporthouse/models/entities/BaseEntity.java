@@ -14,6 +14,7 @@ import javax.persistence.MappedSuperclass;
 @Data
 @NoArgsConstructor
 @MappedSuperclass
+@EqualsAndHashCode
 public abstract class BaseEntity {
 
     @Id

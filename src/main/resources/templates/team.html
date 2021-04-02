@@ -23,11 +23,11 @@
                         <div class="mx-4">
                             <h4 class="font-weight-bold mb-3" th:text="${t.firstName + ' ' + t.firstName}"></h4>
                             <hr/>
-                            <h6 class="font-weight-bold grey-text mb-3">Треньор по: <span></span></h6>
+                            <h6 class="font-weight-bold grey-text mb-3">Trainer: <span></span></h6>
                             <h6 class="font-weight-bold grey-text mb-3">Phone: <span th:text="${t.phoneNum}"></span></h6>
                             <p class="grey-text">Description: <span
                                 th:text="${t.description}"></span></p>
-                            <a class="p-2 fa-lg fb-ic">
+                            <a th:if="${t.socialMediaUrl != null && t.socialMediaUrl != ''}" class="p-2 fa-lg fb-ic">
                                 <i class="fas fa-link" th:href="${t.socialMediaUrl}"></i>
                             </a>
                         </div>

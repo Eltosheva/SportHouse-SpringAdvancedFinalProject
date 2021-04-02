@@ -26,9 +26,6 @@ public class UserOrderHistory extends BaseEntity{
     @Column
     private Integer quantity;
 
-//    @DateTimeFormat
-//    private LocalDate date;
-
     @Column(name = "image_url")
     private String imageUrl;
 

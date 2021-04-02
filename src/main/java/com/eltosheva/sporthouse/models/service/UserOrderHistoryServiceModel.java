@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,7 +14,6 @@ public class UserOrderHistoryServiceModel {
     private BigDecimal price;
     private String name;
     private Integer quantity;
-    private LocalDate date;
     private String imageUrl;
     private BigDecimal totalPrice;
     private LocalDateTime addedAt;

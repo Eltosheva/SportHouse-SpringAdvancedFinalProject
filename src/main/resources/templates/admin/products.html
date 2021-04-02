@@ -22,7 +22,6 @@
                             <div class="form-row">
                                 <div class="col-md-6 mb-2">
                                     <label for="productName">Name</label>
-                                    <!-- АКО ДАННИТЕ В ПОЛЕТО СА ВАЛИДНИ -->
                                     <input th:field="*{productName}"
                                            th:classappend="${#fields.hasErrors('productName')?'is-invalid':''}"
                                             type="text" class="form-control" id="productName"
@@ -32,7 +31,6 @@
                                          th:errors="*{productName}" id="productNameFeedback"
                                          class="invalid-feedback">
                                     </div>
-                                    <!-- valid-feedback  И  is-valid -->
                                 </div>
                                 <div class="col-md-3 mb-2">
                                     <label for="productAvailableQuantity">Quantity</label>
@@ -64,13 +62,11 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-row">
                                 <div class="col-md-6 mb-2">
                                     <div class="row">
                                         <div class="col-md-12 mb-2 ml-auto">
                                             <label for="productImageUrl">Image</label>
-                                            <!-- АКО ДАННИТЕ В ПОЛЕТО НЕ СА ВАЛИДНИ -->
                                             <input th:field="*{productImageUrl}"
                                                    th:classappend="${#fields.hasErrors('productImageUrl')?'is-invalid':''}"
                                                     type="url" class="form-control" id="productImageUrl"

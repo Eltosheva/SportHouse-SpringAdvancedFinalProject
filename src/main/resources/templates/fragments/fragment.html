@@ -32,7 +32,7 @@
                             <li class="nav-item ml-2">
                                 <a class="nav-link" href="/sports">Sports</a>
                             </li>
-                            <li class="nav-item ml-2" sec:authorize="isAuthenticated()">
+                            <li class="nav-item ml-2" sec:authorize="hasRole('USER')">
                                 <a class="nav-link" href="/store">Store</a>
                             </li>
                         </ul>
@@ -51,7 +51,7 @@
                         </ul>
                         <ul class="navbar-nav ml-auto" sec:authorize="isAuthenticated()">
                             <div class="topbar-divider d-none d-sm-block"></div>
-                            <li class="nav-item mr-2">
+                            <li class="nav-item mr-2" sec:authorize="hasRole('USER')">
                                 <a class="nav-link" th:href="@{/products/shopping-cart}">
                                     <i class="fas fa-shopping-cart fa-lg">
                                         <!--/*@thymesVar id="shoppingCartUserCount" type=""*/-->
@@ -211,7 +211,6 @@
             <!-- Custom resources -->
             <link rel="stylesheet" href="/css/my_css.css" type="text/css" />
             <script src="/js/functions.js"></script>
-            <script src="/js/footerSendMail.js"></script>
 
             <div class="container">
                 <div class="row">
