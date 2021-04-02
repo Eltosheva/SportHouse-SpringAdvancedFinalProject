@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head"></head>
+<body>
+<wrapper class="d-flex flex-column">
+    <header th:replace="fragments/fragment :: nav"></header>
+    <main class="flex-fil align-content-center bg-blur my-main">
+        <div class="row" id="body-row">
+            <div th:replace="fragments/fragment :: sidebar"></div>
+            <div class="col p-4">
+                <h2>Admin Sport Plan Management</h2>
+                <hr/>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <form th:object="${subscriptionBindingModel}" method="post" th:action="@{/admin/subscriptions}">
+                            <input type="hidden" name="id" id="id" value="" />
+                            <div class="form-row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4 mb-2">
+                                    <label for="planName">Name</label>
+                                    <!-- АКО ДАННИТЕ В ПОЛЕТО СА ВАЛИДНИ -->
+                                    <input th:field="*{name}"
+                                           th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
+                                           type="text" class="form-control" id="planName" name="name"
+                                           aria-describedby="planNameFeedback" placeholder="Plan name" required/>
+                                    <div th:if="${#fields.hasErrors('name')}"
+                                         th:errors="*{name}"
+                                            id="planNameFeedback" class="valid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-2 mb-2">
+                                    <label for="planPrice">Price</label>
+                                    <!-- АКО ДАННИТЕ В ПОЛЕТО НЕ СА ВАЛИДНИ -->
+                                    <input th:field="*{price}"
+                                           th:classappend="${#fields.hasErrors('price')?'is-invalid':''}"
+                                           type="number" step="0.1" class="form-control"
+                                           id="planPrice" name="price"
+                                           aria-describedby="planPriceFeedback" placeholder="Price" required/>
+                                    <div th:if="${#fields.hasErrors('price')}"
+                                         th:errors="*{price}"
+                                         id="planPriceFeedback" class="invalid-feedback">
+                                    </div>
+                                    <!-- invalid-feedback  И  is-invalid -->
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <label for="planTrainingCount">Description</label>
+                                    <input type="number" step="1" class="form-control"
+                                           id="planTrainingCount" name="trainingCount"
+                                              placeholder="Training count" required/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-2 mb-2">
+                                    <label for="planStartDate">Start date</label>
+                                    <input th:field="*{startDate}"
+                                           th:classappend="${#fields.hasErrors('startDate')?'is-invalid':''}"
+                                           type="date" class="form-control " id="planStartDate" name="startDate"
+                                           placeholder="Start date" required/>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <label for="planExpireDate">Expire date</label>
+                                    <input th:field="*{expireDate}"
+                                           th:classappend="${#fields.hasErrors('expireDate')?'is-invalid':''}"
+                                           type="date" class="form-control " id="planExpireDate" name="expireDate"
+                                           placeholder="Expire date" required />
+                                </div>
+                            </div>
+                            <div class="form-row col-md-8">
+                                <button class="btn btn-success btn-lg ml-auto" type="submit">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <hr />
+                <h2>Plans list</h2>
+                <div class="row">
+                    <div class="table-responsive col-md-12 col-lg-12">
+                        <table id="contractors_table" class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Start date</th>
+                                <th class="text-center">End date</th>
+                                <th class="text-center">Training count</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Edit</th>
+                                <th class="text-center">Change</th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-center">
+                            <tr th:if="${subscriptions} == 0">
+                                <td colspan="12">Empty cart</td>
+                            </tr>
+                            <tr th:each="sub : ${subscriptions}">
+                                <td th:text="${sub.name}">Functional fitness training</td>
+                                <td th:text="${sub.price}">12.40</td>
+                                <td th:text="${sub.startDate}">21.6.2021</td>
+                                <td th:text="${sub.expireDate}">21.7.2021</td>
+                                <td th:text="${sub.trainingCount}">10</td>
+                                <td>
+                                    <h4>
+                                        <span th:if="${sub.isActive == true}" class="badge badge-success">
+                                            Active
+                                        </span>
+                                        <span th:if="${sub.isActive == false}" class="badge badge-danger">
+                                            Inactive
+                                        </span>
+                                    </h4>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" data-title="" data-toggle="modal"
+                                            data-target="#edit" >
+                                        <span class="fas fa-pen"></span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" data-title="" onclick="">
+                                        <span class="fas fa-times"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/fragment :: footer"></footer>
+</wrapper>
+</body>
+</html>

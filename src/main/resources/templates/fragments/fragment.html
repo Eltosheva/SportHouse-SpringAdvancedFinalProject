@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head th:fragment="head">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>My Sport House</title>
+    </head>
+
+    <body>
+        <header th:fragment="nav">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/" sec:authorize="!isAuthenticated()">
+                        Sport House
+                    </a>
+                    <a class="navbar-brand" href="/home" sec:authorize="isAuthenticated()">
+                        Sport House
+                    </a>
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item ml-2">
+                                <a class="nav-link" href="/halls">Halls</a>
+                            </li>
+                            <li class="nav-item ml-2">
+                                <a class="nav-link" href="/sports">Sports</a>
+                            </li>
+                            <li class="nav-item ml-2" sec:authorize="isAuthenticated()">
+                                <a class="nav-link" href="/store">Store</a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav ml-auto" sec:authorize="!isAuthenticated()">
+                            <li class="nav-item navbar-right">
+                                <a class="nav-link" th:href="@{/login}">Login</a>
+                            </li>
+                            <li class="nav-item dropdown navbar-right">
+                                <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">Register</a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a class="dropdown-item" th:href="@{/user/register}">As Sportsman</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/coach/register}">As Coach</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ml-auto" sec:authorize="isAuthenticated()">
+                            <div class="topbar-divider d-none d-sm-block"></div>
+                            <li class="nav-item mr-2">
+                                <a class="nav-link" th:href="@{/products/shopping-cart}">
+                                    <i class="fas fa-shopping-cart fa-lg">
+                                        <!--/*@thymesVar id="shoppingCartUserCount" type=""*/-->
+                                        <span th:text="${shoppingCartUserCount}"
+                                              th:if="${shoppingCartUserCount > 0}" class="badge badge-danger">11</span>
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <!--/*@thymesVar id="firstName" type=""*/-->
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600" th:text="${firstName}">Eli Eli Eli</span>
+                                    <!--/*@thymesVar id="profilePicUrl" type=""*/-->
+                                    <img th:if="${profilePicUrl != null && profilePicUrl != ''}" class="img-profile rounded-circle" th:src="${profilePicUrl}" width="30px" height="30px">
+                                    <img th:if="${profilePicUrl == null || profilePicUrl == ''}" class="img-profile rounded-circle" th:src="@{/images/login_avatar.png}" width="30px" height="30px">
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" th:href="@{/user/profile}">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Profile
+                                    </a>
+                                    <a class="dropdown-item" th:href="@{/user/settings}">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Settings
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <form th:action="@{/logout}" method="POST">
+                                        <button type="submit" class="dropdown-item link-button">
+                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Logout
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- Sidebar -->
+        <div th:fragment="sidebar" id="sidebar-container" class="sidebar-expanded d-none d-md-block">
+            <ul class="list-group">
+                <th:block sec:authorize="hasRole('ADMIN')">
+                    <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                        <small>ADMIN MANAGEMENT MENU</small>
+                    </li>
+
+                    <a th:href="@{/admin/users}" class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fas fa-user fa-fw mr-3"></span>
+                            <span class="menu-collapsed">Users</span>
+                        </div>
+                    </a>
+
+                    <a th:href="@{/admin/sports}" class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fas fa-running fa-fw mr-3"></span>
+                            <span class="menu-collapsed">Sports</span>
+                        </div>
+                    </a>
+
+                    <a th:href="@{/admin/halls}" class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fas fa-building fa-fw mr-3"></span>
+                            <span class="menu-collapsed">Halls</span>
+                        </div>
+                    </a>
+
+                    <a th:href="@{/admin/subscriptions}" class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fas fa-dollar-sign fa-fw mr-3"></span>
+                            <span class="menu-collapsed">Subscriptions</span>
+                        </div>
+                    </a>
+
+                    <a th:href="@{/admin/products}"  class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fab fa-product-hunt fa-fw mr-3"></span>
+                            <span class="menu-collapsed">Products</span>
+                        </div>
+                    </a>
+
+                    <a th:href="@{/admin/tasks}"  class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fas fa-tasks fa-fw mr-3"></span>
+                            <span class="menu-collapsed">Tasks</span>
+                        </div>
+                    </a>
+
+                </th:block>
+                <th:block sec:authorize="hasRole('COACH')">
+                    <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                        <small>COACHS MENU</small>
+                    </li>
+                    <a th:href="@{/coach/schedules}" class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fas fa-clipboard-list fa-fw mr-3"></span>
+                            <span class="menu-collapsed">Schedule</span>
+                        </div>
+                    </a>
+                </th:block>
+                <th:block sec:authorize="hasRole('USER')">
+                    <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                        <small>USERS MENU</small>
+                    </li>
+                    <a th:href="@{/user/subscriptions}" class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fas fa-bell fa-fw mr-3"></span>
+                            <span class="menu-collapsed">My Subscriptions</span>
+                        </div>
+                    </a>
+
+                    <a th:href="@{/user/schedules}" class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fas fa-clipboard-list fa-fw mr-3"></span>
+                            <span class="menu-collapsed">My schedule</span>
+                        </div>
+                    </a>
+                    <a th:href="@{/user/orders}" class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fas fa-wallet fa-fw mr-3"></span>
+                            <span class="menu-collapsed">Orders <span hidden class="badge badge-pill badge-primary ml-2">5</span></span>
+                        </div>
+                    </a>
+                </th:block>
+
+                <li class="list-group-item sidebar-separator menu-collapsed"></li>
+
+                <a th:href="@{/help}" class="bg-dark list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fa fa-question fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Help</span>
+                    </div>
+                </a>
+                <a href="#top" data-toggle="sidebar-colapse" class="bg-dark list-group-item list-group-item-action d-flex align-items-center">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span id="collapse-icon" class="fa fa-2x mr-3"></span>
+                        <span id="collapse-text" class="menu-collapsed">Collapse</span>
+                    </div>
+                </a>
+            </ul>
+        </div>
+
+        <footer th:fragment="footer" class="footer bg-blur">
+            <!-- Latest compiled and minified CSS -->
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+            <!-- jQuery library -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <!-- Popper JS -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <!-- Latest compiled JavaScript -->
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+
+            <!-- Custom resources -->
+            <link rel="stylesheet" href="/css/my_css.css" type="text/css" />
+            <script src="/js/functions.js"></script>
+            <script src="/js/footerSendMail.js"></script>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        <h5><i class="fas fa-snowboarding"></i> Sport House INC.</h5>
+                        <div class="row">
+                            <div class="col-6">
+                                <ul class="list-unstyled">
+                                    <li><a th:href="@{/halls}">Sport Halls</a></li>
+                                    <li><a href="">Sports</a></li>
+                                    <li><a href="">Sport Articles</a></li>
+                                    <li><a href="">Sport Items</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <ul class="list-unstyled">
+                                    <li><a th:href="@{/team}">Team</a></li>
+                                    <li><a href="">Support</a></li>
+                                    <li><a href="">Legal Terms</a></li>
+                                    <li><a href="">About</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <ul class="nav">
+                            <li class="nav-item"><a href="" class="nav-link pl-0"><i class="fab fa-facebook"></i></a></li>
+                            <li class="nav-item"><a href="" class="nav-link"><i class="fab fa-twitter"></i></a></li>
+                            <li class="nav-item"><a href="" class="nav-link"><i class="fab fa-github"></i></a></li>
+                            <li class="nav-item"><a href="" class="nav-link"><i class="fab fa-instagram"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <h5 class="text-md-right">Contact Us</h5>
+                        <hr>
+                    </div>
+                    <div class="col-md-5">
+                        <form id="footerSendMailForm">
+                            <fieldset class="form-group">
+                                <input type="email" name="email" class="form-control" id="footerEmailAddress" placeholder="Enter email" required>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <textarea class="form-control" name="content" id="footerEmailContent" placeholder="Message" required></textarea>
+                            </fieldset>
+                            <fieldset class="form-group text-xs-right">
+                                <button type="submit" class="btn btn-outline-primary">Send</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="h5 text-light">
+                        &copy;SportHouse Team 2021 - Now Is Time For Sport!
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

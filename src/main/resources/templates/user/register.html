@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/fragment :: head"></head>
+
+    <body>
+        <wrapper class="d-flex flex-column">
+            <header th:replace="fragments/fragment :: nav"></header>
+            <main class="flex-fill">
+                <div class="container">
+                    <h1 class="h3 mb-2 mt-3 text-gray-800 border-bottom">Sportsman Registration</h1>
+                    <div th:if="${!errMessage.equals('')}" class="alert alert-danger" role="alert">
+                        <span th:text="${errMessage}"></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="row">
+                                <img alt="Sports athlete icons silhouette"
+                                     src="/images/sports_athlete_icons_silhouette_retro_design.jpg"
+                                     class="w-50 rounded">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <form th:object="${sportsmanRegisterBindingModel}" th:action="@{/user/register}" method="POST"
+                                  class="justify-content-center align-items-center">
+                                <div class="row">
+                                    <div class="col-xl-5 col-md-6">
+                                        <div class="form-group">
+                                            <label for="firstName">
+                                                <h4>First name</h4>
+                                            </label>
+                                            <input th:field="*{firstName}" th:errorclass="bg-danger" type="text" name="firstName"
+                                                   id="firstName"
+                                                   class="form-control"
+                                                   placeholder="First name"
+                                                   required />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-5 col-md-6">
+                                        <div class="form-group">
+                                            <label for="lastName">
+                                                <h4>Last name</h4>
+                                            </label>
+                                            <input th:field="*{lastName}" th:errorclass="bg-danger" type="text" name="lastName"
+                                                   id="lastName"
+                                                   class="form-control"
+                                                   placeholder="Last name"
+                                                   required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-xl-10">
+                                        <label for="email">
+                                            <h4>Email</h4>
+                                        </label>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">@</div>
+                                            </div>
+                                            <input th:field="*{email}" th:errorclass="bg-danger" type="text" name="email"
+                                                   class="form-control"
+                                                   id="email" placeholder="Email">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-5 col-md-6">
+                                        <div class="form-group">
+                                            <label for="phone">
+                                                <h4>Phone</h4>
+                                            </label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><span class="fas fa-phone"></span></div>
+                                                </div>
+                                                <input th:field="*{phoneNum}" th:errorclass="bg-danger" type="text"
+                                                       name="phoneNum"
+                                                       id="phone" class="form-control"
+                                                       placeholder="Enter phone" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-5 col-md-6">
+                                        <div class="form-group">
+                                            <label for="age">
+                                                <h4>Age</h4>
+                                            </label>
+                                            <input th:field="*{age}" th:errorclass="bg-danger" type="number" name="age"
+                                                   id="age" step="1"
+                                                   class="form-control"
+                                                   placeholder="Age" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-5 col-md-6">
+                                        <div class="form-group">
+                                            <label for="target_weight">
+                                                <h4>Target weight</h4>
+                                            </label>
+                                            <input th:field="*{targetWeight}" th:errorclass="bg-danger" type="number" name="targetWeight"
+                                                   id="target_weight"
+                                                   step="0.1" class="form-control"
+                                                   placeholder="Weight" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-xl-10">
+                                        <label for="prof_picture_url">
+                                            <h4>Profile Picture URL</h4>
+                                        </label>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><span class="fas fa-globe"></span></div>
+                                            </div>
+                                            <input th:field="*{profilePictureUrl}" th:errorclass="bg-danger" type="text"
+                                                   name="profilePictureUrl"
+                                                   class="form-control" id="prof_picture_url"
+                                                   placeholder="URL">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-5 col-md-6">
+                                        <div class="form-group">
+                                            <label for="password">
+                                                <h4>Password</h4>
+                                            </label>
+                                            <input th:errorclass="bg-danger" type="password" name="password"
+                                                   id="password"
+                                                   class="form-control"
+                                                   placeholder="Password" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-5 col-md-6">
+                                        <div class="form-group">
+                                            <label for="confirm_password">
+                                                <h4>Confirm Password</h4>
+                                            </label>
+                                            <input th:errorclass="bg-danger" type="password" name="confirmPassword"
+                                                   id="confirm_password"
+                                                   class="form-control"
+                                                   placeholder="Confirm Password" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <br>
+                                    <div class="form-group">
+                                        <button class="btn btn-lg btn-success"><i class="glyphicon glyphicon-ok-sign"></i>
+                                            Register
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer th:replace="fragments/fragment :: footer"></footer>
+        </wrapper>
+    </body>
+</html>

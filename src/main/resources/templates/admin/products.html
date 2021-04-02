@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head"></head>
+<body>
+<wrapper class="d-flex flex-column">
+    <header th:replace="fragments/fragment :: nav"></header>
+    <main class="flex-fil align-content-center bg-blur my-main">
+        <div class="row" id="body-row">
+            <div th:replace="fragments/fragment :: sidebar"></div>
+
+            <div class="col p-4">
+                <h2>Admin Item Management</h2>
+                <hr />
+                <div class="row">
+                    <div class="col-lg-3 col-md-3">
+                        <img th:src="@{/images/image-placeholder.jpg}"
+                             class="img-thumbnail mx-auto d-block demo-thumbnail" alt="Image placeholder">
+                    </div>
+                    <div class="col-lg-9 col-md-9">
+                        <form th:object="${productBindingModel}" method="post" th:action="@{/admin/products}">
+                            <input type="hidden" name="productId" id="id" value="" />
+                            <div class="form-row">
+                                <div class="col-md-6 mb-2">
+                                    <label for="productName">Name</label>
+                                    <!-- АКО ДАННИТЕ В ПОЛЕТО СА ВАЛИДНИ -->
+                                    <input th:field="*{productName}"
+                                           th:classappend="${#fields.hasErrors('productName')?'is-invalid':''}"
+                                            type="text" class="form-control" id="productName"
+                                           name="productName" aria-describedby="productNameFeedback"
+                                           placeholder="Accessory name" required/>
+                                    <div th:if="${#fields.hasErrors('productName')}"
+                                         th:errors="*{productName}" id="productNameFeedback"
+                                         class="invalid-feedback">
+                                    </div>
+                                    <!-- valid-feedback  И  is-valid -->
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <label for="productAvailableQuantity">Quantity</label>
+                                    <input th:field="*{productAvailableQuantity}"
+                                           th:classappend="${#fields.hasErrors('productAvailableQuantity')?'is-invalid':''}"
+                                           type="number" class="form-control" id="productAvailableQuantity"
+                                           name="productAvailableQuantity" aria-describedby="productAvailableQuantityFeedback"
+                                           placeholder="Quantity" required/>
+                                    <div th:if="${#fields.hasErrors('productAvailableQuantity')}"
+                                         th:errors="*{productAvailableQuantity}" id="productAvailableQuantityFeedback"
+                                         class="invalid-feedback">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <label for="productPrice">Price</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroupPrepend33">&#36;</span>
+                                        </div>
+                                        <input th:field="*{productPrice}"
+                                               th:classappend="${#fields.hasErrors('productPrice')?'is-invalid':''}"
+                                                type="number" step="0.1" class="form-control" id="productPrice"
+                                               name="productPrice" placeholder="Price"
+                                               aria-describedby="productPriceFeedback" required/>
+                                        <div th:if="${#fields.hasErrors('productPrice')}"
+                                             th:errors="*{productPrice}" id="productPriceFeedback"
+                                             class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-6 mb-2">
+                                    <div class="row">
+                                        <div class="col-md-12 mb-2 ml-auto">
+                                            <label for="productImageUrl">Image</label>
+                                            <!-- АКО ДАННИТЕ В ПОЛЕТО НЕ СА ВАЛИДНИ -->
+                                            <input th:field="*{productImageUrl}"
+                                                   th:classappend="${#fields.hasErrors('productImageUrl')?'is-invalid':''}"
+                                                    type="url" class="form-control" id="productImageUrl"
+                                                   name="productImageUrl"
+                                                   aria-describedby="productImageUrlFeedback" placeholder="Item image URL"
+                                                   required/>
+                                            <div th:if="${#fields.hasErrors('productImageUrl')}"
+                                                 th:errors="*{productImageUrl}" id="productImageUrlFeedback"
+                                                 class="invalid-feedback">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <label for="status">Status</label>
+                                            <select class="custom-select" id="status" name="isActive" required>
+                                                <option selected>Status...</option>
+                                                <option th:value="false">Inactive</option>
+                                                <option th:value="true">Active</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-5 mb-2">
+                                            <label for="productSportId">Sport</label>
+                                            <select class="custom-select" id="productSportId"
+                                                    name="productSportId" required>
+                                                <option selected>Choice Sport</option>
+                                                <option th:each="s : ${sports}" th:value="${s.id}"
+                                                        th:text="${s.name}" th:selected="${s.getId()} == *{productSportId}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label for="productDescription">Description</label>
+                                    <textarea class="form-control" id="productDescription" name="productDescription"
+                                              placeholder="Description" rows="5" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <button class="btn btn-success btn-lg ml-auto" type="submit">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <hr />
+                <h2>Products list</h2>
+                <div class="row">
+                    <div class="table-responsive col-md-12 col-lg-12">
+                        <table id="contractors_table" class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Edit</th>
+                                <th class="text-center">Change Status</th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr th:if="${products} == 0">
+                                    <td colspan="12">Empty cart</td>
+                                </tr>
+                                <tr th:each="p : ${products}">
+                                    <td th:text="${p.name}">name</td>
+                                    <td th:text="${p.price}">10.10</td>
+                                    <td th:text="${p.availableQuantity}">30</td>
+                                    <td>
+                                        <h4>
+                                            <span th:if="${p.isActive == true}" class="badge badge-success">
+                                            Active
+                                            </span>
+                                            <span th:if="${p.isActive == false}" class="badge badge-danger">
+                                            Inactive
+                                            </span>
+                                        </h4>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" data-title="" data-toggle="modal"
+                                                data-target="#edit" >
+                                            <span class="fas fa-pen"></span>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm"
+                                                th:classappend="${p.isActive == true ? 'btn-danger' : 'btn-success'}"
+                                                data-title="" onclick="">
+                                            <span class="fas" th:classappend="${p.isActive == true ? 'fa-times' : 'fa-check'}"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/fragment :: footer"></footer>
+</wrapper>
+</body>
+</html>

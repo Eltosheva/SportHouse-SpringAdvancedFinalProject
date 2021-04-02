@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head"></head>
+<body>
+<wrapper class="d-flex flex-column">
+    <header th:replace="fragments/fragment :: nav"></header>
+    <main class="flex-fil align-content-center bg-blur my-main">
+        <div class="row" id="body-row">
+            <div th:replace="fragments/fragment :: sidebar"></div>
+            <div class="col p-4">
+                <h2>Settings</h2>
+                <hr />
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/fragment :: footer"></footer>
+</wrapper>
+</body>
+</html>

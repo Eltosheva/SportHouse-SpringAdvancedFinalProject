@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/fragment :: head"></head>
+    <body>
+        <wrapper class="d-flex flex-column">
+            <header th:replace="fragments/fragment :: nav"></header>
+            <main class="flex-fill d-flex justify-content-center align-self-center">
+                <div class="container" style="margin: auto">
+                    <div class="h-100">
+                        <div class="card login-card-bg shadow p-3">
+                            <div class="card-body">
+                                <div class="center-block">
+                                    <img class="profile-img" th:src="@{/images/login_avatar.png}"
+                                         alt="Anonymous Login Image" />
+                                </div>
+                                <div th:if="${invalidSession != null}" class="alert alert-danger" role="alert">
+                                    <span th:text="${invalidSession}"></span>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div th:if="${bad_credentials}" class="alert alert-danger" role="alert">
+                                    <span>Wrong email or password.</span>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form th:action="@{/login}"
+                                        method="POST">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input th:value="${email}" type="email" id="email" name="email" class="form-control"
+                                               placeholder="Email" required />
+                                        <div class="invalid-feedback">
+                                            <div>Email is required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required/>
+                                        <div class="invalid-feedback">
+                                            <div>Password is required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group d-flex justify-content-center">
+                                        <button class="btn btn-success px-3">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer th:replace="fragments/fragment :: footer"></footer>
+        </wrapper>
+    </body>
+</html>

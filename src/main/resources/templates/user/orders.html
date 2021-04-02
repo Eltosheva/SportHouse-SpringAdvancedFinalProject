@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head"></head>
+<body>
+<wrapper class="d-flex flex-column">
+    <header th:replace="fragments/fragment :: nav"></header>
+    <main class="flex-fil align-content-center bg-blur my-main">
+        <div class="row" id="body-row">
+            <div th:replace="fragments/fragment :: sidebar"></div>
+            <div class="col p-4">
+                <h2>My Orders</h2>
+                <hr/>
+                <table th:each="o : ${orders}">
+                    <tr>
+                        <td>
+                            <div class="name-product">
+                                <h6 class="font-weight-bold grey-text mb-3"> Order №
+                                    <span th:text="${o.orderId}"></span>
+                                </h6>
+                            </div>
+                            <div class="name-product">
+                                <h6 class="font-weight-bold grey-text mb-3"> Total order price:
+                                    <span th:text="${o.totalOrderPrice}"></span>&#36;
+                                </h6>
+                            </div>
+                        </td>
+                    </tr>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="el : ${o.getOrderList()}">
+                        <table>
+                            <td>
+                                <div class="img-product">
+                                    <img th:if="${el.imageUrl != null}" th:src="@{el.imageUrl}"
+                                         alt="" class="mCS_img_loaded">
+                                    <img th:if="*{el.imageUrl == null}"
+                                         th:src="@{https://kevy.co/wp-content/uploads/2013/09/total-product-marketing.jpg}"
+                                         alt="Product picture" style="width: 50px; height: 50px">
+                                </div>
+                                <div class="name-product">
+                                    <span th:text="${el.name}"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="price">
+                                    &#36;<span th:text="${el.price}"></span>
+                                </div>
+                            </td>
+                            <td class="product-count">
+                                <div class="count-inlineflex">
+                                    <span th:text="${el.quantity}" class="qty"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="total">
+                                    &#36;<span th:text="${el.totalPrice}"></span>
+                                </div>
+                            </td>
+                        </table>
+                    </tr>
+                    </tbody>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/fragment :: footer"></footer>
+</wrapper>
+</body>
+</html>

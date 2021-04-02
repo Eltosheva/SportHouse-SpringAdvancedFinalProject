@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head></head>
+    <body>
+        <div class="row p-3" th:fragment="place_odd_row (place)">
+            <div th:replace="fragments/place_fragments :: place_url(${place.imageUrl})"></div>
+            <div th:replace="fragments/place_fragments :: place_content(${place})"></div>
+        </div>
+
+        <div class="row p-3" style="background-color: #e5e8ea" th:fragment="place_even_row (place)">
+            <div th:replace="fragments/place_fragments :: place_content(${place})"></div>
+            <div th:replace="fragments/place_fragments :: place_url(${place.imageUrl})"></div>
+        </div>
+
+        <div th:fragment="place_content(pls)" class="col-md-6 col-sm-6 col-xs-12">
+            <u><h2 class="text-uppercase" th:text="${pls.name}"></h2></u>
+            <h5><span th:text="${pls.city}"></span>, <span th:text="${pls.address}"></span></h5>
+            <br />
+            <p>Phone number: <b><span th:text="${pls.phone}"></span></b></p>
+            <p>Work from: <b><span th:text="${pls.workFrom}"></span></b> to: <b><span th:text="${pls.workTo}"></b></span></p>
+            <p>Short Description:</p>
+        </div>
+
+        <div th:fragment="place_url(url)" class="col-md-6 col-sm-6 col-xs-12">
+            <img th:src="${url} == '' ? 'http://placehold.it/555x312/652fff/ffffff/?text=ABOUT%20US' : ${url}" alt=""
+                 class="img-responsive" th:width="500" th:height="350" />
+        </div>
+    </body>
+</html>

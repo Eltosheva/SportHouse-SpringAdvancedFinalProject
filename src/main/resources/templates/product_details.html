@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head"></head>
+<body>
+<wrapper class="d-flex flex-column">
+    <header th:replace="fragments/fragment :: nav"></header>
+    <main class="flex-fill">
+        <div class="container">
+            <div class="heading-section">
+                <h2>Product Details</h2>
+            </div>
+            <div class="row" th:object="${product}">
+                <div class="col-md-6">
+                    <div class="item">
+                        <img th:if="(*{imageUrl} == null)" class="product-details-img"
+                             src="https://via.placeholder.com/500x340/5fa9f8/efefef" />
+                        <img th:if="(*{imageUrl} != null)" th:src="*{imageUrl}" class="product-details-img" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="product-dtl">
+                        <div class="product-info">
+                            <div class="product-name" th:text="*{name}"></div>
+                            <div class="reviews-counter">
+                                <div class="rate">
+                                    <input type="radio" id="star5" name="rate" value="5" checked="checked" />
+                                    <label for="star5" title="text">5 stars</label>
+                                    <input type="radio" id="star4" name="rate" value="4" checked />
+                                    <label for="star4" title="text">4 stars</label>
+                                    <input type="radio" id="star3" name="rate" value="3" checked />
+                                    <label for="star3" title="text">3 stars</label>
+                                    <input type="radio" id="star2" name="rate" value="2" checked />
+                                    <label for="star2" title="text">2 stars</label>
+                                    <input type="radio" id="star1" name="rate" value="1" checked />
+                                    <label for="star1" title="text">1 star</label>
+                                </div>
+                            </div>
+                            <div class="product-price-discount">&#36;<span th:text="*{price}"></span></div>
+                        </div>
+                        <p th:text="*{description}"></p>
+                        <div class="product-count">
+                            <form th:action="@{/products/add-to-cart}" method="post" class="display-flex">
+                                <input type="hidden" name="productId" th:value="${product.id}"/>
+                                <input th:field="${shoppingCartBindingModel.quantity}" id="quantity" type="number"
+                                       step="1" name="quantity" value="1" class="qty"/>
+                                <p><span th:text="${product.availableQuantity}"></span> Available quantity</p>
+                                <button type="submit" class="round-black-btn">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+<!--   45ред -> th:classappend="${#fields.hasErrors('shoppingCartBindingModel.quantity')?'is-invalid':''}"-->
+    <footer th:replace="fragments/fragment :: footer"></footer>
+    <link rel="stylesheet" th:href="@{/css/product_details.css}">
+</wrapper>
+</body>
+</html>

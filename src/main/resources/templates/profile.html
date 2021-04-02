@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head"></head>
+<body>
+<wrapper class="d-flex flex-column">
+    <header th:replace="fragments/fragment :: nav"></header>
+    <main class="flex-fil align-content-center bg-blur my-main">
+        <div class="row" id="body-row">
+            <div th:replace="fragments/fragment :: sidebar"></div>
+            <div class="col p-4">
+                <h2> Username:
+                    <span th:text="${user.firstName}">Eli</span>
+                </h2>
+                <hr/>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="text-center">
+                            <img th:if="${user.profilePictureUrl != null && user.profilePictureUrl != ''}" th:src="${user.profilePictureUrl}" class="img-circle img-thumbnail" alt="avatar">
+                            <img th:if="${user.profilePictureUrl == null || user.profilePictureUrl == ''}" th:src="@{/images/login_avatar.png}" class="img-circle img-thumbnail" alt="avatar">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <th:block sec:authorize="hasRole('USER')">
+                            <form th:action="@{/user/profile}" method="post"
+                                  class="justify-content-center align-items-center">
+                        </th:block>
+                        <th:block sec:authorize="hasRole('COACH')">
+                            <form th:action="@{/coach/profile}" method="post"
+                                  class="justify-content-center align-items-center">
+                        </th:block>
+                        <input type="hidden" name="id" th:value="${user.id}">
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group">
+                                    <label for="firstName">
+                                        <h4>First name</h4>
+                                    </label>
+                                    <input th:field="${user.firstName}" type="text" id="firstName"
+                                           class="form-control" placeholder="first name" required/>
+                                    <div class="invalid-feedback">
+                                        <div>First name is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group">
+                                    <label for="lastName">
+                                        <h4>Last name</h4>
+                                    </label>
+                                    <input th:field="${user.lastName}" type="text" id="lastName"
+                                           class="form-control" placeholder="last name" required/>
+                                    <div class="invalid-feedback">
+                                        <div>Last name is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group">
+                                    <label for="phone">
+                                        <h4>Phone</h4>
+                                    </label>
+                                    <input th:field="${user.phoneNum}" type="text" id="phone"
+                                           class="form-control" placeholder="enter phone"/>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group">
+                                    <label for="email">
+                                        <h4>Email</h4>
+                                    </label>
+                                    <input th:field="${user.email}" type="email" id="email"
+                                           class="form-control" placeholder="your@email.com" required/>
+                                    <div class="invalid-feedback">
+                                        <div>Email is required field</div>
+                                        <div>Not valid email format</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <th:block sec:authorize="hasRole('USER')">
+                            <div class="row">
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="form-group">
+                                        <label for="age">
+                                            <h4>Age</h4>
+                                        </label>
+                                        <input type="text" id="age"
+                                               class="form-control" placeholder="age" required/>
+                                        <div class="invalid-feedback">
+                                            <div>First name is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="form-group">
+                                        <label for="targetWeight">
+                                            <h4>Target weight</h4>
+                                        </label>
+                                        <input type="text" id="targetWeight"
+                                               class="form-control" placeholder="targetWeight" required/>
+                                        <div class="invalid-feedback">
+                                            <div>Last name is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                        <h3 class="mt-3">Change password</h3>
+                        <hr/>
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group">
+                                    <label for="password">
+                                        <h4>Password</h4>
+                                    </label>
+                                    <input type="password" id="password" class="form-control"
+                                           placeholder="password"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group">
+                                    <label for="password">
+                                        <h4>New Password</h4>
+                                    </label>
+                                    <input type="password" id="newpassword" class="form-control"
+                                           placeholder="new password"/>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group">
+                                    <label for="password2">
+                                        <h4>Verify New Password</h4>
+                                    </label>
+                                    <input type="password" id="password2" class="form-control"
+                                           placeholder="verify new password"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <br>
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-success"><i class="glyphicon glyphicon-ok-sign"></i>
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/fragment :: footer"></footer>
+</wrapper>
+</body>
+</html>

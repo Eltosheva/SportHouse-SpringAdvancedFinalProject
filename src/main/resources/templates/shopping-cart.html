@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head"></head>
+<body>
+<wrapper class="d-flex flex-column">
+    <header th:replace="fragments/fragment :: nav"></header>
+    <main class="flex-fill">
+        <div class="container mt-5">
+            <div class="row">
+            <div class="col-lg-8">
+                <div class="main-heading">Shopping Cart</div>
+                <div class="table-cart">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="p : ${products}">
+                            <td>
+                                <div class="display-flex align-center">
+                                    <div class="img-product">
+                                        <img th:if="*{p.imageUrl != null}"
+                                             th:src="@{*{p.imageUrl}}" alt="" class="mCS_img_loaded">
+                                        <img th:if="*{p.imageUrl == null}"
+                                             th:src="@{https://via.placeholder.com/240x240/5fa9f8/efefef}" alt=""
+                                             class="mCS_img_loaded">
+                                    </div>
+                                    <div class="name-product">
+                                        <span th:text="*{p.name}"></span>
+                                    </div>
+                                    <div class="price">
+                                        &#36;<span th:text="*{p.price}"></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="product-count">
+                                <div class="count-inlineflex">
+                                    <span th:text="*{p.quantity}" class="qty"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="total">
+                                    &#36;<span th:text="*{p.totalPrice}"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <a th:href="@{/products/cart-remove/{id}(id = *{p.id})}">
+                                    <span class="fas fa-times text-danger"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart-totals">
+                    <h3>Cart Totals</h3>
+                    <form th:action="@{/user/order}" method="post">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>Subtotal</td>
+                                <td class="subtotal">&#36;<span th:text="${totalProductPrice}"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Shipping</td>
+                                <td class="free-shipping">Free Shipping</td>
+                            </tr>
+                            <tr>
+                                <td>Payment</td>
+                                <td class="free-shipping">Collect Payment</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td class="price-total">&#36;<span th:text="${totalProductPrice}"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="btn-cart-totals">
+                            <button th:disabled="${products.size() == 0}"
+                                    type="submit" class="checkout round-black-btn">Make Order</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/fragment :: footer"></footer>
+    <link rel="stylesheet" th:href="@{/css/shopping_cart.css}">
+</wrapper>
+</body>
+</html>

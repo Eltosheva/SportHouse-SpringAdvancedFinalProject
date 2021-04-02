@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Tennis",
+    "description":"Tennis is a racket sport that can be played individually against a single opponent (singles) or between two teams of two players each (doubles). Each player uses a tennis racket that is strung with cord to strike a hollow rubber ball covered with felt over or around a net and into the opponent's court. The object of the game is to maneuver the ball in such a way that the opponent is not able to play a valid return. The player who is unable to return the ball will not gain a point, while the opposite player will.",
+    "imageUrl" : "https://photoresources.wtatennis.com/photo-resources/2019/08/15/dbb59626-9254-4426-915e-57397b6d6635/tennis-origins-e1444901660593.jpg",
+    "isActive" : true
+  },
+  {
+    "name": "Basketball",
+    "description":"Basketball is a team sport in which two teams, most commonly of five players each, opposing one another on a rectangular court, compete with the primary objective of shooting a basketball (approximately 9.4 inches (24 cm) in diameter) through the defender's hoop (a basket 18 inches (46 cm) in diameter mounted 10 feet (3.048 m) high to a backboard at each end of the court) while preventing the opposing team from shooting through their own hoop.",
+    "imageUrl" : "https://wallpaper.dog/large/241057.jpg",
+    "isActive" : true
+  },
+  {
+    "name": "Functional Fitness",
+    "description":"Functional fitness is a classification of training that prepares the body for real-life movements and activities. Also known as functional training or functional movement, “It trains your muscles to work together and prepares them for daily tasks by simulating common movements you might do at home, at work, or in sports.” – Mayo Clinic. Movements such as squatting, reaching, pulling, and lifting will be made easier with functional fitness integrated into your exercise routine.",
+    "imageUrl" : "https://www.superwatches.com/wp-content/uploads/2020/06/Functional-Fitness.jpg",
+    "isActive" : true
+  }
+]

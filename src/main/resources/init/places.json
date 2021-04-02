@@ -1,0 +1,35 @@
+[
+  {
+    "isActive": true,
+    "address": "slavqnska",
+    "city": "Burgas",
+    "description": "...",
+    "imageUrl": "https://www.gramofona.com/assets/post/0cc8b464e8bca714d94f34c90f991cc1.jpg",
+    "name": "zala neftohimik",
+    "phone": "321421",
+    "workFrom": "02:08",
+    "workTo": "12:08"
+  },
+  {
+    "isActive": true,
+    "address": "Carigradsko",
+    "city": "Sofia",
+    "description": "Arena Armeec Sofia is a multi-purpose indoor arena located in Sofia, Bulgaria. It has a seating capacity of 12,373. For concerts it can grow to 17,906. It was originally called Arena Sofia before the Bulgarian insurance company Armeec purchased the naming rights.",
+    "imageUrl": "https://gbs-bg.com/bg/wp-content/uploads/2011/12/armeec_cover.jpg",
+    "name": "Arena Armeec",
+    "phone": "123456",
+    "workFrom": "12:08",
+    "workTo": "22:08"
+  },
+  {
+    "isActive": true,
+    "address": "karlovsko",
+    "city": "plovdiv",
+    "description": "...",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/63/Stroitel_Hall_in_Plovdiv.jpg",
+    "name": "stroitel",
+    "phone": "22316",
+    "workFrom": "02:08",
+    "workTo": "20:08"
+  }
+]
