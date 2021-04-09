@@ -11,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface SubscriptionRepository extends JpaRepository<Subscription, String> {
     Optional<Subscription> findById(String id);
+
+
 }

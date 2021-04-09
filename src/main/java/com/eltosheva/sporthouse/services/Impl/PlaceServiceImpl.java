@@ -1,5 +1,6 @@
 package com.eltosheva.sporthouse.services.Impl;
 
+import com.eltosheva.sporthouse.models.bindingModels.PlaceBindingModel;
 import com.eltosheva.sporthouse.models.entities.Place;
 import com.eltosheva.sporthouse.models.service.PlaceServiceModel;
 import com.eltosheva.sporthouse.repositories.PlaceRepository;
@@ -16,6 +17,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class  PlaceServiceImpl implements PlaceService {
@@ -70,5 +72,12 @@ public class  PlaceServiceImpl implements PlaceService {
                 throw new IllegalStateException("Places cannot be initialized.");
             }
         }
+    }
+
+    @Override
+    public void changeStatus(String id) {
+        Place place = placeRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        place.setIsActive(!place.getIsActive());
+        placeRepository.saveAndFlush(place);
     }
 }

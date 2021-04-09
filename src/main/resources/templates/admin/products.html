@@ -10,7 +10,7 @@
 
             <div class="col p-4">
                 <h2>Admin Item Management</h2>
-                <hr />
+                <hr/>
                 <div class="row">
                     <div class="col-lg-3 col-md-3">
                         <img th:src="@{/images/image-placeholder.jpg}"
@@ -18,13 +18,13 @@
                     </div>
                     <div class="col-lg-9 col-md-9">
                         <form th:object="${productBindingModel}" method="post" th:action="@{/admin/products}">
-                            <input type="hidden" name="productId" id="id" value="" />
+                            <input type="hidden" name="productId" id="id" value=""/>
                             <div class="form-row">
                                 <div class="col-md-6 mb-2">
                                     <label for="productName">Name</label>
                                     <input th:field="*{productName}"
                                            th:classappend="${#fields.hasErrors('productName')?'is-invalid':''}"
-                                            type="text" class="form-control" id="productName"
+                                           type="text" class="form-control" id="productName"
                                            name="productName" aria-describedby="productNameFeedback"
                                            placeholder="Accessory name" required/>
                                     <div th:if="${#fields.hasErrors('productName')}"
@@ -37,7 +37,8 @@
                                     <input th:field="*{productAvailableQuantity}"
                                            th:classappend="${#fields.hasErrors('productAvailableQuantity')?'is-invalid':''}"
                                            type="number" class="form-control" id="productAvailableQuantity"
-                                           name="productAvailableQuantity" aria-describedby="productAvailableQuantityFeedback"
+                                           name="productAvailableQuantity"
+                                           aria-describedby="productAvailableQuantityFeedback"
                                            placeholder="Quantity" required/>
                                     <div th:if="${#fields.hasErrors('productAvailableQuantity')}"
                                          th:errors="*{productAvailableQuantity}" id="productAvailableQuantityFeedback"
@@ -52,7 +53,7 @@
                                         </div>
                                         <input th:field="*{productPrice}"
                                                th:classappend="${#fields.hasErrors('productPrice')?'is-invalid':''}"
-                                                type="number" step="0.1" class="form-control" id="productPrice"
+                                               type="number" step="0.1" class="form-control" id="productPrice"
                                                name="productPrice" placeholder="Price"
                                                aria-describedby="productPriceFeedback" required/>
                                         <div th:if="${#fields.hasErrors('productPrice')}"
@@ -69,9 +70,10 @@
                                             <label for="productImageUrl">Image</label>
                                             <input th:field="*{productImageUrl}"
                                                    th:classappend="${#fields.hasErrors('productImageUrl')?'is-invalid':''}"
-                                                    type="url" class="form-control" id="productImageUrl"
+                                                   type="url" class="form-control" id="productImageUrl"
                                                    name="productImageUrl"
-                                                   aria-describedby="productImageUrlFeedback" placeholder="Item image URL"
+                                                   aria-describedby="productImageUrlFeedback"
+                                                   placeholder="Item image URL"
                                                    required/>
                                             <div th:if="${#fields.hasErrors('productImageUrl')}"
                                                  th:errors="*{productImageUrl}" id="productImageUrlFeedback"
@@ -83,7 +85,7 @@
                                         <div class="col-md-4 mb-2">
                                             <label for="status">Status</label>
                                             <select class="custom-select" id="status" name="isActive" required>
-                                                <option selected>Status...</option>
+                                                <option value="" selected>Status...</option>
                                                 <option th:value="false">Inactive</option>
                                                 <option th:value="true">Active</option>
                                             </select>
@@ -92,9 +94,10 @@
                                             <label for="productSportId">Sport</label>
                                             <select class="custom-select" id="productSportId"
                                                     name="productSportId" required>
-                                                <option selected>Choice Sport</option>
+                                                <option value="" selected>Choice Sport</option>
                                                 <option th:each="s : ${sports}" th:value="${s.id}"
-                                                        th:text="${s.name}" th:selected="${s.getId()} == *{productSportId}">
+                                                        th:text="${s.name}"
+                                                        th:selected="${s.getId()} == *{productSportId}">
                                                 </option>
                                             </select>
                                         </div>
@@ -112,7 +115,7 @@
                         </form>
                     </div>
                 </div>
-                <hr />
+                <hr/>
                 <h2>Products list</h2>
                 <div class="row">
                     <div class="table-responsive col-md-12 col-lg-12">
@@ -128,37 +131,41 @@
                             </tr>
                             </thead>
                             <tbody class="text-center">
-                                <tr th:if="${products} == 0">
-                                    <td colspan="12">Empty cart</td>
-                                </tr>
-                                <tr th:each="p : ${products}">
-                                    <td th:text="${p.name}">name</td>
-                                    <td th:text="${p.price}">10.10</td>
-                                    <td th:text="${p.availableQuantity}">30</td>
-                                    <td>
-                                        <h4>
+                            <tr th:if="${products} == 0">
+                                <td colspan="12">Empty cart</td>
+                            </tr>
+                            <tr th:each="p : ${products}">
+                                <td th:text="${p.name}">name</td>
+                                <td th:text="${p.price}">10.10</td>
+                                <td th:text="${p.availableQuantity}">30</td>
+                                <td>
+                                    <h4>
                                             <span th:if="${p.isActive == true}" class="badge badge-success">
                                             Active
                                             </span>
-                                            <span th:if="${p.isActive == false}" class="badge badge-danger">
+                                        <span th:if="${p.isActive == false}" class="badge badge-danger">
                                             Inactive
                                             </span>
-                                        </h4>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm" data-title="" data-toggle="modal"
-                                                data-target="#edit" >
-                                            <span class="fas fa-pen"></span>
-                                        </button>
-                                    </td>
-                                    <td>
+                                    </h4>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" data-title="" data-toggle="modal"
+                                            data-target="#edit">
+                                        <span class="fas fa-pen"></span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <form th:action="@{/admin/products/status}" method="post">
+                                        <input type="hidden" name="id" th:value="${p.id}"/>
                                         <button class="btn btn-sm"
                                                 th:classappend="${p.isActive == true ? 'btn-danger' : 'btn-success'}"
-                                                data-title="" onclick="">
-                                            <span class="fas" th:classappend="${p.isActive == true ? 'fa-times' : 'fa-check'}"></span>
+                                                data-title="" type="submit">
+                                            <span class="fas"
+                                                  th:classappend="${p.isActive == true ? 'fa-times' : 'fa-check'}"></span>
                                         </button>
-                                    </td>
-                                </tr>
+                                    </form>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

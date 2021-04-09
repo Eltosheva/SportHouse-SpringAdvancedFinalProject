@@ -1,6 +1,6 @@
 package com.eltosheva.sporthouse.web;
 
-import com.eltosheva.sporthouse.models.service.ProductServiceModel;
+import com.eltosheva.sporthouse.models.service.ProductStoreServiceModel;
 import com.eltosheva.sporthouse.services.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class ProductsRestController {
     private final ProductService productService;
 
     @RequestMapping(path = "/products", method = RequestMethod.GET)
-    public ResponseEntity<List<ProductServiceModel>> findAll() {
-        return ResponseEntity.ok().body(productService.getAllProducts());
+    public ResponseEntity<List<ProductStoreServiceModel>> findAll() {
+        return ResponseEntity.ok().body(productService.getAllStoreProducts());
     }
 }

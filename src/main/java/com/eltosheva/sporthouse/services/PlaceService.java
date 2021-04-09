@@ -9,4 +9,5 @@ public interface PlaceService {
     List<PlaceServiceModel> getPlaces();
     void removePlace(String id);
     void initPlaces();
+    void changeStatus(String id);
 }

@@ -38,7 +38,8 @@ class UserServiceImplTest {
 
     @BeforeEach
     void setup() {
-        userService = new UserServiceImpl(userRepository, new ModelMapper(), roleRepository, passwordEncoder, sportRepository);
+        userService = new UserServiceImpl(userRepository, new ModelMapper(),
+                roleRepository, passwordEncoder, sportRepository);
     }
 
     @Test

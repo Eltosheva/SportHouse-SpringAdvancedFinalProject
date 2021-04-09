@@ -12,4 +12,5 @@ public interface SportService {
     void removeSport(String id);
     List<ProductServiceModel> getAllSportsAccessories(String sportId);
     void initSports() throws IOException;
+    void changeStatus(String id);
 }

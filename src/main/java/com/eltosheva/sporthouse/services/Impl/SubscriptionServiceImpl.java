@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -36,11 +33,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public void activityStatus(String id) {
-        subscriptionRepository.findById(id);
-    }
-
-    @Override
     public List<SubscriptionServiceModel> getAllSubscriptions() {
         List<SubscriptionServiceModel> subscriptionServiceModels = new ArrayList<>();
         subscriptionRepository
@@ -54,14 +46,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscriptionServiceModels;
     }
 
-   // @Override
-//    public List<SubscriptionServiceModel> getTopThree() {
-//        return subscriptionRepository.findAll()
-//                .stream()
-//                .sorted(Comparator.comparing(Subscription::getTrainingCount).reversed())
-//                .limit(3)
-//                .map(s -> modelMapper.map(s, SubscriptionServiceModel.class))
-//                .collect(Collectors.toList());
-//    }
-
+    @Override
+    public void changeStatus(String id) {
+        Subscription subscription = subscriptionRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        subscription.setIsActive(!subscription.getIsActive());
+        subscriptionRepository.saveAndFlush(subscription);
+    }
 }

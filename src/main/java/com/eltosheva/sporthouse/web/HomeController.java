@@ -25,6 +25,12 @@ public class HomeController {
         return "home";
     }
 
+    @GetMapping("/store")
+    public String store(Model model) {
+        model.addAttribute("sports", sportService.getSports());
+        return "store";
+    }
+
     @GetMapping("/help")
     public String applicationHelpPage() {
         return "help";

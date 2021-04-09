@@ -1,6 +1,6 @@
 package com.eltosheva.sporthouse.web;
 
-import com.eltosheva.sporthouse.bindingModels.CoachRegisterBindingModel;
+import com.eltosheva.sporthouse.models.bindingModels.CoachRegisterBindingModel;
 import com.eltosheva.sporthouse.models.service.CoachServiceModel;
 import com.eltosheva.sporthouse.models.service.UserServiceModel;
 import com.eltosheva.sporthouse.services.SportService;
@@ -70,7 +70,7 @@ public class CoachController {
     }
 
     @GetMapping("/profile")
-    public String coachProfilePage(Model model, HttpSession httpSession) {
+    public String coachProfilePage(Model model) {
         if (!model.containsAttribute("coachRegisterBindingModel")) {
             model.addAttribute("coachRegisterBindingModel", new CoachRegisterBindingModel());
             model.addAttribute("isWrongConfirmPassword", false);

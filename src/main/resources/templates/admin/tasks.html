@@ -9,11 +9,83 @@
             <div th:replace="fragments/fragment :: sidebar"></div>
             <div class="col p-4">
                 <h2>Admin Tasks Management</h2>
-                <hr />
+                <hr/>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary btn-sm mb-2" id="createBtn" data-toggle="modal"><b>+</b> Create</button>
+                </div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th class="pl-2">Id</th>
+                        <th class="pl-2">Name</th>
+                        <th class="pl-2">Group</th>
+                        <th class="pl-2">Crons</th>
+                        <th class="pl-2">Desc</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="j : ${jobs}" th:data-id="${j.jobId}">
+                        <td class="pl-2" th:text="${j.jobId}">$item.jobId</td>
+                        <td class="pl-2" th:text="${j.jobName}" th:id="${'name_'+ j.jobId}">$item.jobName</td>
+                        <td class="pl-2" th:text="${j.jobGroup}" th:id="${'group_' + j.jobId}">$item.jobGroup</td>
+                        <td class="pl-2" th:text="${j.cronExpression}" th:id="${'cron_' + j.jobId}">$item.cronExpression</td>
+                        <td class="pl-2" th:text="${j.desc}" th:id="${'desc_' + j.jobId}">$item.desc</td>
+                        <td class="pl-2" style="text-align: center;">
+                            <div class="d-flex justify-content-around" role="group"
+                                 th:data-id="${j.jobId}">
+                                <button type="button" class="btn btn-success btn-sm btnRun"><i class="fas fa-bolt"></i>&nbsp;Execute</button>
+                                <button type="button" class="btn btn-warning btn-sm btnEdit"><i class="fas fa-pen"></i>&nbsp;Edit</button>
+                                <button type="button" class="btn btn-danger btn-sm btnDelete"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Create cron task</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="mainForm" action="">
+                                <div>
+                                    <input type="hidden" class="form-control" id="jobId" name="jobId" />
+                                    <div class="form-group">
+                                        <label class="control-label" for="edit_name">job name</label>
+                                        <input type="text" alias="no-edit" name="jobName" class="form-control" id="edit_name" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="edit_group">job group</label>
+                                        <input type="text" alias="no-edit" name="jobGroup" class="form-control" id="edit_group" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="edit_cron">cron expression</label>
+                                        <input type="text" alias="no-edit" name="cronExpression" class="form-control" id="edit_cron" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="edit_desc">job description</label>
+                                        <input type="text" alias="no-edit" name="desc" class="form-control" id="edit_desc" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                            <button type="button" class="btn btn-primary" id="save">save</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
     <footer th:replace="fragments/fragment :: footer"></footer>
+    <script type="application/javascript" th:src="@{/js/tasks.js}"></script>
 </wrapper>
 </body>
 </html>

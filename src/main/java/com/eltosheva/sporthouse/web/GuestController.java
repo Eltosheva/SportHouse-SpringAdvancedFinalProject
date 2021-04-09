@@ -1,10 +1,7 @@
 package com.eltosheva.sporthouse.web;
 
 import com.eltosheva.sporthouse.exceptions.UnauthorizedException;
-import com.eltosheva.sporthouse.models.service.ProductServiceModel;
-import com.eltosheva.sporthouse.services.PlaceService;
-import com.eltosheva.sporthouse.services.ProductService;
-import com.eltosheva.sporthouse.services.UserService;
+import com.eltosheva.sporthouse.services.*;
 import com.eltosheva.sporthouse.utils.AppConstants;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,6 +19,7 @@ public class GuestController {
     private final PlaceService placeService;
     private final ProductService productService;
     private final UserService userService;
+    private final SportService sportService;
 
     @GetMapping("/login")
     public String login(@RequestParam(value = "invalid-session", defaultValue = "false") boolean invalidSession,
@@ -62,13 +60,9 @@ public class GuestController {
         return "places";
     }
 
-    @GetMapping("/store")
-    public String store() {
-        return "store";
-    }
-
     @GetMapping("/sports")
-    public String sports() {
+    public String sports(Model model) {
+        model.addAttribute("sports", sportService.getSports());
         return "sports";
     }
 

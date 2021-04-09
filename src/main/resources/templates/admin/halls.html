@@ -10,7 +10,7 @@
 
             <div class="col p-4">
                 <h2>Admin Halls Management</h2>
-                <hr />
+                <hr/>
                 <div class="row">
                     <div class="col-lg-3 col-md-3">
                         <img th:src="@{/images/image-placeholder.jpg}"
@@ -18,12 +18,12 @@
                     </div>
                     <div class="col-lg-9 col-md-9">
                         <form th:object="${placeBindingModel}" method="post" th:action="@{/admin/halls}">
-                            <input type="hidden" name="id" id="id" value="" />
+                            <input type="hidden" name="id" id="id" value=""/>
                             <div class="form-row">
                                 <div class="col-md-6 mb-2">
                                     <label for="placeName">Name</label>
                                     <input th:field="*{name}" th:errorclass="is-invalid"
-                                            type="text" class="form-control" id="placeName" name="name"
+                                           type="text" class="form-control" id="placeName" name="name"
                                            aria-describedby="placeNameFeedback" placeholder="Hall name" required/>
                                     <div th:if="${#fields.hasErrors('name')}"
                                          th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
@@ -34,8 +34,9 @@
                                 <div class="col-md-6 mb-2 ml-auto">
                                     <label for="placeImageUrl">Image</label>
                                     <input th:field="*{imageUrl}" th:errorclass="is-invalid"
-                                            type="url" class="form-control" id="placeImageUrl" name="imageUrl"
-                                           aria-describedby="placeImageUrlFeedback" placeholder="Hall image URL" required/>
+                                           type="url" class="form-control" id="placeImageUrl" name="imageUrl"
+                                           aria-describedby="placeImageUrlFeedback" placeholder="Hall image URL"
+                                           required/>
                                     <div th:if="${#fields.hasErrors('imageUrl')}"
                                          th:classappend="${#fields.hasErrors('imageUrl')?'is-invalid':''}"
                                          id="placeImageUrlFeedback" class="invalid-feedback">
@@ -48,7 +49,7 @@
                                         <div class="col-md-4 mb-2">
                                             <label for="hallCity">City</label>
                                             <input th:field="*{city}" th:errorclass="is-invalid"
-                                                    type="text" class="form-control" id="hallCity" name="city"
+                                                   type="text" class="form-control" id="hallCity" name="city"
                                                    aria-describedby="hallCityFeedback" placeholder="City" required/>
                                             <div th:if="${#fields.hasErrors('city')}"
                                                  th:classappend="${#fields.hasErrors('city')?'is-invalid':''}"
@@ -58,8 +59,9 @@
                                         <div class="col-md-8 mb-2">
                                             <label for="hallAddress">Address</label>
                                             <input th:field="*{address}" th:errorclass="is-invalid"
-                                                    type="text" class="form-control" id="hallAddress" name="address"
-                                                   aria-describedby="hallAddressFeedback" placeholder="Address" required/>
+                                                   type="text" class="form-control" id="hallAddress" name="address"
+                                                   aria-describedby="hallAddressFeedback" placeholder="Address"
+                                                   required/>
                                             <div th:if="${#fields.hasErrors('address')}"
                                                  th:classappend="${#fields.hasErrors('address')?'is-invalid':''}"
                                                  id="hallAddressFeedback" class="invalid-feedback">
@@ -70,8 +72,8 @@
                                         <div class="col-md-4 mb-2">
                                             <label for="hallPhone">Phone</label>
                                             <input th:field="*{phone}" th:errorclass="is-invalid"
-                                                    type="text" class="form-control" id="hallPhone" name="phone"
-                                                   aria-describedby="hallPhoneFeedback" placeholder="Phone" />
+                                                   type="text" class="form-control" id="hallPhone" name="phone"
+                                                   aria-describedby="hallPhoneFeedback" placeholder="Phone"/>
                                             <div th:if="${#fields.hasErrors('phone')}"
                                                  th:classappend="${#fields.hasErrors('phone')?'is-invalid':''}"
                                                  id="hallPhoneFeedback" class="invalid-feedback">
@@ -80,8 +82,9 @@
                                         <div class="col-md-4 mb-2">
                                             <label for="hallWorkFrom">Work from</label>
                                             <input th:field="*{workFrom}" th:errorclass="is-invalid"
-                                                    type="time" class="custom-select" id="hallWorkFrom" name="workFrom"
-                                                   aria-describedby="hallWorkFromFeedback" placeholder="Work from" required/>
+                                                   type="time" class="custom-select" id="hallWorkFrom" name="workFrom"
+                                                   aria-describedby="hallWorkFromFeedback" placeholder="Work from"
+                                                   required/>
                                             <div th:if="${#fields.hasErrors('workFrom')}"
                                                  th:classappend="${#fields.hasErrors('workFrom')?'is-invalid':''}"
                                                  id="hallWorkFromFeedback" class="invalid-feedback">
@@ -90,8 +93,9 @@
                                         <div class="col-md-4 mb-2">
                                             <label for="hallWorkTo">Work to</label>
                                             <input th:field="*{workTo}" th:errorclass="is-invalid"
-                                                    type="time" class="custom-select" id="hallWorkTo" name="workTo"
-                                                   aria-describedby="hallWorkToFeedback" placeholder="Work to" required/>
+                                                   type="time" class="custom-select" id="hallWorkTo" name="workTo"
+                                                   aria-describedby="hallWorkToFeedback" placeholder="Work to"
+                                                   required/>
                                             <div th:if="${#fields.hasErrors('workTo')}"
                                                  th:classappend="${#fields.hasErrors('workTo')?'is-invalid':''}"
                                                  id="hallWorkToFeedback" class="invalid-feedback">
@@ -111,59 +115,63 @@
                         </form>
                     </div>
                 </div>
-                <hr />
+                <hr/>
                 <h2>Halls list</h2>
                 <div class="row">
                     <div class="table-responsive col-md-12 col-lg-12">
                         <table id="contractors_table" class="table table-striped table-hover">
                             <thead>
-                                <tr>
-                                    <th class="text-center">Name</th>
-                                    <th class="text-center">City</th>
-                                    <th class="text-center">Address</th>
-                                    <th class="text-center">Work from</th>
-                                    <th class="text-center">Work to</th>
-                                    <th class="text-center">Phone</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center">Edit</th>
-                                    <th class="text-center">Change Status</th>
-                                </tr>
+                            <tr>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">City</th>
+                                <th class="text-center">Address</th>
+                                <th class="text-center">Work from</th>
+                                <th class="text-center">Work to</th>
+                                <th class="text-center">Phone</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Edit</th>
+                                <th class="text-center">Change Status</th>
+                            </tr>
                             </thead>
                             <tbody class="text-center">
-                                <tr th:if="${halls} == 0">
-                                    <td colspan="12">Empty cart</td>
-                                </tr>
-                                <tr th:each="h : ${halls}">
-                                    <td th:text="${h.name}">Arena Armeec</td>
-                                    <td th:text="${h.city}" >Sofia</td>
-                                    <td th:text="${h.address}" >Carigradsko shose 1</td>
-                                    <td th:text="${h.workFrom}" >9:30</td>
-                                    <td th:text="${h.workTo}" >18:30</td>
-                                    <td th:text="${h.phone}" >1122334455</td>
-                                    <td>
-                                        <h4>
+                            <tr th:if="${halls} == 0">
+                                <td colspan="12">Empty cart</td>
+                            </tr>
+                            <tr th:each="h : ${halls}">
+                                <td th:text="${h.name}">Arena Armeec</td>
+                                <td th:text="${h.city}">Sofia</td>
+                                <td th:text="${h.address}">Carigradsko shose 1</td>
+                                <td th:text="${h.workFrom}">9:30</td>
+                                <td th:text="${h.workTo}">18:30</td>
+                                <td th:text="${h.phone}">1122334455</td>
+                                <td>
+                                    <h4>
                                             <span th:if="${h.isActive == true}" class="badge badge-success">
                                             Active
                                             </span>
-                                            <span th:if="${h.isActive == false}" class="badge badge-danger">
+                                        <span th:if="${h.isActive == false}" class="badge badge-danger">
                                             Inactive
                                             </span>
-                                        </h4>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm" data-title="" data-toggle="modal"
-                                                data-target="#edit" >
-                                            <span class="fas fa-pen"></span>
-                                        </button>
-                                    </td>
-                                    <td>
+                                    </h4>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" data-title="" data-toggle="modal"
+                                            data-target="#edit">
+                                        <span class="fas fa-pen"></span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <form th:action="@{/admin/halls/status}" method="post">
+                                        <input type="hidden" name="id" th:value="${h.id}"/>
                                         <button class="btn btn-sm"
                                                 th:classappend="${h.isActive == true ? 'btn-danger' : 'btn-success'}"
-                                                data-title="" onclick="">
-                                            <span class="fas" th:classappend="${h.isActive == true ? 'fa-times' : 'fa-check'}"></span>
+                                                data-title="" type="submit">
+                                            <span class="fas"
+                                                  th:classappend="${h.isActive == true ? 'fa-times' : 'fa-check'}"></span>
                                         </button>
-                                    </td>
-                                </tr>
+                                    </form>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

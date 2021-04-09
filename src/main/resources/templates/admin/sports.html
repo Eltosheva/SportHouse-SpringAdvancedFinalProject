@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/fragment :: head"></head>
 <body>
@@ -9,21 +9,22 @@
             <div th:replace="fragments/fragment :: sidebar"></div>
             <div class="col p-4">
                 <h2>Admin Sports Management</h2>
-                <hr />
+                <hr/>
                 <div class="row">
                     <div class="col-lg-3 col-md-3">
                         <img th:src="@{/images/image-placeholder.jpg}"
-                             class="img-thumbnail mx-auto d-block demo-thumbnail img-thumbnail-view" alt="Image placeholder">
+                             class="img-thumbnail mx-auto d-block demo-thumbnail img-thumbnail-view"
+                             alt="Image placeholder">
                     </div>
                     <div class="col-lg-9 col-md-9">
                         <form th:object="${sportBindingModel}" method="post" th:action="@{/admin/sports}">
-                            <input type="hidden" name="id" id="id" value="" />
+                            <input type="hidden" name="id" id="id" value=""/>
                             <div class="form-row">
                                 <div class="col-md-6 mb-2">
                                     <div class="form-row">
                                         <label for="sportName">Name</label>
                                         <input th:field="*{name}" th:errorclass="is-invalid"
-                                                type="text" class="form-control" id="sportName" name="name"
+                                               type="text" class="form-control" id="sportName" name="name"
                                                aria-describedby="sportNameFeedback" placeholder="Sport name" required>
                                         <div th:if="${#fields.hasErrors('name')}"
                                              th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
@@ -36,7 +37,7 @@
                                                type="url" class="form-control form-img-thumbnail" id="sportImageUrl"
                                                name="imageUrl"
                                                aria-describedby="sportImageUrlFeedback"
-                                               placeholder="Hall image URL" required />
+                                               placeholder="Hall image URL" required/>
                                         <div th:if="${#fields.hasErrors('imageUrl')}"
                                              th:classappend="${#fields.hasErrors('imageUrl')?'is-invalid':''}"
                                              id="sportImageUrlFeedback" class="invalid-feedback">
@@ -56,7 +57,7 @@
                         </form>
                     </div>
                 </div>
-                <hr />
+                <hr/>
                 <h2>Sports list</h2>
                 <div class="row">
                     <div class="table-responsive col-md-12 col-lg-12">
@@ -87,17 +88,21 @@
                                 </td>
                                 <td>
                                     <button class="btn btn-primary btn-sm" data-title="" data-toggle="modal"
-                                            data-target="#edit" >
+                                            data-target="#edit">
                                         <span class="fas fa-pen"></span>
                                     </button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm"
-                                            th:classappend="${s.isActive == true ? 'btn-danger' : 'btn-success'}"
-                                            data-title="" onclick="">
-                                        <span class="fas" th:classappend="${s.isActive == true ? 'fa-times' : 'fa-check'}">
+                                    <form th:action="@{/admin/sports/status}" method="post">
+                                        <input type="hidden" name="id" th:value="${s.id}"/>
+                                        <button class="btn btn-sm"
+                                                th:classappend="${s.isActive == true ? 'btn-danger' : 'btn-success'}"
+                                                data-title="" type="submit">
+                                        <span class="fas"
+                                              th:classappend="${s.isActive == true ? 'fa-times' : 'fa-check'}">
                                         </span>
-                                    </button>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                             </tbody>

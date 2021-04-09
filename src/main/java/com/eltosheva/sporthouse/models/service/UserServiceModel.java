@@ -15,4 +15,8 @@ public class UserServiceModel {
     private String imageUrl;
     private String profilePictureUrl;
     private boolean isActive;
+    private Integer age;
+    private Double targetWeight;
+    private String description;
+    private String socialMediaUrl;
 }

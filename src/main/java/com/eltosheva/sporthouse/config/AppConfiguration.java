@@ -50,4 +50,5 @@ public class AppConfiguration {
     public ValidationUtil validatorUtil() {
         return new ValidationUtilImpl(validator());
     }
+
 }

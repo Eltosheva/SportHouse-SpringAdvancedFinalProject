@@ -5,6 +5,7 @@ import com.eltosheva.sporthouse.models.entities.Sport;
 import com.eltosheva.sporthouse.models.entities.User;
 import com.eltosheva.sporthouse.models.enums.RoleEnum;
 import com.eltosheva.sporthouse.models.service.CoachServiceModel;
+import com.eltosheva.sporthouse.models.service.CoachTeamServiceModel;
 import com.eltosheva.sporthouse.models.service.SportsmanServiceModel;
 import com.eltosheva.sporthouse.models.service.UserServiceModel;
 import com.eltosheva.sporthouse.repositories.RoleRepository;
@@ -13,7 +14,6 @@ import com.eltosheva.sporthouse.repositories.UserRepository;
 import com.eltosheva.sporthouse.services.UserService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -72,11 +72,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<CoachServiceModel> getAllCoaches() {
+    public List<CoachTeamServiceModel> getAllCoaches() {
         return userRepository.findAll()
                  .stream()
                 .filter(user -> user.isCoach() && !user.isAdmin())
-                .map(user -> modelMapper.map(user, CoachServiceModel.class))
+                .map(user -> {
+                    CoachTeamServiceModel coach = modelMapper.map(user, CoachTeamServiceModel.class);
+                    coach.setSportName(user.getSport().getName());
+                    return coach;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -95,7 +99,7 @@ public class UserServiceImpl implements UserService {
             User appAdmin = new User();
             appAdmin.setFirstName("Admin");
             appAdmin.setLastName("Admin");
-            appAdmin.setPassword(passwordEncoder.encode("123"));
+            appAdmin.setPassword(passwordEncoder.encode("123456"));
             appAdmin.setEmail("1@1");
             appAdmin.setPhoneNum("123456789");
             appAdmin.setProfilePictureUrl("https://ih1.redbubble.net/image.161080070.3717/flat,750x1000,075,f.jpg");

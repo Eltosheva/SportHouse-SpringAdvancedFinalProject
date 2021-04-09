@@ -15,8 +15,10 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="text-center">
-                            <img th:if="${user.profilePictureUrl != null && user.profilePictureUrl != ''}" th:src="${user.profilePictureUrl}" class="img-circle img-thumbnail" alt="avatar">
-                            <img th:if="${user.profilePictureUrl == null || user.profilePictureUrl == ''}" th:src="@{/images/login_avatar.png}" class="img-circle img-thumbnail" alt="avatar">
+                            <img th:if="${user.profilePictureUrl != null && user.profilePictureUrl != ''}"
+                                 th:src="${user.profilePictureUrl}" class="img-circle img-thumbnail" alt="avatar">
+                            <img th:if="${user.profilePictureUrl == null || user.profilePictureUrl == ''}"
+                                 th:src="@{/images/login_avatar.png}" class="img-circle img-thumbnail" alt="avatar">
                         </div>
                     </div>
                     <div class="col">
@@ -86,10 +88,10 @@
                                         <label for="age">
                                             <h4>Age</h4>
                                         </label>
-                                        <input type="text" id="age"
+                                        <input th:field="${user.age}" type="text" id="age"
                                                class="form-control" placeholder="age" required/>
                                         <div class="invalid-feedback">
-                                            <div>First name is required</div>
+                                            <div></div>
                                         </div>
                                     </div>
                                 </div>
@@ -98,10 +100,10 @@
                                         <label for="targetWeight">
                                             <h4>Target weight</h4>
                                         </label>
-                                        <input type="text" id="targetWeight"
+                                        <input th:field="${user.targetWeight}" type="number" step="0.1" id="targetWeight"
                                                class="form-control" placeholder="targetWeight" required/>
                                         <div class="invalid-feedback">
-                                            <div>Last name is required</div>
+                                            <div></div>
                                         </div>
                                     </div>
                                 </div>

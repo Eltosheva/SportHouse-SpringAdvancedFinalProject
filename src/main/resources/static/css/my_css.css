@@ -185,3 +185,7 @@ body, wrapper {
 .navbar-icon-top.navbar-expand-lg .navbar-nav .nav-link > .fa > .badge {
     top: -7px;
 }
+
+#carousel-text-bg {
+    background-color: #1f2022c2;
+}

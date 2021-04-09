@@ -1,13 +1,11 @@
 package com.eltosheva.sporthouse.web;
 
-import com.eltosheva.sporthouse.bindingModels.SportsmanRegisterBindingModel;
+import com.eltosheva.sporthouse.models.bindingModels.SportsmanRegisterBindingModel;
 import com.eltosheva.sporthouse.models.service.SportsmanServiceModel;
-import com.eltosheva.sporthouse.models.service.UserOrdersServiceModel;
 import com.eltosheva.sporthouse.models.service.UserServiceModel;
 import com.eltosheva.sporthouse.services.UserOrderHistoryService;
 import com.eltosheva.sporthouse.services.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

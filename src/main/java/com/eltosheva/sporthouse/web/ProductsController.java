@@ -1,6 +1,6 @@
 package com.eltosheva.sporthouse.web;
 
-import com.eltosheva.sporthouse.bindingModels.ShoppingCartBindingModel;
+import com.eltosheva.sporthouse.models.bindingModels.ShoppingCartBindingModel;
 import com.eltosheva.sporthouse.models.service.ShoppingCartServiceModel;
 import com.eltosheva.sporthouse.services.ProductService;
 import com.eltosheva.sporthouse.services.ShoppingCartService;

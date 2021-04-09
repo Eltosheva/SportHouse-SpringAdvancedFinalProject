@@ -7,10 +7,11 @@
     <main class="flex-fill">
         <div class="container">
             <section class="team-section my-5">
-                <h2 class="h1-responsive font-weight-bold text-center my-5">Our amazing team</h2>
-                <p class="grey-text text-center w-responsive mx-auto mb-5">Lorem ipsum dolor sit amet, consectetur
-                    adipisicing elit. Fugit, error amet numquam iure provident voluptate esse quasi, veritatis totam voluptas
-                    nostrum quisquam eum porro a pariatur veniam.</p>
+                <h2 class="h1-responsive font-weight-bold text-center my-5">Our team</h2>
+                <p class="grey-text text-center w-responsive mx-auto mb-5">We would like to introduce You our amazing team of trainers!
+                    Here at `Sport House`, we value our trainers more than anything, and we know that their work is the reason for our success.
+                    You are in good hands.
+                </p>
 
                 <div class="row text-center text-md-left">
 
@@ -23,12 +24,12 @@
                         <div class="mx-4">
                             <h4 class="font-weight-bold mb-3" th:text="${t.firstName + ' ' + t.firstName}"></h4>
                             <hr/>
-                            <h6 class="font-weight-bold grey-text mb-3">Trainer: <span></span></h6>
+                            <h6 class="font-weight-bold grey-text mb-3">Trainer: <span th:text="${t.sportName}"></span></h6>
                             <h6 class="font-weight-bold grey-text mb-3">Phone: <span th:text="${t.phoneNum}"></span></h6>
                             <p class="grey-text">Description: <span
                                 th:text="${t.description}"></span></p>
-                            <a th:if="${t.socialMediaUrl != null && t.socialMediaUrl != ''}" class="p-2 fa-lg fb-ic">
-                                <i class="fas fa-link" th:href="${t.socialMediaUrl}"></i>
+                            <a th:if="${t.socialMediaUrl != null && t.socialMediaUrl != ''}" th:href="${t.socialMediaUrl}" target="_blank" class="p-2 fa-lg fb-ic">
+                                <i class="fas fa-link"></i>
                             </a>
                         </div>
                     </div>

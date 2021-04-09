@@ -5,99 +5,28 @@
 <wrapper class="d-flex flex-column">
     <header th:replace="fragments/fragment :: nav"></header>
     <main class="flex-fill">
-        <div th:replace="fragments/fragment :: sidebar"></div>
-        <div class="col p-4">
-<!--            <div id="wrap">-->
-<!--                <div id="header"></div>-->
-<!--                <div id="post-area">-->
-<!--                    <div id="post-1031"-->
-<!--                         class="post-1031 post type-post status-publish format-standard has-post-thumbnail hentry category-designs">-->
-<!--                        <div class="pinbin-image">-->
-<!--                            <a href="https://demo.colorlib.com/pinbin/random-content-experiment/">-->
-<!--                            <img width="300" height="225"/>-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="pinbin-copy">-->
-<!--                            <h2>-->
-<!--                                <a class="front-link"-->
-<!--                                   href="https://demo.colorlib.com/pinbin/random-content-experiment/">-->
-<!--                                    Random Content Experiment-->
-<!--                                </a>-->
-<!--                            </h2>-->
-<!--                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis auctor justo enim, a-->
-<!--                                malesuada nulla egestas sed. Suspendisse eu nibh condimentum, condimentum nisi eu,-->
-<!--                                consequat lacus. Proin vel consequat urna. Vestibulum a est malesuada, commodo nisi eu,-->
-<!--                                auctor tortor. Integer suscipit enim orci, nec tincidunt magna cursus a. Etiam ac-->
-<!--                                venenatis leo, in aliquam arcu. [&hellip;]</p>-->
-<!--                            <p class="pinbin-link">-->
-<!--                                <a href="https://demo.colorlib.com/pinbin/random-content-experiment/">&rarr;</a>-->
-<!--                            </p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div id="post-1026"-->
-<!--                         class="post-1026 post type-post status-publish format-standard has-post-thumbnail hentry category-designs">-->
-<!--                        <div class="pinbin-image">-->
-<!--                            <a href="https://demo.colorlib.com/pinbin/tiled-galleries-powered-jetpack/">-->
-<!--                                <img width="300" height="252"-->
-<!--                                     src="https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/Fotolia_32060553_Subscription_Monthly_XXL-300x252.jpg"-->
-<!--                                     class="attachment-summary-image size-summary-image wp-post-image" alt=""-->
-<!--                                     loading="lazy"-->
-<!--                                     srcset="https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/Fotolia_32060553_Subscription_Monthly_XXL-300x252.jpg 300w, https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/Fotolia_32060553_Subscription_Monthly_XXL-750x632.jpg 750w, https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/Fotolia_32060553_Subscription_Monthly_XXL.jpg 1000w"-->
-<!--                                     sizes="(max-width: 300px) 100vw, 300px" data-attachment-id="849"-->
-<!--                                     data-permalink="https://demo.colorlib.com/pinbin/layout-test/fotolia_32060553_subscription_monthly_xxl/"-->
-<!--                                     data-orig-file="https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/Fotolia_32060553_Subscription_Monthly_XXL.jpg"-->
-<!--                                     data-orig-size="1000,843" data-comments-opened="1"-->
-<!--                                     data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;olly - Fotolia&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}"-->
-<!--                                     data-image-title="Fotolia_32060553_Subscription_Monthly_XXL"-->
-<!--                                     data-image-description=""-->
-<!--                                     data-medium-file="https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/Fotolia_32060553_Subscription_Monthly_XXL-300x252.jpg"-->
-<!--                                     data-large-file="https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/Fotolia_32060553_Subscription_Monthly_XXL.jpg"/>-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="pinbin-copy">-->
-<!--                            <h2>-->
-<!--                                <a class="front-link"-->
-<!--                                   href="https://demo.colorlib.com/pinbin/tiled-galleries-powered-jetpack/">-->
-<!--                                    Tiled galleries powered by Jetpack-->
-<!--                                </a>-->
-<!--                            </h2>-->
-<!--                            <p class="pinbin-link"><a-->
-<!--                                    href="https://demo.colorlib.com/pinbin/tiled-galleries-powered-jetpack/">&rarr;</a>-->
-<!--                            </p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div id="post-134"-->
-<!--                         class="post-134 post type-post status-publish format-standard has-post-thumbnail hentry category-designs category-apps">-->
-<!--                        <div class="pinbin-image">-->
-<!--                            <a href="https://demo.colorlib.com/pinbin/this-post-has-no-body/">-->
-<!--                                <img width="300" height="225"-->
-<!--                                     src="https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/cameraios-300x225.jpg"-->
-<!--                                     class="attachment-summary-image size-summary-image wp-post-image" alt=""-->
-<!--                                     loading="lazy"-->
-<!--                                     srcset="https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/cameraios-300x225.jpg 300w, https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/cameraios-750x562.jpg 750w, https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/cameraios.jpg 800w"-->
-<!--                                     sizes="(max-width: 300px) 100vw, 300px" data-attachment-id="840"-->
-<!--                                     data-permalink="https://demo.colorlib.com/pinbin/layout-test/cameraios/"-->
-<!--                                     data-orig-file="https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/cameraios.jpg"-->
-<!--                                     data-orig-size="800,600" data-comments-opened="1"-->
-<!--                                     data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}"-->
-<!--                                     data-image-title="cameraios" data-image-description=""-->
-<!--                                     data-medium-file="https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/cameraios-300x225.jpg"-->
-<!--                                     data-large-file="https://demo.colorlib.com/pinbin/wp-content/uploads/sites/56/2008/09/cameraios.jpg"/>-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="pinbin-copy">-->
-<!--                            <h2>-->
-<!--                                <a class="front-link" href="https://demo.colorlib.com/pinbin/this-post-has-no-body/">-->
-<!--                                    This post has no body &#8211; almost-->
-<!--                                </a>-->
-<!--                            </h2>-->
-<!--                            <p>Cras leo tortor, condimentum id semper eu, sodales id elit. Maecenas commodo dolor vel-->
-<!--                                massa-->
-<!--                                gravida vehicula. Morbi tristique sapien ac dui tempus imperdiet.</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+        <div class="container">
+            <div th:each="s : ${sports}" class="row">
+                <div id="post-1031"
+                     class="post-1031 post type-post status-publish format-standard has-post-thumbnail hentry
+                    category-designs">
+                    <div class="pinbin-image">
+                        <img th:src="${s.imageUrl}" width="300" height="225"/>
+                    </div>
+                    <div class="pinbin-copy">
+                        <h2>
+                            <p th:text="${s.name}" class="front-link">
+                                BASKETBALL
+                            </p>
+                        </h2>
+                        <p th:text="${s.description}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Duis auctor justo enim, a malesuada nulla egestas sed. Suspendisse eu nibh condimentum,
+                            condimentum nisi eu, consequat lacus. Proin vel consequat urna. Vestibulum a est malesuada,
+                            commodo nisi eu, auctor tortor. Integer suscipit enim orci, nec tincidunt magna cursus a.
+                            Etiam ac venenatis leo, in aliquam arcu.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     <footer th:replace="fragments/fragment :: footer"></footer>

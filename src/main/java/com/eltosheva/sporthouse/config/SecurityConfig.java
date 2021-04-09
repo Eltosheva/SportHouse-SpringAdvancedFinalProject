@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
+            .authorizeRequests() //.anyRequest().permitAll();
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .antMatchers(PUBLIC_PAGES_MATCHER).permitAll()
                 .antMatchers(SECURE_PAGE_PATTERN).authenticated()
@@ -49,6 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutUrl(SECURITY_LOGOUT_URL)
                     .logoutSuccessUrl(APP_BASE_URL)
                     .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID");
+                    .deleteCookies("JSESSIONID").and().csrf().disable().cors();
     }
 }

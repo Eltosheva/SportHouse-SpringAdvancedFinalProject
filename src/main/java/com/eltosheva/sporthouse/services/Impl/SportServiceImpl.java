@@ -77,4 +77,11 @@ public class SportServiceImpl implements SportService {
             }
         }
     }
+
+    @Override
+    public void changeStatus(String id) {
+        Sport sport = sportRepository.findById(id).orElseThrow(IllegalAccessError::new);
+        sport.setIsActive(!sport.getIsActive());
+        sportRepository.saveAndFlush(sport);
+    }
 }

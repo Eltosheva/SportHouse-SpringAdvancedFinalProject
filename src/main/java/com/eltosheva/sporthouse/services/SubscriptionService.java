@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface SubscriptionService {
     void addNewSubscription(SubscriptionServiceModel subscriptionServiceModel);
-    void activityStatus(String id);
     List<SubscriptionServiceModel> getAllSubscriptions();
-//    List<SubscriptionServiceModel> getTopThree();
+    void changeStatus(String id);
 }
