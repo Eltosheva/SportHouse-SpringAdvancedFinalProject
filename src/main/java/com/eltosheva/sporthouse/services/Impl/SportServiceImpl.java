@@ -54,16 +54,6 @@ public class SportServiceImpl implements SportService {
     }
 
     @Override
-    public void removeSport(String id) {
-
-    }
-
-    @Override
-    public List<ProductServiceModel> getAllSportsAccessories(String sportId) {
-        return null;
-    }
-
-    @Override
     public void initSports() {
         if (sportRepository.count() == 0) {
             try {

@@ -1,9 +1,10 @@
 package com.eltosheva.sporthouse.web;
 
-import com.eltosheva.sporthouse.bindingModels.ProductBindingModel;
-import com.eltosheva.sporthouse.bindingModels.PlaceBindingModel;
-import com.eltosheva.sporthouse.bindingModels.SportBindingModel;
-import com.eltosheva.sporthouse.bindingModels.SubscriptionBindingModel;
+import com.eltosheva.sporthouse.jobs.SchedulerService;
+import com.eltosheva.sporthouse.models.bindingModels.ProductBindingModel;
+import com.eltosheva.sporthouse.models.bindingModels.PlaceBindingModel;
+import com.eltosheva.sporthouse.models.bindingModels.SportBindingModel;
+import com.eltosheva.sporthouse.models.bindingModels.SubscriptionBindingModel;
 import com.eltosheva.sporthouse.models.service.ProductServiceModel;
 import com.eltosheva.sporthouse.models.service.PlaceServiceModel;
 import com.eltosheva.sporthouse.models.service.SportServiceModel;
@@ -13,13 +14,11 @@ import com.eltosheva.sporthouse.services.PlaceService;
 import com.eltosheva.sporthouse.services.SportService;
 import com.eltosheva.sporthouse.services.SubscriptionService;
 import org.modelmapper.ModelMapper;
+import org.quartz.SchedulerException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -33,13 +32,15 @@ public class AdminController {
     private final SportService sportService;
     private final PlaceService placeService;
     private final SubscriptionService subscriptionService;
+    private final SchedulerService schedulerService;
 
-    public AdminController(ModelMapper modelMapper, ProductService productService, SportService sportService, PlaceService placeService, SubscriptionService subscriptionService) {
+    public AdminController(ModelMapper modelMapper, ProductService productService, SportService sportService, PlaceService placeService, SubscriptionService subscriptionService, SchedulerService schedulerService) {
         this.modelMapper = modelMapper;
         this.productService = productService;
         this.sportService = sportService;
         this.placeService = placeService;
         this.subscriptionService = subscriptionService;
+        this.schedulerService = schedulerService;
     }
 
     @GetMapping("/users")
@@ -76,6 +77,12 @@ public class AdminController {
         return "redirect:/admin/sports";
     }
 
+    @RequestMapping(path = "/sports/status", method = RequestMethod.POST)
+    public String changeSportsStatus(@RequestParam String id) {
+        sportService.changeStatus(id);
+        return "redirect:/admin/sports";
+    }
+
     @RequestMapping(path = "/halls", method = RequestMethod.GET)
     public String manageHallsPage(Model model) {
         if (!model.containsAttribute("placeBindingModel")) {
@@ -100,6 +107,12 @@ public class AdminController {
         }
         placeService.addNewSportHall(modelMapper.map(placeBindingModel, PlaceServiceModel.class));
         redirectAttributes.addFlashAttribute("isPlaceSavedSuccessfully", true);
+        return "redirect:/admin/halls";
+    }
+
+    @RequestMapping(path = "/halls/status", method = RequestMethod.POST)
+    public String changePlaceStatus(@RequestParam String id) {
+        placeService.changeStatus(id);
         return "redirect:/admin/halls";
     }
 
@@ -132,6 +145,12 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
+    @RequestMapping(path = "/products/status", method = RequestMethod.POST)
+    public String changeProductsStatus(@RequestParam String id) {
+        productService.changeStatus(id);
+        return "redirect:/admin/products";
+    }
+
     @RequestMapping(path = "/subscriptions", method = RequestMethod.GET)
     public String manageSubscriptionsPage(Model model) {
         if (!model.containsAttribute("subscriptionBindingModel")) {
@@ -141,7 +160,7 @@ public class AdminController {
             model.addAttribute("isSubscriptionSavedSuccessfully", false);
         }
         model.addAttribute("subscriptions", subscriptionService.getAllSubscriptions());
-        return "admin/sport_plans";
+        return "admin/subscriptions";
     }
 
     @RequestMapping(path = "/subscriptions", method = RequestMethod.POST)
@@ -159,8 +178,15 @@ public class AdminController {
         return "redirect:/admin/subscriptions";
     }
 
+    @RequestMapping(path = "/subscriptions/status", method = RequestMethod.POST)
+    public String changeSubsStatus(@RequestParam String id) {
+        subscriptionService.changeStatus(id);
+        return "redirect:/admin/subscriptions";
+    }
+
     @RequestMapping(path = "/tasks", method = RequestMethod.GET)
-    public String manageTasksPage() {
+    public String manageTasksPage(Model model) {
+        model.addAttribute("jobs", schedulerService.getAllJobs());
         return "admin/tasks";
     }
 }

@@ -9,8 +9,6 @@ import java.util.List;
 public interface SportService {
     void addNewSport(SportServiceModel sportServiceModel);
     List<SportServiceModel> getSports();
-    void removeSport(String id);
-    List<ProductServiceModel> getAllSportsAccessories(String sportId);
     void initSports() throws IOException;
     void changeStatus(String id);
 }

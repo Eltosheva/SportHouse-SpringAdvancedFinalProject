@@ -62,10 +62,8 @@ class SubscriptionServiceImplTest {
     @WithMockUser(value = "1@1")
     void changeStatus_invalidTest() {
         Subscription sub = new Subscription();
-        sub.setName("TET");
         sub.setIsActive(true);
-        sub.setId("1232");
-        when(subscriptionRepository.findById("1232")).thenReturn(Optional.ofNullable(sub));
-        Assertions.assertThrows(IllegalArgumentException.class, ()-> subscriptionService.changeStatus("1111"));
+        when(subscriptionRepository.findById("1232")).thenThrow(IllegalArgumentException.class);
+        Assertions.assertThrows(IllegalArgumentException.class, ()-> subscriptionService.changeStatus("1232"));
     }
 }

@@ -30,8 +30,12 @@ public class SchedulerService {
         }
     }
 
-    private void editJob(ScheduleJob scheduleJob) {
-
+    private void editJob(ScheduleJob scheduleJob) throws SchedulerException {
+        TriggerKey triggerKey = TriggerKey.triggerKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
+        CronTrigger cronTrigger = (CronTrigger)scheduler.getTrigger(triggerKey);
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression());
+        cronTrigger = cronTrigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(cronScheduleBuilder).build();
+        scheduler.rescheduleJob(triggerKey, cronTrigger);
     }
 
     private void addJob(ScheduleJob scheduleJob) throws Exception {
@@ -70,28 +74,30 @@ public class SchedulerService {
         } catch (SchedulerException schedulerException) {
             System.out.println(schedulerException.getMessage());
         }
-
-
         return jobsList;
+    }
+
+    public void deleteJob(ScheduleJob scheduleJob) throws SchedulerException {
+        JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
+        scheduler.deleteJob(jobKey);
+    }
+
+    public void runJob(ScheduleJob scheduleJob) throws SchedulerException {
+        JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
+        scheduler.triggerJob(jobKey);
     }
 
     @PostConstruct
     public void init() {
         try{
-            System.out.println("Стъпка 4 - старт");
            scheduler.start();
-        } catch (SchedulerException e) {
-            System.out.println("Стъпка 4.1 - старт грешка");
-        }
+        } catch (SchedulerException e) {}
     }
 
     @PreDestroy
     public void preDestroy() {
         try {
-            System.out.println("Стъпка 5 - стоп");
             scheduler.shutdown();
-        } catch (SchedulerException e) {
-            System.out.println("Стъпка 5.1 - стоп грешка");
-        }
+        } catch (SchedulerException e) {}
     }
 }

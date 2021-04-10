@@ -1,6 +1,5 @@
 package com.eltosheva.sporthouse.services.Impl;
 
-import com.eltosheva.sporthouse.models.bindingModels.PlaceBindingModel;
 import com.eltosheva.sporthouse.models.entities.Place;
 import com.eltosheva.sporthouse.models.service.PlaceServiceModel;
 import com.eltosheva.sporthouse.repositories.PlaceRepository;
@@ -17,7 +16,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class  PlaceServiceImpl implements PlaceService {
@@ -45,7 +43,6 @@ public class  PlaceServiceImpl implements PlaceService {
         List<PlaceServiceModel> placeServiceModels = new ArrayList<>();
         placeRepository
                 .findAll()
-                .stream()
                 .forEach(place -> {
                     PlaceServiceModel placeServiceModel = new PlaceServiceModel();
                     modelMapper.map(place, placeServiceModel);

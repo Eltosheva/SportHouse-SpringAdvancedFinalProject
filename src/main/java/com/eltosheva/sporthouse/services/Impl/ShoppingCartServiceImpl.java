@@ -9,7 +9,6 @@ import com.eltosheva.sporthouse.repositories.ShoppingCartRepository;
 import com.eltosheva.sporthouse.repositories.UserRepository;
 import com.eltosheva.sporthouse.services.ShoppingCartService;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
-    private final ModelMapper modelMapper;
     private final ShoppingCartRepository shoppingCartRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
@@ -42,7 +40,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             product.setAvailableQuantity(product.getAvailableQuantity() - shoppingCartServiceModel.getQuantity());
             productRepository.saveAndFlush(product);
         }
-        ShoppingCart shoppingCart = new ShoppingCart();
+            ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setProductId(shoppingCartServiceModel.getProductId());
         shoppingCart.setQuantity(shoppingCartServiceModel.getQuantity());
         shoppingCart.setPrice(product.getPrice());
@@ -84,14 +82,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void removeProductById(String id) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findById(id).orElseThrow(IllegalAccessError::new);
+        ShoppingCart shoppingCart = shoppingCartRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         returnQuantity(shoppingCart.getProductId(), shoppingCart.getQuantity());
         shoppingCartRepository.deleteById(id);
     }
 
     @Async
     protected void returnQuantity(final String productId, final Integer quantity) {
-        Product product = productRepository.findById(productId).orElseThrow(IllegalAccessError::new);
+        Product product = productRepository.findById(productId).orElseThrow(IllegalArgumentException::new);
         if(!(product instanceof SubscriptionProduct)) {
             product.setAvailableQuantity(quantity + product.getAvailableQuantity());
             productRepository.saveAndFlush(product);

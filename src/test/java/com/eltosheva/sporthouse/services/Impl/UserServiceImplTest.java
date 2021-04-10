@@ -1,8 +1,10 @@
 package com.eltosheva.sporthouse.services.Impl;
 
 import com.eltosheva.sporthouse.models.entities.Role;
+import com.eltosheva.sporthouse.models.entities.Sport;
 import com.eltosheva.sporthouse.models.entities.User;
 import com.eltosheva.sporthouse.models.enums.RoleEnum;
+import com.eltosheva.sporthouse.models.service.CoachTeamServiceModel;
 import com.eltosheva.sporthouse.models.service.UserServiceModel;
 import com.eltosheva.sporthouse.repositories.RoleRepository;
 import com.eltosheva.sporthouse.repositories.SportRepository;
@@ -17,10 +19,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import static org.mockito.Mockito.when;
-
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -59,7 +62,6 @@ class UserServiceImplTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> userService.findById("invalidId"));
     }
 
-
     @Test
     @WithMockUser(value = "1@1")
     void findByEmailWithValidUser() {
@@ -97,5 +99,78 @@ class UserServiceImplTest {
         appAdmin.updateRoleSet(List.of(admin, coach, user));
 
         return appAdmin;
+    }
+
+    @Test
+    void initUsers() {
+        Role admin = new Role();
+        admin.setName(RoleEnum.ADMIN);
+        Role coach = new Role();
+        coach.setName(RoleEnum.COACH);
+        Role user = new Role();
+        user.setName(RoleEnum.USER);
+
+
+        User appAdmin = new User();
+        appAdmin.setFirstName("Admin");
+        appAdmin.setLastName("Admin");
+        appAdmin.setPassword(passwordEncoder.encode("123456"));
+        appAdmin.setEmail("1@1");
+        appAdmin.setPhoneNum("123456789");
+        appAdmin.setProfilePictureUrl("https://ih1.redbubble.net/image.161080070.3717/flat,750x1000,075,f.jpg");
+        appAdmin.updateRoleSet(List.of(admin, coach, user));
+
+        when(userRepository.count()).thenReturn(0L);
+        userService.initUsers();
+        verify(roleRepository, times(1)).saveAll(List.of(admin, coach, user));
+        verify(userRepository, times(1)).save(appAdmin);
+    }
+
+    @Test
+    void findByEmail_valid() {
+        User u = new User();
+        u.setEmail("1@1");
+        when(userRepository.findByEmail("1@1")).thenReturn(Optional.of(u));
+        UserServiceModel userServiceModel = userService.findByEmail("1@1");
+        Assertions.assertEquals(userServiceModel.getId(), u.getId());
+    }
+
+    @Test
+    void findByEmail_invalidArts() {
+        when(userRepository.findByEmail("invalidEmail")).thenThrow(IllegalArgumentException.class);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.findByEmail("invalidEmail"));
+    }
+
+    @Test
+    void getAllCoaches() {
+
+        Sport sport = new Sport();
+        sport.setName("Basketball");
+
+        Role coach = new Role();
+        coach.setName(RoleEnum.COACH);
+        Role user = new Role();
+        user.setName(RoleEnum.USER);
+
+        User u1 = new User();
+        u1.setEmail("1@1");
+        u1.updateRoleSet(List.of(coach));
+        u1.setSport(sport);
+
+        User u2 = new User();
+        u2.setEmail("2@2");
+        u2.updateRoleSet(List.of(user));
+
+        User u3 = new User();
+        u3.setEmail("3@3");
+        u3.updateRoleSet(List.of(coach));
+        u3.setSport(sport);
+
+        when(userRepository.findAll()).thenReturn(List.of(u1, u2, u3));
+
+        List<CoachTeamServiceModel> coaches = userService.getAllCoaches();
+
+        assertEquals(2, coaches.size());
+        verify(userRepository, times(1)).findAll();
     }
 }

@@ -26,6 +26,26 @@ public class JobRestController {
         return ResponseEntity.ok().body(new ResponseMsg(true));
     }
 
+    @RequestMapping(path = "/delete", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<?> deleteJob(ScheduleJob job) {
+        try {
+            schedulerService.deleteJob(job);
+        } catch (Exception e) {
+
+        }
+        return ResponseEntity.ok().body(new ResponseMsg(true));
+    }
+
+    @RequestMapping(path = "/run", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<?> runJob(ScheduleJob job) {
+        try {
+            schedulerService.runJob(job);
+        } catch (Exception e) {
+
+        }
+        return ResponseEntity.ok().body(new ResponseMsg(true));
+    }
+
     private class ResponseMsg implements Serializable {
         private Boolean valid;
 

@@ -4,7 +4,7 @@ $(function() {
     $(".btnRun").click(function() {
         var jobId = $(this).parent().data("id");
         $.ajax({
-            url: "/api/runJob?t=" + new Date().getTime(),
+            url: "/api/schedule/run",
             type: "POST",
             data: {
                 "jobName": $("#name_"+jobId).text(),
@@ -20,53 +20,11 @@ $(function() {
         });
     });
 
-    //pause job
-    $(".btnPause").click(function() {
-        var jobId = $(this).parent().data("id");
-        $.ajax({
-            url: "/api/pauseJob?t=" + new Date().getTime(),
-            type: "POST",
-            data: {
-                "jobName": $("#name_"+jobId).text(),
-                "jobGroup": $("#group_"+jobId).text()
-            },
-            success: function(res) {
-                if (res.valid) {
-                    alert("pause success!");
-                    location.reload();
-                } else {
-                    alert(res.msg);
-                }
-            }
-        });
-    });
-
-    //resume job
-    $(".btnResume").click(function() {
-        var jobId = $(this).parent().data("id");
-        $.ajax({
-            url: "/api/resumeJob?t=" + new Date().getTime(),
-            type: "POST",
-            data: {
-                "jobName": $("#name_"+jobId).text(),
-                "jobGroup": $("#group_"+jobId).text()
-            },
-            success: function(res) {
-                if (res.valid) {
-                    alert("resume success!");
-                    location.reload();
-                } else {
-                    alert(res.msg);
-                }
-            }
-        });
-    });
-
     //delete job
     $(".btnDelete").click(function() {
         var jobId = $(this).parent().data("id");
         $.ajax({
-            url: "/api/deleteJob?t=" + new Date().getTime(),
+            url: "/api/schedule/delete",
             type: "POST",
             data: {
                 "jobName": $("#name_"+jobId).text(),

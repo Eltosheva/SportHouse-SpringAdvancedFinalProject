@@ -1,21 +1,19 @@
 package com.eltosheva.sporthouse.jobs;
 
+import com.eltosheva.sporthouse.repositories.ShoppingCartRepository;
+import lombok.AllArgsConstructor;
 import org.quartz.Job;
-import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class QuartzJobFactory implements Job {
-    private static final Logger LOG = LoggerFactory.getLogger(QuartzJobFactory.class);
+
+    private final ShoppingCartRepository shoppingCartRepository;
 
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
-        System.out.println("Финале");
-        JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
-        LOG.info("Job execution");
+    public void execute(JobExecutionContext context) {
+        shoppingCartRepository.deleteAll();
     }
 }
