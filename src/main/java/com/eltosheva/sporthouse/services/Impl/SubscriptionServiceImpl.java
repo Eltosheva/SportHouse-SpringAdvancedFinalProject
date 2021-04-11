@@ -26,7 +26,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public void addEditSubscription(SubscriptionServiceModel subscriptionServiceModel) {
         Subscription subscription = modelMapper.map(subscriptionServiceModel, Subscription.class);
         boolean isEdit = true;
-        if ("".equals(subscription.getId())) {
+        if (subscription.getId() == null || "".equals(subscription.getId())) {
             subscription.setIsActive(true);
             isEdit = false;
         }
