@@ -1,117 +1,177 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-        <style type="text/css">#message-htmlpart1 div.rcmBody *{box-sizing:border-box} #message-htmlpart1 div.rcmBody html{font-size: 10px} #message-htmlpart1 div.rcmBody{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-                                                                                                                                                font-size: 14px;
-                                                                                                                                                line-height: 1.42857143;
-                                                                                                                                                color: #333;
-                                                                                                                                                background-color: #fff;
-                                                                                                                                                margin: 0}
-        #message-htmlpart1 div.rcmBody table{background-color: transparent;
-            border-spacing: 0;
-            border-collapse: collapse}#message-htmlpart1 div.rcmBody .v1success{font-weight: bold;
-                                          background-color:#5cb85c;
-                                          padding: .1em .3em;
-                                          font-weight:700;
-                                          color:#fff;
-                                          border-radius: .25em}
-        #message-htmlpart1 div.rcmBody .v1table{width: 100%;
-            max-width: 100%;
-            margin-bottom: 20px}#message-htmlpart1 div.rcmBody th{text-align:left}#message-htmlpart1 div.rcmBody .v1info{background-color:#337ab7;
-                                                                                      padding: .2em .4em .3em;
-                                                                                      font-weight:700;
-                                                                                      color:#fff;
-                                                                                      border-radius: .25em}
-        #message-htmlpart1 div.rcmBody .v1table > tbody > tr > td, #message-htmlpart1 div.rcmBody .v1table > tbody > tr > th, #message-htmlpart1 div.rcmBody .v1table > tfoot > tr > td, #message-htmlpart1 div.rcmBody .v1table > tfoot > tr > th, #message-htmlpart1 div.rcmBody .v1table > thead > tr > td, #message-htmlpart1 div.rcmBody .v1table > thead > tr > th {
-            padding: 8px;
-            line-height: 1.42857143;
-            vertical-align: top;
-            border-top: 1px solid #ddd}#message-htmlpart1 div.rcmBody .v1table-striped > tbody > tr:nth-of-type(2n+1){background-color: #f9f9f9}
-        #message-htmlpart1 div.rcmBody h3 {font-style: italic;
-            font-size: 24px;
-            font-family: inherit;
-            font-weight: 500;
-            line-height: 1.1;
-            color: inherit;
-            margin-top: 20px;
-            margin-bottom: 10px}#message-htmlpart1 div.rcmBody .v1content {width: 900px;
-                                    padding-right: 15px;
-                                    padding-left: 15px;
-                                    margin-right: auto;
-                                    margin-left: auto}
-        #message-htmlpart1 div.rcmBody .v1danger{text-decoration:underline;
-            color:red;
-            font-size:18px}#message-htmlpart1 div.rcmBody .v1weight_summary{font-weight:bold;
-                               text-decoration:underline;
-                               text-align:right;
-                               font-size:16px}#message-htmlpart1 div.rcmBody .v1summary_weight{font-weight:bold;
-                                                  font-size:16px}
-        #message-htmlpart1 div.rcmBody .v1warning{background-color:#fcf8e3;
-            padding: .2em .4em .3em;
-            font-weight:700;
-            color:#8a6d3b;
-            border-radius: .25em}
-        .img-product {
-            width: 72px;
-            float: left;
-            margin-left: 8px;
-            margin-right: 31px;
-            line-height: 63px;
-        }
-        </style>
-    </head>
-    <body>
-    <div id="messagebody">
-        <div class="message-htmlpart" id="message-htmlpart1">
-            <div class="rcmBody">
-                <div class="v1content">
-                    <h1>SPORTS HOUSE</h1>
-                    <p class="v1weight_summary">Date: 29.03.2021</p>
-                    <h3>Hello, <span th:text="${userData.firstName}"></span>. You are receiving this email as confirmation of your order.</h3>
-                    <p><span class="v1info">User:</span>&nbsp;
-                        <!--/*@thymesVar id="user" type=""*/-->
-                        <strong th:text="${userData.firstName + ' ' + userData.lastName}">Гошо Гошев</strong></p>
-                    <p><span class="v1info">Phone:</span>&nbsp;
-                        <strong th:text="${userData.phoneNum}">0896830305</strong></p>
-                    <br>
-                    <h3><span style="text-decoration: underline">Request №</span>&nbsp;
-                        <span th:text="${productList.get(0).orderId}" class="v1success">42</span>
-                    </h3>
-                    <p>Request generated on <strong th:text="${sendDate}">29.03.2021</strong>.</p>
-                    <p>Request content:</p>
-                    <table class="v1table v1table-striped">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Single Price</th>
-                            <th>Total Product Price</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="p : ${productList}">
-                            <td>
-                                <img th:if="${p.imageUrl == null || p.imageUrl == ''}" th:src="@{https://via.placeholder.com/240x240/5fa9f8/efefef}" class="img-product" alt=""/>
-                                <img th:if="${p.imageUrl != null && p.imageUrl != ''}" th:src="${p.imageUrl}" class="img-product" alt=""/>
-                            </td>
-                            <td th:text="${p.name}">Баскетболна топка</td>
-                            <td th:text="${p.quantity}">1</td>
-                            <td>&#36;<span th:text="${p.price}"></span></td>
-                            <td>&#36;<span th:text="${p.totalPrice}"></span></td>
-                        </tr>
-                        <tr>
-                            <td colspan="4" class="v1weight_summary">Total amount:</td>
-                            <td class="v1summary_weight">&#36;<span th:text="${totalProductPrice}"></span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <p class="v1danger">Our associate will contact You for order confirmation and further information about the address of delivery.</p>
-                </div>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">#message-htmlpart1 div.rcmBody * {
+        box-sizing: border-box
+    }
+
+    #message-htmlpart1 div.rcmBody html {
+        font-size: 10px
+    }
+
+    #message-htmlpart1 div.rcmBody {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #333;
+        background-color: #fff;
+        margin: 0
+    }
+
+    #message-htmlpart1 div.rcmBody table {
+        background-color: transparent;
+        border-spacing: 0;
+        border-collapse: collapse
+    }
+
+    #message-htmlpart1 div.rcmBody .v1success {
+        font-weight: bold;
+        background-color: #5cb85c;
+        padding: .1em .3em;
+        font-weight: 700;
+        color: #fff;
+        border-radius: .25em
+    }
+
+    #message-htmlpart1 div.rcmBody .v1table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px
+    }
+
+    #message-htmlpart1 div.rcmBody th {
+        text-align: left
+    }
+
+    #message-htmlpart1 div.rcmBody .v1info {
+        background-color: #337ab7;
+        padding: .2em .4em .3em;
+        font-weight: 700;
+        color: #fff;
+        border-radius: .25em
+    }
+
+    #message-htmlpart1 div.rcmBody .v1table > tbody > tr > td, #message-htmlpart1 div.rcmBody .v1table > tbody > tr > th, #message-htmlpart1 div.rcmBody .v1table > tfoot > tr > td, #message-htmlpart1 div.rcmBody .v1table > tfoot > tr > th, #message-htmlpart1 div.rcmBody .v1table > thead > tr > td, #message-htmlpart1 div.rcmBody .v1table > thead > tr > th {
+        padding: 8px;
+        line-height: 1.42857143;
+        vertical-align: top;
+        border-top: 1px solid #ddd
+    }
+
+    #message-htmlpart1 div.rcmBody .v1table-striped > tbody > tr:nth-of-type(2n+1) {
+        background-color: #f9f9f9
+    }
+
+    #message-htmlpart1 div.rcmBody h3 {
+        font-style: italic;
+        font-size: 24px;
+        font-family: inherit;
+        font-weight: 500;
+        line-height: 1.1;
+        color: inherit;
+        margin-top: 20px;
+        margin-bottom: 10px
+    }
+
+    #message-htmlpart1 div.rcmBody .v1content {
+        width: 900px;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto
+    }
+
+    #message-htmlpart1 div.rcmBody .v1danger {
+        text-decoration: underline;
+        color: red;
+        font-size: 18px
+    }
+
+    #message-htmlpart1 div.rcmBody .v1weight_summary {
+        font-weight: bold;
+        text-decoration: underline;
+        text-align: right;
+        font-size: 16px
+    }
+
+    #message-htmlpart1 div.rcmBody .v1summary_weight {
+        font-weight: bold;
+        font-size: 16px
+    }
+
+    #message-htmlpart1 div.rcmBody .v1warning {
+        background-color: #fcf8e3;
+        padding: .2em .4em .3em;
+        font-weight: 700;
+        color: #8a6d3b;
+        border-radius: .25em
+    }
+
+    .img-product {
+        width: 72px;
+        float: left;
+        margin-left: 8px;
+        margin-right: 31px;
+        line-height: 63px;
+    }
+    </style>
+</head>
+<body>
+<div id="messagebody">
+    <div class="message-htmlpart" id="message-htmlpart1">
+        <div class="rcmBody">
+            <div class="v1content">
+                <h1>SPORTS HOUSE</h1>
+                <p class="v1weight_summary">Date: <span th:text="${sendDate}">29.03.2021</span></p>
+                <h3>Hello, <span th:text="${userData.firstName}"></span>. You are receiving this email as confirmation
+                    of your order.</h3>
+                <p><span class="v1info">User:</span>&nbsp;
+                    <strong th:text="${userData.firstName + ' ' + userData.lastName}">Гошо Гошев</strong></p>
+                <p><span class="v1info">Phone:</span>&nbsp;
+                    <strong th:text="${userData.phoneNum}">0896830305</strong></p>
+                <br>
+                <h3><span style="text-decoration: underline">Request №</span>&nbsp;
+                    <span th:text="${productList.get(0).orderId}" class="v1success">42</span>
+                </h3>
+                <p>Request generated on <strong th:text="${sendDateTime}">29.03.2021</strong></p>
+                <p>Request content:</p>
+                <table class="v1table v1table-striped">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Single Price</th>
+                        <th>Total Product Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p : ${productList}">
+                        <td>
+                            <img th:if="${p.imageUrl == null || p.imageUrl == ''}"
+                                 th:src="@{https://via.placeholder.com/240x240/5fa9f8/efefef}" class="img-product"
+                                 alt=""/>
+                            <img th:if="${p.imageUrl != null && p.imageUrl != ''}" th:src="${p.imageUrl}"
+                                 class="img-product" alt=""/>
+                        </td>
+                        <td th:text="${p.name}">Баскетболна топка</td>
+                        <td th:text="${p.quantity}">1</td>
+                        <td>&#36;<span th:text="${p.price}"></span></td>
+                        <td>&#36;<span th:text="${p.totalPrice}"></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="v1weight_summary">Total amount:</td>
+                        <td class="v1summary_weight">&#36;<span th:text="${totalProductPrice}"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="v1danger">Our associate will contact You for order confirmation and further information about
+                    the address of delivery.</p>
             </div>
         </div>
     </div>
-    </body>
+</div>
+</body>
 </html>

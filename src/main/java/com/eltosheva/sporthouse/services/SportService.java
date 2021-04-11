@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface SportService {
-    void addNewSport(SportServiceModel sportServiceModel);
+    void addEditSport(SportServiceModel sportServiceModel);
     List<SportServiceModel> getSports();
     void initSports() throws IOException;
     void changeStatus(String id);

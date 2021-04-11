@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment :: head"></head>
+<body>
+<wrapper class="d-flex flex-column">
+    <header th:replace="fragments/fragment :: nav"></header>
+    <main class="flex-fil align-content-center bg-blur my-main">
+        <div class="row" id="body-row">
+            <div th:replace="fragments/fragment :: sidebar"></div>
+            <div class="col p-4">
+                <h2>My subscription</h2>
+                <hr/>
+                <div th:if="${subs.size() == 0}">
+                    <img src="https://organickle.com/images/no-order.svg" alt=""/>
+                </div>
+                <div th:if="${subs.size() > 0}">
+                    <div>
+                        <p>The number remaining trainings is - <span th:text="${trainingCount}"></span></p>
+                    </div>
+                    <div class="table-responsive col-md-12 col-lg-12">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center">From order</th>
+                                <th></th>
+                                <th class="text-center">Subscription</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Quantity</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <div th:each="s : ${subs}">
+                                <tr th:each="el : ${s.getOrderList()}">
+                                    <td class="text-center">
+                                        <div class="name-product">
+                                            <span th:text="${s.orderId}"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="img-product">
+                                            <img th:if="${el.imageUrl != '' && el.imageUrl != null}"
+                                                 th:src="@{${el.imageUrl}}"
+                                                 alt="" class="mCS_img_loaded" style="width: 50px; height: 50px">
+                                            <img th:if="${el.imageUrl == '' || el.imageUrl == null}"
+                                                 th:src="@{https://kevy.co/wp-content/uploads/2013/09/total-product-marketing.jpg}"
+                                                 alt="Product picture" style="width: 50px; height: 50px">
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="name-product">
+                                            <span th:text="${el.name}"></span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="price">
+                                            &#36;<span th:text="${el.price}"></span>
+                                        </div>
+                                    </td>
+                                    <td class="product-count text-center">
+                                        <div class="count-inlineflex">
+                                            <span th:text="${el.quantity}" class="qty"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/fragment :: footer"></footer>
+</wrapper>
+</body>
+</html>
+

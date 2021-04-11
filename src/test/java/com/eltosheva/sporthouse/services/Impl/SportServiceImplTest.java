@@ -49,7 +49,7 @@ class SportServiceImplTest {
        SportServiceModel sportServiceModel = new SportServiceModel();
        sportServiceModel.setName("Tennis");
        sportServiceModel.setIsActive(true);
-       sportServiceImpl.addNewSport(sportServiceModel);
+       sportServiceImpl.addEditSport(sportServiceModel);
        verify(sportRepository, times(1)).saveAndFlush(modelMapper.map(sportServiceModel, Sport.class));
     }
 

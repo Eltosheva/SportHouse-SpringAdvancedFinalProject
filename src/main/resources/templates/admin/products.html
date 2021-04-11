@@ -126,7 +126,6 @@
                                 <th class="text-center">Price</th>
                                 <th class="text-center">Quantity</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Edit</th>
                                 <th class="text-center">Change Status</th>
                             </tr>
                             </thead>
@@ -147,12 +146,6 @@
                                             Inactive
                                             </span>
                                     </h4>
-                                </td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm" data-title="" data-toggle="modal"
-                                            data-target="#edit">
-                                        <span class="fas fa-pen"></span>
-                                    </button>
                                 </td>
                                 <td>
                                     <form th:action="@{/admin/products/status}" method="post">

@@ -1,5 +1,6 @@
 package com.eltosheva.sporthouse.models.bindingModels;
 
+import com.eltosheva.sporthouse.models.entities.Sport;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;

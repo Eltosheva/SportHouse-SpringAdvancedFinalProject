@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 public class SportBindingModel {
+    private String id;
     @NotBlank(message = "Field must have name of sport")
     private String name;
     private String description;

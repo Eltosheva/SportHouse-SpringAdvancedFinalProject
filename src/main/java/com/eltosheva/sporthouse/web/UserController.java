@@ -1,12 +1,15 @@
 package com.eltosheva.sporthouse.web;
 
+import com.eltosheva.sporthouse.models.bindingModels.ProfileBindingModel;
 import com.eltosheva.sporthouse.models.bindingModels.SportsmanRegisterBindingModel;
+import com.eltosheva.sporthouse.models.bindingModels.UserProfileBindingModel;
 import com.eltosheva.sporthouse.models.service.SportsmanServiceModel;
 import com.eltosheva.sporthouse.models.service.UserServiceModel;
 import com.eltosheva.sporthouse.services.UserOrderHistoryService;
 import com.eltosheva.sporthouse.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,12 +29,14 @@ public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final UserOrderHistoryService userOrderHistoryService;
+    private final PasswordEncoder passwordEncoder;
 
     public UserController(UserService userService, ModelMapper modelMapper,
-                          UserOrderHistoryService userOrderHistoryService) {
+                          UserOrderHistoryService userOrderHistoryService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.userOrderHistoryService = userOrderHistoryService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/register")
@@ -71,7 +76,7 @@ public class UserController {
 
     @GetMapping("/subscriptions")
     public String userSubscriptionsPage() {
-        return "user/subscription";
+        return "subscriptions";
     }
 
     @GetMapping("/schedules")
@@ -93,26 +98,53 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public String userProfileCorrection(@Valid @ModelAttribute SportsmanRegisterBindingModel sportsmanRegisterBindingModel,
+    public String userProfileCorrection(@Valid @ModelAttribute UserProfileBindingModel userProfileBindingModel,
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("sportsmanRegisterBindingModel",
-                    sportsmanRegisterBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.sportsmanRegisterBindingModel",
+            redirectAttributes.addFlashAttribute("userProfileBindingModel",
+                    userProfileBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userProfileBindingModel",
                     bindingResult);
-            redirectAttributes.addFlashAttribute("isWrongConfirmPassword",
-                    sportsmanRegisterBindingModel.getPassword().equals(sportsmanRegisterBindingModel.getConfirmPassword()));
             return "redirect:/user/profile";
         }
-        
-//      !userProfileBindingModel.getPassword().equals(userProfileBindingModel.getConfirmPassword())
-        if (userService.findByEmail(sportsmanRegisterBindingModel.getEmail()) != null) {
-            UserServiceModel userServiceModel = userService.findById(sportsmanRegisterBindingModel.getId());
-            modelMapper.map(sportsmanRegisterBindingModel, userServiceModel);
-            userServiceModel.setActive(true);
+
+        String validation = validateUserData(userProfileBindingModel);
+        if(!"".equals(validation)) {
+            redirectAttributes.addFlashAttribute("userProfileBindingModel",
+                    userProfileBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userProfileBindingModel",
+                    bindingResult);
+            redirectAttributes.addFlashAttribute("errorMessage", validation);
+            return "redirect:/user/profile";
         }
+
+        UserServiceModel userServiceModel = modelMapper.map(userProfileBindingModel, UserServiceModel.class);
+        if(!"".equals(userProfileBindingModel.getNewPassword())) {
+            userServiceModel.setPassword(passwordEncoder.encode(userProfileBindingModel.getNewPassword()));
+        } else {
+            userServiceModel.setPassword("");
+        }
+
+        userService.editUser(userServiceModel);
+
+        redirectAttributes.addFlashAttribute("success", "User data have been updated successfully.");
         return "redirect:/user/profile";
+    }
+
+    private String validateUserData(ProfileBindingModel profileBindingModel) {
+        if(!profileBindingModel.getNewPassword().isEmpty()) {
+            try {
+                userService.findByEmailAndPassword(profileBindingModel.getEmail(), profileBindingModel.getPassword());
+            } catch (IllegalArgumentException i) {
+                return "Wrong email or password.";
+            }
+
+            if(!profileBindingModel.getNewPassword().equals(profileBindingModel.getConfirmPassword())) {
+                return "New password and confirmation password didn't match.";
+            }
+        }
+        return "";
     }
 
     @GetMapping("/settings")
@@ -124,6 +156,13 @@ public class UserController {
     public String userOrdersPage(Model model) {
         model.addAttribute("orders", userOrderHistoryService.findAllUserOrders());
         return "/user/orders";
+    }
+
+    @GetMapping("/mySubs")
+    public String userSubscriptionsPage(Model model) {
+        model.addAttribute("subs", userOrderHistoryService.findAllUserSubscriptions());
+        model.addAttribute("trainingCount", userService.getTrainingsCount());
+        return "/user/subscriptions";
     }
 
 }

@@ -38,9 +38,11 @@ public class SportServiceImpl implements SportService {
     }
 
     @Override
-    public void addNewSport(SportServiceModel sportServiceModel) {
+    public void addEditSport(SportServiceModel sportServiceModel) {
         Sport sport = modelMapper.map(sportServiceModel, Sport.class);
-        sport.setIsActive(true);
+        if ("".equals(sport.getId())) {
+            sport.setIsActive(true);
+        }
         sportRepository.saveAndFlush(sport);
     }
 

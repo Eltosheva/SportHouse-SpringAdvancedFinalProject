@@ -17,5 +17,5 @@ public class PlaceServiceModel {
     private String imageUrl;
     private String phone;
     private String description;
-    private boolean isActive;
+    private Boolean isActive;
 }

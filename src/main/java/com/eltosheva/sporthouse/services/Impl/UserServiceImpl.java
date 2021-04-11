@@ -1,8 +1,6 @@
 package com.eltosheva.sporthouse.services.Impl;
 
-import com.eltosheva.sporthouse.models.entities.Role;
-import com.eltosheva.sporthouse.models.entities.Sport;
-import com.eltosheva.sporthouse.models.entities.User;
+import com.eltosheva.sporthouse.models.entities.*;
 import com.eltosheva.sporthouse.models.enums.RoleEnum;
 import com.eltosheva.sporthouse.models.service.CoachServiceModel;
 import com.eltosheva.sporthouse.models.service.CoachTeamServiceModel;
@@ -14,10 +12,12 @@ import com.eltosheva.sporthouse.repositories.UserRepository;
 import com.eltosheva.sporthouse.services.UserService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.IllformedLocaleException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,6 +51,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void editUser(UserServiceModel userServiceModel) {
+        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
+        user.setFirstName(userServiceModel.getFirstName());
+        user.setLastName(userServiceModel.getLastName());
+        user.setPhoneNum(userServiceModel.getPhoneNum());
+        if(!"".equals(userServiceModel.getPassword())) user.setPassword(userServiceModel.getPassword());
+        user.setIsActive(true);
+
+        if(user.isUser()) {
+            user.setAge(userServiceModel.getAge());
+            user.setTargetWeight(userServiceModel.getTargetWeight());
+            user.setProfilePictureUrl(userServiceModel.getProfilePictureUrl());
+        } else if(user.isCoach()) {
+           user.setSocialMediaUrl(userServiceModel.getSocialMediaUrl());
+           user.setDescription(userServiceModel.getDescription());
+            Sport coachSport = sportRepository.findById(((CoachServiceModel) userServiceModel).getSportId()).orElseThrow(IllegalArgumentException::new);
+            user.setSport(coachSport);
+        }
+
+        userRepository.saveAndFlush(user);
+    }
+
+    @Override
     public UserServiceModel findById(String id) {
        return userRepository.findById(id)
                 .map(user ->  modelMapper.map(user, UserServiceModel.class))
@@ -59,9 +82,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel findByEmailAndPassword(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password)
-                .map(user -> modelMapper.map(user, UserServiceModel.class))
-                .orElseThrow(IllegalArgumentException::new);
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(IllegalArgumentException::new);
+        if(!passwordEncoder.matches(password, user.getPassword()))
+            throw new IllegalArgumentException();
+        return modelMapper.map(user, UserServiceModel.class);
     }
 
     @Override
@@ -85,6 +110,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserServiceModel> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .filter(user -> !user.isAdmin())
+                .map(user -> modelMapper.map(user, UserServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void changeStatus(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(IllegalArgumentException::new);
+        user.setIsActive(!user.getIsActive());
+        userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public Integer getTrainingsCount() {
+        return userRepository.getTrainingCount(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+
+    @Override
     public void initUsers() {
         if(userRepository.count() == 0) {
             Role admin = new Role();
@@ -97,6 +143,7 @@ public class UserServiceImpl implements UserService {
             roleRepository.saveAll(List.of(admin, coach, user));
 
             User appAdmin = new User();
+            appAdmin.setIsActive(true);
             appAdmin.setFirstName("Admin");
             appAdmin.setLastName("Admin");
             appAdmin.setPassword(passwordEncoder.encode("123456"));

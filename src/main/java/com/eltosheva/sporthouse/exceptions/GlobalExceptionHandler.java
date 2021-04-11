@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler({UnauthorizedException.class})
+    @ExceptionHandler({UnauthorizedException.class, IllegalArgumentException.class})
     public ModelAndView unathorizationHadler (UnauthorizedException exc) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("exceptionUnauthorized", exc.getMessage());

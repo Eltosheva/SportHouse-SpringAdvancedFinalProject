@@ -19,6 +19,7 @@
                     <div class="col-lg-9 col-md-9">
                         <form th:object="${sportBindingModel}" method="post" th:action="@{/admin/sports}">
                             <input type="hidden" name="id" id="id" value=""/>
+                            <input type="hidden" name="isActive" id="isActive" value=""/>
                             <div class="form-row">
                                 <div class="col-md-6 mb-2">
                                     <div class="form-row">
@@ -46,8 +47,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-2">
-                                    <label for="hallDescription">Description</label>
-                                    <textarea class="form-control" id="hallDescription" name="description"
+                                    <label for="sportDescription">Description</label>
+                                    <textarea class="form-control" id="sportDescription" name="description"
                                               placeholder="Description" rows="5" required></textarea>
                                 </div>
                             </div>
@@ -75,7 +76,10 @@
                                 <td colspan="12">Empty cart</td>
                             </tr>
                             <tr th:each="s : ${sports}">
-                                <td th:text="${s.name}">Tennis</td>
+                                <td th:text="${s.name}" th:id="${'name_' + s.id}">Tennis</td>
+                                <input type="hidden" th:id="${'status_' + s.id}" th:value="${s.isActive}"/>
+                                <input type="hidden" th:id="${'description_' + s.id}" th:value="${s.description}"/>
+                                <input type="hidden" th:id="${'imageUrl_' + s.id}" th:value="${s.imageUrl}"/>
                                 <td>
                                     <h4>
                                         <span th:if="${s.isActive == true}" class="badge badge-success">
@@ -86,8 +90,8 @@
                                             </span>
                                     </h4>
                                 </td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm" data-title="" data-toggle="modal"
+                                <td th:data-id="${s.id}">
+                                    <button class="btn btn-primary btn-sm sportEdit" data-title="" data-toggle="modal"
                                             data-target="#edit">
                                         <span class="fas fa-pen"></span>
                                     </button>
@@ -114,6 +118,7 @@
     </main>
     <footer th:replace="fragments/fragment :: footer"></footer>
     <script th:src="@{/js/img_resource_load.js}"></script>
+    <script th:src="@{/js/sports.js}" type="text/javascript"></script>
 </wrapper>
 </body>
 </html>

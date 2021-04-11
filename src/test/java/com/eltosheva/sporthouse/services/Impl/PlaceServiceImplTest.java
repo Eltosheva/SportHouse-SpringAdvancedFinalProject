@@ -16,7 +16,6 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +59,7 @@ class PlaceServiceImplTest {
         testPlace.setPhone("1234567890");
         testPlace.setDescription("description");
 
-        placeService.addNewSportHall(testPlace);
+        placeService.addEditSportHall(testPlace);
         verify(mockPlaceRepository, times(1)).save(modelMapper.map(testPlace, Place.class));
     }
 

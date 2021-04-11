@@ -25,7 +25,8 @@ public class AuthUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("User with email" + email + " is not fount."));
-
+        if (!user.getIsActive())
+            throw new UsernameNotFoundException("This user with email" + email + " is not active.");
         return mapToUserDetails(user);
     }
 

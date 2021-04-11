@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface PlaceService {
 
-    void addNewSportHall(PlaceServiceModel placeServiceModel);
+    void addEditSportHall(PlaceServiceModel placeServiceModel);
     List<PlaceServiceModel> getPlaces();
     void removePlace(String id);
     void initPlaces();

@@ -3,6 +3,7 @@
 html, body {
     height: 100%;
     padding-bottom: 100px;
+    background-color: lemonchiffon;
 }
 
 .panel-heading {
@@ -42,8 +43,6 @@ img.profile-img-mini {
     /*position: absolute;*/
     bottom: 0;
     width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 300px;
 }
 
 footer {

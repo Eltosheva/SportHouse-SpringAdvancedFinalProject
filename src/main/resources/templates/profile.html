@@ -12,6 +12,18 @@
                     <span th:text="${user.firstName}">Eli</span>
                 </h2>
                 <hr/>
+                <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
+                    <span th:text="${errorMessage}"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div th:if="${success != null}" class="alert alert-success" role="alert">
+                    <span th:text="${success}"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="text-center">
@@ -22,12 +34,16 @@
                         </div>
                     </div>
                     <div class="col">
-                        <th:block sec:authorize="hasRole('USER')">
+                        <th:block sec:authorize="hasRole('USER') && !hasRole('ADMIN')">
                             <form th:action="@{/user/profile}" method="post"
                                   class="justify-content-center align-items-center">
                         </th:block>
-                        <th:block sec:authorize="hasRole('COACH')">
+                        <th:block sec:authorize="hasRole('COACH') && !hasRole('ADMIN')">
                             <form th:action="@{/coach/profile}" method="post"
+                                  class="justify-content-center align-items-center">
+                        </th:block>
+                        <th:block sec:authorize="hasRole('ADMIN')">
+                            <form th:action="@{/admin/profile}" method="post"
                                   class="justify-content-center align-items-center">
                         </th:block>
                         <input type="hidden" name="id" th:value="${user.id}">
@@ -73,7 +89,7 @@
                                         <h4>Email</h4>
                                     </label>
                                     <input th:field="${user.email}" type="email" id="email"
-                                           class="form-control" placeholder="your@email.com" required/>
+                                           name="email" class="form-control" readonly/>
                                     <div class="invalid-feedback">
                                         <div>Email is required field</div>
                                         <div>Not valid email format</div>
@@ -81,7 +97,7 @@
                                 </div>
                             </div>
                         </div>
-                        <th:block sec:authorize="hasRole('USER')">
+                        <th:block sec:authorize="hasRole('USER') && !hasRole('ADMIN')">
                             <div class="row">
                                 <div class="col-xl-4 col-md-6">
                                     <div class="form-group">
@@ -89,7 +105,7 @@
                                             <h4>Age</h4>
                                         </label>
                                         <input th:field="${user.age}" type="text" id="age"
-                                               class="form-control" placeholder="age" required/>
+                                               name="age" class="form-control" placeholder="age"/>
                                         <div class="invalid-feedback">
                                             <div></div>
                                         </div>
@@ -100,11 +116,67 @@
                                         <label for="targetWeight">
                                             <h4>Target weight</h4>
                                         </label>
-                                        <input th:field="${user.targetWeight}" type="number" step="0.1" id="targetWeight"
-                                               class="form-control" placeholder="targetWeight" required/>
+                                        <input th:field="${user.targetWeight}" type="number" step="0.1"
+                                               id="targetWeight"
+                                               name="targetWeight" class="form-control" placeholder="targetWeight"/>
                                         <div class="invalid-feedback">
                                             <div></div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-8 col-md-12">
+                                    <div class="form-group">
+                                        <label for="profilePictureUrl">
+                                            <h4>Profile Picture URL</h4>
+                                        </label>
+                                        <input th:field="${user.profilePictureUrl}" name="profilePictureUrl" type="text"
+                                               id="profilePictureUrl"
+                                               class="form-control" placeholder="Profile picture URL"/>
+                                        <div class="invalid-feedback">
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                        <th:block sec:authorize="hasRole('COACH') && !hasRole('ADMIN')">
+                            <div class="row">
+                                <div class="col-xl-3  col-md-4">
+                                    <div class="form-group">
+                                        <label for="inputGroupSelect01">
+                                            <h4>Choose sport</h4>
+                                        </label>
+                                        <select class="custom-select" name="sportId" id="inputGroupSelect01">
+                                            <option value="" selected>Choose sport</option>
+                                            <option th:each="s : ${sports}" th:value="${s.id}"
+                                                    th:text="${s.name}" th:selected="${s.getId()} == ${user.sportId}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-5 col-md-8">
+                                    <div class="form-group">
+                                        <label for="socialMediaUrl">
+                                            <h4>Social Media URL</h4>
+                                        </label>
+                                        <input th:field="${user.socialMediaUrl}" type="text" id="socialMediaUrl"
+                                               name="socialMediaUrl" class="form-control"
+                                               placeholder="Social Media URL"/>
+                                        <div class="invalid-feedback">
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-8 col-md-12">
+                                    <div class="form-group">
+                                        <label for="description">Description:</label>
+                                        <textarea th:field="${user.description}" th:errorclass="bg-danger"
+                                                  class="form-control" id="description" name="description">
+                                        </textarea>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +189,7 @@
                                     <label for="password">
                                         <h4>Password</h4>
                                     </label>
-                                    <input type="password" id="password" class="form-control"
+                                    <input type="password" id="password" name="password" class="form-control"
                                            placeholder="password"/>
                                 </div>
                             </div>
@@ -128,7 +200,7 @@
                                     <label for="password">
                                         <h4>New Password</h4>
                                     </label>
-                                    <input type="password" id="newpassword" class="form-control"
+                                    <input type="password" id="newpassword" name="newPassword" class="form-control"
                                            placeholder="new password"/>
                                 </div>
                             </div>
@@ -137,7 +209,7 @@
                                     <label for="password2">
                                         <h4>Verify New Password</h4>
                                     </label>
-                                    <input type="password" id="password2" class="form-control"
+                                    <input type="password" id="password2" name="confirmPassword" class="form-control"
                                            placeholder="verify new password"/>
                                 </div>
                             </div>

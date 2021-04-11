@@ -11,8 +11,10 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
   Optional<User> findById(String id);
-  Optional<User> findByEmailAndPassword(String email, String password);
+  Optional<User> findUserByEmailAndPassword(String email, String password);
   Optional<User> findByEmail(String email);
   @Query("SELECT u.firstName as firstName, u.profilePictureUrl as profilePicUrl FROM User u WHERE u.email = ?1")
   Map<String, String> getUserData(String email);
+  @Query("select u.availableTraining from User u where u.email = ?1")
+  Integer getTrainingCount(String email);
 }

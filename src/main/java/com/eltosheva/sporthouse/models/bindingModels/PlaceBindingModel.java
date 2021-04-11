@@ -10,6 +10,7 @@ import java.time.LocalTime;
 @Data
 @NoArgsConstructor
 public class PlaceBindingModel {
+    private String id;
     @NotBlank(message = "Place must have a name")
     private String name;
     @NotBlank(message = "Place must have city")
@@ -24,4 +25,5 @@ public class PlaceBindingModel {
     @NotBlank(message = "Enter phone number for this place")
     private String phone;
     private String description;
+    private Boolean isActive;
 }

@@ -35,7 +35,6 @@ class UserServiceImplTest {
     private RoleRepository roleRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
-
     @Mock
     private SportRepository sportRepository;
 
@@ -66,7 +65,7 @@ class UserServiceImplTest {
     @WithMockUser(value = "1@1")
     void findByEmailWithValidUser() {
         User appAdmin = getUserData();
-        when(userRepository.findByEmailAndPassword("1@1", "123")).thenReturn(Optional.ofNullable(appAdmin));
+        when(userRepository.findUserByEmailAndPassword("1@1", "123")).thenReturn(Optional.ofNullable(appAdmin));
         UserServiceModel user = userService.findByEmailAndPassword("1@1", "123");
 
         Assertions.assertEquals(appAdmin.getFirstName(), user.getFirstName());
@@ -75,7 +74,7 @@ class UserServiceImplTest {
     @Test
     @WithMockUser(value = "1@1")
     void findByEmailThrowIllegalArgsException() {
-        when(userRepository.findByEmailAndPassword("", "")).thenThrow(IllegalArgumentException.class);
+        when(userRepository.findUserByEmailAndPassword("", "")).thenThrow(IllegalArgumentException.class);
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> userService.findByEmailAndPassword("",""));
     }

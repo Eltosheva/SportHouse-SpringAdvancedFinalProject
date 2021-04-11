@@ -33,7 +33,9 @@ public class  PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public void addNewSportHall(PlaceServiceModel placeServiceModel) {
+    public void addEditSportHall(PlaceServiceModel placeServiceModel) {
+        if("".equals(placeServiceModel.getId()))
+            placeServiceModel.setIsActive(true);
         Place place = modelMapper.map(placeServiceModel, Place.class);
         placeRepository.save(place);
     }

@@ -19,6 +19,7 @@
                     <div class="col-lg-9 col-md-9">
                         <form th:object="${placeBindingModel}" method="post" th:action="@{/admin/halls}">
                             <input type="hidden" name="id" id="id" value=""/>
+                            <input type="hidden" name="isActive" id="isActive" value=""/>
                             <div class="form-row">
                                 <div class="col-md-6 mb-2">
                                     <label for="placeName">Name</label>
@@ -137,13 +138,16 @@
                             <tr th:if="${halls} == 0">
                                 <td colspan="12">Empty cart</td>
                             </tr>
-                            <tr th:each="h : ${halls}">
-                                <td th:text="${h.name}">Arena Armeec</td>
-                                <td th:text="${h.city}">Sofia</td>
-                                <td th:text="${h.address}">Carigradsko shose 1</td>
-                                <td th:text="${h.workFrom}">9:30</td>
-                                <td th:text="${h.workTo}">18:30</td>
-                                <td th:text="${h.phone}">1122334455</td>
+                            <tr th:each="h : ${halls}" th:data-id="${h.id}">
+                                <input type="hidden" th:id="${'imageUrl_' + h.id}" th:value="${h.imageUrl}" />
+                                <input type="hidden" th:id="${'description_' + h.id}" th:value="${h.description}" />
+                                <input type="hidden" th:id="${'status_' + h.id}" th:value="${h.isActive}" />
+                                <td th:text="${h.name}" th:id="${'name_' + h.id}">Arena Armeec</td>
+                                <td th:text="${h.city}" th:id="${'city_' + h.id}">Sofia</td>
+                                <td th:text="${h.address}" th:id="${'address_' + h.id}">Carigradsko shose 1</td>
+                                <td th:text="${h.workFrom}" th:id="${'workFrom_' + h.id}">9:30</td>
+                                <td th:text="${h.workTo}" th:id="${'workTo_' + h.id}">18:30</td>
+                                <td th:text="${h.phone}" th:id="${'phone_' + h.id}">1122334455</td>
                                 <td>
                                     <h4>
                                             <span th:if="${h.isActive == true}" class="badge badge-success">
@@ -154,8 +158,8 @@
                                             </span>
                                     </h4>
                                 </td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm" data-title="" data-toggle="modal"
+                                <td th:data-id="${h.id}">
+                                    <button class="btn btn-primary btn-sm hallEdit" data-title="" data-toggle="modal"
                                             data-target="#edit">
                                         <span class="fas fa-pen"></span>
                                     </button>
@@ -180,6 +184,7 @@
         </div>
     </main>
     <footer th:replace="fragments/fragment :: footer"></footer>
+    <script th:src="@{/js/halls.js}" type="text/javascript"></script>
 </wrapper>
 </body>
 </html>

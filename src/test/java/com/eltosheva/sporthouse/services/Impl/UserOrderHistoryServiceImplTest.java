@@ -2,6 +2,7 @@ package com.eltosheva.sporthouse.services.Impl;
 
 import com.eltosheva.sporthouse.models.entities.Product;
 import com.eltosheva.sporthouse.models.entities.ShoppingCart;
+import com.eltosheva.sporthouse.models.service.ProductServiceModel;
 import com.eltosheva.sporthouse.models.service.UserOrderHistoryServiceModel;
 import com.eltosheva.sporthouse.repositories.ProductRepository;
 import com.eltosheva.sporthouse.repositories.ShoppingCartRepository;
@@ -36,6 +37,9 @@ class UserOrderHistoryServiceImplTest {
 
     @Mock
     private ProductRepository productRepository;
+
+    @Mock
+    private ProductServiceModel productServiceModel;
 
     @Mock
     private AppMailService mailService;

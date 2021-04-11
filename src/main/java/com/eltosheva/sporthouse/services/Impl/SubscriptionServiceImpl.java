@@ -23,13 +23,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     @Transactional
-    public void addNewSubscription(SubscriptionServiceModel subscriptionServiceModel) {
+    public void addEditSubscription(SubscriptionServiceModel subscriptionServiceModel) {
         Subscription subscription = modelMapper.map(subscriptionServiceModel, Subscription.class);
-        subscription.setIsActive(true);
+        boolean isEdit = true;
+        if ("".equals(subscription.getId())) {
+            subscription.setIsActive(true);
+            isEdit = false;
+        }
         subscriptionRepository.saveAndFlush(subscription);
-        // todo add new product item for this subscription
-
-        productService.addNewSubscriptionTypeProduct(subscription);
+        if (!isEdit) productService.addNewSubscriptionTypeProduct(subscription);
     }
 
     @Override

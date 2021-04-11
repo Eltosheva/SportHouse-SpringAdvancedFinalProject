@@ -1,20 +1,12 @@
 package com.eltosheva.sporthouse.web;
 
 import com.eltosheva.sporthouse.jobs.SchedulerService;
-import com.eltosheva.sporthouse.models.bindingModels.ProductBindingModel;
-import com.eltosheva.sporthouse.models.bindingModels.PlaceBindingModel;
-import com.eltosheva.sporthouse.models.bindingModels.SportBindingModel;
-import com.eltosheva.sporthouse.models.bindingModels.SubscriptionBindingModel;
-import com.eltosheva.sporthouse.models.service.ProductServiceModel;
-import com.eltosheva.sporthouse.models.service.PlaceServiceModel;
-import com.eltosheva.sporthouse.models.service.SportServiceModel;
-import com.eltosheva.sporthouse.models.service.SubscriptionServiceModel;
-import com.eltosheva.sporthouse.services.ProductService;
-import com.eltosheva.sporthouse.services.PlaceService;
-import com.eltosheva.sporthouse.services.SportService;
-import com.eltosheva.sporthouse.services.SubscriptionService;
+import com.eltosheva.sporthouse.models.bindingModels.*;
+import com.eltosheva.sporthouse.models.service.*;
+import com.eltosheva.sporthouse.services.*;
 import org.modelmapper.ModelMapper;
-import org.quartz.SchedulerException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,22 +25,19 @@ public class AdminController {
     private final PlaceService placeService;
     private final SubscriptionService subscriptionService;
     private final SchedulerService schedulerService;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public AdminController(ModelMapper modelMapper, ProductService productService, SportService sportService, PlaceService placeService, SubscriptionService subscriptionService, SchedulerService schedulerService) {
+    public AdminController(ModelMapper modelMapper, ProductService productService, SportService sportService, PlaceService placeService, SubscriptionService subscriptionService, SchedulerService schedulerService, UserService userService, PasswordEncoder passwordEncoder) {
         this.modelMapper = modelMapper;
         this.productService = productService;
         this.sportService = sportService;
         this.placeService = placeService;
         this.subscriptionService = subscriptionService;
         this.schedulerService = schedulerService;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
-
-    @GetMapping("/users")
-    public String getAppUsers(Model model) {
-        model.addAttribute("users", "");
-        return "admin/users";
-    }
-
 
     @RequestMapping(path = "/sports", method = RequestMethod.GET)
     public String manageSportsPage(Model model) {
@@ -72,7 +61,7 @@ public class AdminController {
                     bindingResult);
             return "redirect:/admin/sports";
         }
-        sportService.addNewSport(modelMapper.map(sportBindingModel, SportServiceModel.class));
+        sportService.addEditSport(modelMapper.map(sportBindingModel, SportServiceModel.class));
         redirectAttributes.addFlashAttribute("isSportSaveSuccessfully", true);
         return "redirect:/admin/sports";
     }
@@ -105,7 +94,7 @@ public class AdminController {
                     bindingResult);
             return "redirect:/admin/halls";
         }
-        placeService.addNewSportHall(modelMapper.map(placeBindingModel, PlaceServiceModel.class));
+        placeService.addEditSportHall(modelMapper.map(placeBindingModel, PlaceServiceModel.class));
         redirectAttributes.addFlashAttribute("isPlaceSavedSuccessfully", true);
         return "redirect:/admin/halls";
     }
@@ -173,7 +162,7 @@ public class AdminController {
                     bindingResult);
             return "redirect:/admin/subscriptions";
         }
-        subscriptionService.addNewSubscription(modelMapper.map(subscriptionBindingModel, SubscriptionServiceModel.class));
+        subscriptionService.addEditSubscription(modelMapper.map(subscriptionBindingModel, SubscriptionServiceModel.class));
         redirectAttributes.addFlashAttribute("isSubscriptionSavedSuccessfully", true);
         return "redirect:/admin/subscriptions";
     }
@@ -188,5 +177,75 @@ public class AdminController {
     public String manageTasksPage(Model model) {
         model.addAttribute("jobs", schedulerService.getAllJobs());
         return "admin/tasks";
+    }
+
+    @RequestMapping(path = "/users", method = RequestMethod.GET)
+    public String manageUsersPage(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "admin/users";
+    }
+
+    @RequestMapping(path = "/users/status", method = RequestMethod.POST)
+    public String changeUserStatus(@RequestParam String email) {
+        userService.changeStatus(email);
+        return "redirect:/admin/users";
+    }
+    @GetMapping("/profile")
+    public String coachProfilePage(Model model) {
+
+        model.addAttribute("user", userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()));
+
+        return "profile";
+    }
+
+    @PostMapping("/profile")
+    public String coachProfileCorrection(@Valid @ModelAttribute ProfileBindingModel profileBindingModel,
+                                         BindingResult bindingResult,
+                                         RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("profileBindingModel",
+                    profileBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.profileBindingModel",
+                    bindingResult);
+            return "redirect:/coach/profile";
+        }
+
+        String validation = validateUserData(profileBindingModel);
+        if(!"".equals(validation)) {
+            redirectAttributes.addFlashAttribute("profileBindingModel",
+                    profileBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.profileBindingModel",
+                    bindingResult);
+            redirectAttributes.addFlashAttribute("errorMessage", validation);
+            return "redirect:/coach/profile";
+        }
+
+        UserServiceModel userServiceModel = modelMapper.map(profileBindingModel, UserServiceModel.class);
+        if(!"".equals(profileBindingModel.getNewPassword())) {
+            userServiceModel.setPassword(passwordEncoder.encode(profileBindingModel.getNewPassword()));
+        } else {
+            userServiceModel.setPassword("");
+        }
+
+        userService.editUser(userServiceModel);
+
+        redirectAttributes.addFlashAttribute("success", "User data have been updated successfully.");
+
+        return "redirect:/coach/profile";
+    }
+
+    private String validateUserData(ProfileBindingModel profileBindingModel) {
+        if(!profileBindingModel.getNewPassword().isEmpty()) {
+            try {
+                userService.findByEmailAndPassword(profileBindingModel.getEmail(), profileBindingModel.getPassword());
+            } catch (IllegalArgumentException i) {
+                return "Wrong email or password.";
+            }
+
+            if(!profileBindingModel.getNewPassword().equals(profileBindingModel.getConfirmPassword())) {
+                return "New password and confirmation password didn't match.";
+            }
+        }
+        return "";
     }
 }
