@@ -27,8 +27,9 @@ public class AdminController {
     private final SchedulerService schedulerService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
-    public AdminController(ModelMapper modelMapper, ProductService productService, SportService sportService, PlaceService placeService, SubscriptionService subscriptionService, SchedulerService schedulerService, UserService userService, PasswordEncoder passwordEncoder) {
+    public AdminController(ModelMapper modelMapper, ProductService productService, SportService sportService, PlaceService placeService, SubscriptionService subscriptionService, SchedulerService schedulerService, UserService userService, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.modelMapper = modelMapper;
         this.productService = productService;
         this.sportService = sportService;
@@ -37,12 +38,16 @@ public class AdminController {
         this.schedulerService = schedulerService;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     @RequestMapping(path = "/sports", method = RequestMethod.GET)
     public String manageSportsPage(Model model) {
         if (!model.containsAttribute("sportBindingModel")) {
             model.addAttribute("sportBindingModel", new SportBindingModel());
+            model.addAttribute("isFirstTime", true);
+        } else {
+            model.addAttribute("isFirstTime", false);
         }
         if (!model.containsAttribute("isSportSaveSuccessfully")) {
             model.addAttribute("isSportSaveSuccessfully", false);
@@ -76,6 +81,9 @@ public class AdminController {
     public String manageHallsPage(Model model) {
         if (!model.containsAttribute("placeBindingModel")) {
             model.addAttribute("placeBindingModel", new PlaceBindingModel());
+            model.addAttribute("isFirstTime", true);
+        } else {
+            model.addAttribute("isFirstTime", false);
         }
         if (!model.containsAttribute("isPlaceSavedSuccessfully")) {
             model.addAttribute("isPlaceSavedSuccessfully", false);
@@ -109,6 +117,9 @@ public class AdminController {
     public String manageProductsPage(Model model) {
         if (!model.containsAttribute("productBindingModel")) {
             model.addAttribute("productBindingModel", new ProductBindingModel());
+            model.addAttribute("isFirstTime", true);
+        } else {
+            model.addAttribute("isFirstTime", false);
         }
         if (!model.containsAttribute("isProductSavedSuccessfully")) {
             model.addAttribute("isProductSavedSuccessfully", false);
@@ -144,6 +155,9 @@ public class AdminController {
     public String manageSubscriptionsPage(Model model) {
         if (!model.containsAttribute("subscriptionBindingModel")) {
             model.addAttribute("subscriptionBindingModel", new SubscriptionBindingModel());
+            model.addAttribute("isFirstTime", true);
+        } else {
+            model.addAttribute("isFirstTime", false);
         }
         if (!model.containsAttribute("isSubscriptionSavedSuccessfully")) {
             model.addAttribute("isSubscriptionSavedSuccessfully", false);
@@ -182,6 +196,7 @@ public class AdminController {
     @RequestMapping(path = "/users", method = RequestMethod.GET)
     public String manageUsersPage(Model model) {
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("roles", roleService.getAllRoles());
         return "admin/users";
     }
 

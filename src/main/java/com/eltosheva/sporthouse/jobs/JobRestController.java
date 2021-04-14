@@ -1,10 +1,9 @@
 package com.eltosheva.sporthouse.jobs;
 
 import com.eltosheva.sporthouse.jobs.Info.ScheduleJob;
+import com.eltosheva.sporthouse.utils.ResponseMsg;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.Serializable;
 
 @RestController()
 @RequestMapping(path = "/api/schedule")
@@ -44,22 +43,5 @@ public class JobRestController {
 
         }
         return ResponseEntity.ok().body(new ResponseMsg(true));
-    }
-
-    private class ResponseMsg implements Serializable {
-        private Boolean valid;
-
-        public ResponseMsg(Boolean valid) {
-            this.valid = valid;
-        }
-
-        public Boolean getValid() {
-            return valid;
-        }
-
-        public ResponseMsg setValid(Boolean valid) {
-            this.valid = valid;
-            return this;
-        }
     }
 }

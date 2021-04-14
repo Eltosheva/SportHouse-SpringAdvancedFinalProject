@@ -47,12 +47,18 @@ public class SportServiceImpl implements SportService {
     }
 
     @Override
-    public List<SportServiceModel> getSports() {
+    public List<SportServiceModel> getSports(boolean showOnlyActive) {
         return sportRepository
                 .findAll()
                 .stream()
+                .filter(sport -> !showOnlyActive || sport.getIsActive())
                 .map(sport -> modelMapper.map(sport, SportServiceModel.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SportServiceModel> getSports() {
+        return getSports(false);
     }
 
     @Override

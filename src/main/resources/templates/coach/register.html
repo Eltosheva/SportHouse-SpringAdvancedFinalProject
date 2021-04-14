@@ -1,164 +1,215 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="fragments/fragment :: head"></head>
-    <body>
-        <wrapper class="d-flex flex-column">
-            <header th:replace="fragments/fragment :: nav"></header>
-            <main class="flex-fill">
-                <div class="container">
-                    <h1 class="h3 mb-2 mt-3 text-gray-800 border-bottom">Coach Registration</h1>
-                    <div th:if="${!errMessage.equals('')}" class="alert alert-danger" role="alert">
-                        <span th:text="${errMessage}"></span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <form th:object="${coachRegisterBindingModel}" method="POST" th:action="@{/coach/register}">
-                                <fieldset>
-                                    <legend>Account Details</legend>
-                                    <div class="row">
-                                        <div class="col-xl-5 col-md-6">
-                                            <div class="form-group">
-                                                <label for="firstName">
-                                                    First name
-                                                </label>
-                                                <input th:field="*{firstName}" th:errorclass="bg-danger" type="text"
-                                                       name="firstName" id="firstName" class="form-control"
-                                                       placeholder="first name" required />
-                                                <div class="invalid-feedback">
-                                                    <div>First name is required</div>
-                                                </div>
-                                            </div>
+<head th:replace="fragments/fragment :: head"></head>
+<body>
+<wrapper class="d-flex flex-column">
+    <header th:replace="fragments/fragment :: nav"></header>
+    <main class="flex-fill">
+        <div class="container">
+            <h1 class="h3 mb-2 mt-3 text-gray-800 border-bottom">Coach Registration</h1>
+            <div th:if="${!errMessage.equals('')}" class="alert alert-danger" role="alert">
+                <span th:text="${errMessage}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <form th:object="${coachRegisterBindingModel}" method="POST" th:action="@{/coach/register}">
+                        <fieldset>
+                            <legend>Account Details</legend>
+                            <div class="row">
+                                <div class="col-xl-5 col-md-6">
+                                    <div class="form-group">
+                                        <label for="firstName">
+                                            First name
+                                        </label>
+                                        <input th:field="*{firstName}" type="text"
+                                               name="firstName" id="firstName" class="form-control"
+                                               th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('firstName') ? 'is-invalid' : 'is-valid'))}"
+                                               placeholder="first name" required="required"
+                                               aria-describedby="firstNameFeedback"/>
+                                        <div th:if="${(!isFirstTime and #fields.hasErrors('firstName'))}"
+                                             id="firstNameFeedback"
+                                             th:class="${(#fields.hasErrors('firstName') ? 'invalid-feedback' : 'valid-feedback')}"
+                                             th:text="${(#fields.hasErrors('firstName') ? #fields.errors('firstName').get(0).toString() : 'Looks good')}">
                                         </div>
-                                        <div class="col-xl-5 col-md-6">
-                                            <div class="form-group">
-                                                <label for="lastName">
-                                                    Last name
-                                                </label>
-                                                <input th:field="*{lastName}" th:errorclass="bg-danger"
-                                                       type="text" name="lastName"
-                                                       id="lastName" class="form-control"
-                                                       placeholder="last name" required />
-                                                <div class="invalid-feedback">
-                                                    <div>Last name is required</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-xl-10">
-                                            <div class="input-group mb-3">
-                                                <select class="custom-select" name="sportId" id="inputGroupSelect01">
-                                                    <option value="" selected>Choose sport</option>
-                                                    <option th:each="s : ${sports}" th:value="${s.id}"
-                                                            th:text="${s.name}" th:selected="${s.getId()} == *{sportId}">
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-xl-10">
-                                            <label for="email">
-                                                Email
-                                            </label>
-                                            <div class="input-group mb-2">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">@</div>
-                                                </div>
-                                                <input th:field="*{email}" th:errorclass="bg-danger"
-                                                       name="email" type="email" class="form-control"
-                                                       id="email" placeholder="Email">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-xl-5 col-md-6">
-                                            <div class="form-group">
-                                                <label for="password">
-                                                    Password
-                                                </label>
-                                                <input th:field="*{password}" th:errorclass="bg-danger"
-                                                       name="password" type="password" id="password"
-                                                       class="form-control" placeholder="Password" />
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5 col-md-6">
-                                            <div class="form-group">
-                                                <label for="password2">
-                                                    Confirm Password
-                                                </label>
-                                                <input th:field="*{confirmPassword}" th:errorclass="bg-danger"
-                                                       name="confirmPassword" type="password" id="password2"
-                                                       class="form-control" placeholder="Confirm Password" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Optional Details</legend>
-
-                                    <div class="row">
-                                        <div class="form-group col-xl-5">
-                                            <label for="phone">
-                                                Phone
-                                            </label>
-                                            <div class="input-group mb-2">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text"><span class="fas fa-phone"></span></div>
-                                                </div>
-                                                <input th:field="*{phoneNum}" th:errorclass="bg-danger"
-                                                       name="phoneNum" type="text" class="form-control"
-                                                       id="phone" placeholder="+359">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-xl-10">
-                                            <label for="social_media">
-                                                Social Media Link
-                                            </label>
-                                            <div class="input-group mb-2">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text"><span class="fas fa-link"></span></div>
-                                                </div>
-                                                <input th:field="*{socialMediaUrl}" th:errorclass="bg-danger"
-                                                        name="socialMediaUrl" type="text" class="form-control"
-                                                        id="social_media" placeholder="Social Media Link">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="form-group col-md-12 hidden">
-                                            <label for="description">Description:</label>
-                                            <textarea th:field="*{description}" th:errorclass="bg-danger"
-                                                      class="form-control" id="description" name="description">
-                                            </textarea>
-                                        </div>
-                                    </div>
-
-                                </fieldset>
-
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <button type="submit" class="btn btn-success">
-                                            Register
-                                        </button>
                                     </div>
                                 </div>
+                                <div class="col-xl-5 col-md-6">
+                                    <div class="form-group">
+                                        <label for="lastName">
+                                            Last name
+                                        </label>
+                                        <input th:field="*{lastName}" type="text" name="lastName"
+                                               id="lastName" class="form-control"
+                                               th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('lastName') ? 'is-invalid' : 'is-valid'))}"
+                                               placeholder="last name" required="required"/>
+                                        <div th:if="${(!isFirstTime and #fields.hasErrors('lastName'))}"
+                                             id="lastNameFeedback"
+                                             th:class="${(#fields.hasErrors('lastName') ? 'invalid-feedback' : 'valid-feedback')}"
+                                             th:text="${(#fields.hasErrors('lastName') ? #fields.errors('lastName').get(0).toString() : 'Looks good')}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xl-10">
+                                    <div class="input-group mb-3">
+                                        <select class="custom-select" name="sportId" id="inputGroupSelect01"
+                                                th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('sportId') ? 'is-invalid' : 'is-valid'))}"
+                                                aria-describedby="sportIdFeedback" required="required">
+                                            <option value="" selected>Choose sport</option>
+                                            <option th:each="s : ${sports}" th:value="${s.id}"
+                                                    th:text="${s.name}" th:selected="${s.getId()} == *{sportId}">
+                                            </option>
+                                        </select>
+                                        <div th:if="${(!isFirstTime and #fields.hasErrors('sportId'))}"
+                                             id="sportIdFeedback"
+                                             th:class="${(#fields.hasErrors('sportId') ? 'invalid-feedback' : 'valid-feedback')}"
+                                             th:text="${(#fields.hasErrors('sportId') ? #fields.errors('sportId').get(0).toString() : 'Looks good')}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xl-10">
+                                    <label for="email">
+                                        Email
+                                    </label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">@</div>
+                                        </div>
+                                        <input th:field="*{email}" name="email" type="email" class="form-control"
+                                               th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('email') ? 'is-invalid' : 'is-valid'))}"
+                                               aria-describedby="emailFeedback" id="email" placeholder="Email"
+                                               required="required"/>
+                                        <div th:if="${(!isFirstTime and #fields.hasErrors('email'))}" id="emailFeedback"
+                                             th:class="${(#fields.hasErrors('email') ? 'invalid-feedback' : 'valid-feedback')}"
+                                             th:text="${(#fields.hasErrors('email') ? #fields.errors('email').get(0).toString() : 'Looks good')}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                            </form>
+                            <div class="row">
+                                <div class="col-xl-5 col-md-6">
+                                    <div class="form-group">
+                                        <label for="password">
+                                            Password
+                                        </label>
+                                        <input th:field="*{password}" name="password" type="password" id="password"
+                                               class="form-control" placeholder="Password"
+                                               th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('password') ? 'is-invalid' : 'is-valid'))}"
+                                               aria-describedby="passwordFeedback" required="required"/>
+                                        <div th:if="${(!isFirstTime and #fields.hasErrors('password'))}"
+                                             id="passwordFeedback"
+                                             th:class="${(#fields.hasErrors('password') ? 'invalid-feedback' : 'valid-feedback')}"
+                                             th:text="${(#fields.hasErrors('password') ? #fields.errors('password').get(0).toString() : 'Looks good')}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-5 col-md-6">
+                                    <div class="form-group">
+                                        <label for="password2">
+                                            Confirm Password
+                                        </label>
+                                        <input th:field="*{confirmPassword}"
+                                               name="confirmPassword" type="password" id="password2"
+                                               class="form-control" placeholder="Confirm Password"
+                                               th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('confirmPassword') ? 'is-invalid' : 'is-valid'))}"
+                                               aria-describedby="confPasswordFeedback" required="required"/>
+                                        <div th:if="${(!isFirstTime and #fields.hasErrors('confirmPassword'))}"
+                                             id="confPasswordFeedback"
+                                             th:class="${(#fields.hasErrors('confirmPassword') ? 'invalid-feedback' : 'valid-feedback')}"
+                                             th:text="${(#fields.hasErrors('confirmPassword') ? #fields.errors('confirmPassword').get(0).toString() : 'Looks good')}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-12 hidden">
+                                    <label for="description">Description:</label>
+                                    <textarea th:field="*{description}"
+                                              class="form-control" id="description" name="description"
+                                              th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('description') ? 'is-invalid' : 'is-valid'))}"
+                                              aria-describedby="descriptionFeedback" required="required">
+                                            </textarea>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('description'))}"
+                                         id="descriptionFeedback"
+                                         th:class="${(#fields.hasErrors('description') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('description') ? #fields.errors('description').get(0).toString() : 'Looks good')}">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Optional Details</legend>
+
+                            <div class="row">
+                                <div class="form-group col-xl-5">
+                                    <label for="phone">
+                                        Phone
+                                    </label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><span class="fas fa-phone"></span></div>
+                                        </div>
+                                        <input th:field="*{phoneNum}"
+                                               name="phoneNum" type="text" class="form-control"
+                                               id="phone" placeholder="+359"
+                                               th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('phoneNum') ? 'is-invalid' : 'is-valid'))}"
+                                               aria-describedby="phoneFeedback"/>
+                                        <div th:if="${(!isFirstTime and #fields.hasErrors('phoneNum'))}"
+                                             id="phoneFeedback"
+                                             th:class="${(#fields.hasErrors('phoneNum') ? 'invalid-feedback' : 'valid-feedback')}"
+                                             th:text="${(#fields.hasErrors('phoneNum') ? #fields.errors('phoneNum').get(0).toString() : 'Looks good')}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xl-10">
+                                    <label for="social_media">
+                                        Social Media Link
+                                    </label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><span class="fas fa-link"></span></div>
+                                        </div>
+                                        <input th:field="*{socialMediaUrl}"
+                                               name="socialMediaUrl" type="text" class="form-control"
+                                               id="social_media" placeholder="Social Media Link"
+                                               th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('socialMediaUrl') ? 'is-invalid' : 'is-valid'))}"
+                                               aria-describedby="socialMediaFeedback" />
+                                        <div th:if="${(!isFirstTime and #fields.hasErrors('socialMediaUrl'))}"
+                                             id="socialMediaFeedback"
+                                             th:class="${(#fields.hasErrors('socialMediaUrl') ? 'invalid-feedback' : 'valid-feedback')}"
+                                             th:text="${(#fields.hasErrors('socialMediaUrl') ? #fields.errors('socialMediaUrl').get(0).toString() : 'Looks good')}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success">
+                                    Register
+                                </button>
+                            </div>
                         </div>
 
-                    </div>
+                    </form>
                 </div>
-            </main>
-            <footer th:replace="fragments/fragment :: footer"></footer>
-        </wrapper>
-    </body>
+
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/fragment :: footer"></footer>
+</wrapper>
+</body>
 </html>

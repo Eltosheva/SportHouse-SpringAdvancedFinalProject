@@ -1,6 +1,7 @@
 package com.eltosheva.sporthouse.services;
 
 import com.eltosheva.sporthouse.models.service.CoachTeamServiceModel;
+import com.eltosheva.sporthouse.models.service.UserManagementServiceModel;
 import com.eltosheva.sporthouse.models.service.UserServiceModel;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface UserService {
 
     List<CoachTeamServiceModel> getAllCoaches();
 
-    List<UserServiceModel> getAllUsers();
+    List<UserManagementServiceModel> getAllUsers();
     void changeStatus(String email);
     Integer getTrainingsCount ();
 }

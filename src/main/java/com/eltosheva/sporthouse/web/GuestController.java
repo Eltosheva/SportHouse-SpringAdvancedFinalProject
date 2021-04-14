@@ -41,7 +41,7 @@ public class GuestController {
     @GetMapping("/")
     public String index(Model model) {
 
-        model.addAttribute("places", placeService.getPlaces());
+        model.addAttribute("places", placeService.getPlaces(true));
         model.addAttribute("productsSubs", productService.getTopThree());
         return "index";
     }
@@ -56,7 +56,7 @@ public class GuestController {
 
     @GetMapping("/halls")
     public String places(Model model) {
-        model.addAttribute("places", placeService.getPlaces());
+        model.addAttribute("places", placeService.getPlaces(true));
         return "places";
     }
 

@@ -20,14 +20,14 @@ public class HomeController {
     @GetMapping("/home")
     public String home(Model model) {
         ///Евентуално да започва всичко от избиране на мястото за тренировка
-        model.addAttribute("places", placeService.getPlaces());
-        model.addAttribute("sports", sportService.getSports());
+        model.addAttribute("places", placeService.getPlaces(true));
+        model.addAttribute("sports", sportService.getSports(true));
         return "home";
     }
 
     @GetMapping("/store")
     public String store(Model model) {
-        model.addAttribute("sports", sportService.getSports());
+        model.addAttribute("sports", sportService.getSports(true));
         return "store";
     }
 

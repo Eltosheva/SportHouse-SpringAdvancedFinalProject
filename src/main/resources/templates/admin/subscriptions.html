@@ -18,13 +18,14 @@
                                 <div class="col-md-4"></div>
                                 <div class="col-md-4 mb-2">
                                     <label for="planName">Name</label>
-                                    <input th:field="*{name}"
-                                           th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
-                                           type="text" class="form-control" id="planName" name="name"
-                                           aria-describedby="planNameFeedback" placeholder="Plan name" required/>
-                                    <div th:if="${#fields.hasErrors('name')}"
-                                         th:errors="*{name}"
-                                         id="planNameFeedback" class="valid-feedback">
+                                    <input th:field="*{name}" type="text" class="form-control" id="planName" name="name"
+                                           th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('name') ? 'is-invalid' : 'is-valid'))}"
+                                           aria-describedby="planNameFeedback" placeholder="Plan name"
+                                           required="required"/>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('name'))}"
+                                         id="planNameFeedback"
+                                         th:class="${(#fields.hasErrors('name') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('name') ? #fields.errors('name').get(0).toString() : 'Looks good')}">
                                     </div>
                                 </div>
                             </div>
@@ -32,38 +33,54 @@
                                 <div class="col-md-4"></div>
                                 <div class="col-md-2 mb-2">
                                     <label for="planPrice">Price</label>
-                                    <input th:field="*{price}"
-                                           th:classappend="${#fields.hasErrors('price')?'is-invalid':''}"
-                                           type="number" step="0.1" class="form-control"
-                                           id="planPrice" name="price"
-                                           aria-describedby="planPriceFeedback" placeholder="Price" required/>
-                                    <div th:if="${#fields.hasErrors('price')}"
-                                         th:errors="*{price}"
-                                         id="planPriceFeedback" class="invalid-feedback">
+                                    <input th:field="*{price}" type="number" step="0.1" class="form-control"
+                                           th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('price') ? 'is-invalid' : 'is-valid'))}"
+                                           id="planPrice" name="price" aria-describedby="planPriceFeedback"
+                                           placeholder="Price" required="required"/>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('price'))}"
+                                         id="planPriceFeedback"
+                                         th:class="${(#fields.hasErrors('price') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('price') ? #fields.errors('price').get(0).toString() : 'Looks good')}">
                                     </div>
                                 </div>
                                 <div class="col-md-2 mb-2">
                                     <label for="planTrainingCount">Training count</label>
-                                    <input type="number" step="1" class="form-control"
-                                           id="planTrainingCount" name="trainingCount"
-                                           placeholder="Training count" required/>
+                                    <input type="number" step="1" class="form-control" id="planTrainingCount"
+                                           name="trainingCount" placeholder="Training count" required="required"
+                                           th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('trainingCount') ? 'is-invalid' : 'is-valid'))}"
+                                           aria-describedby="planTrainingFeedback"/>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('trainingCount'))}"
+                                         id="planTrainingFeedback"
+                                         th:class="${(#fields.hasErrors('trainingCount') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('trainingCount') ? #fields.errors('trainingCount').get(0).toString() : 'Looks good')}">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-md-4"></div>
                                 <div class="col-md-2 mb-2">
                                     <label for="planStartDate">Start date</label>
-                                    <input th:field="*{startDate}"
-                                           th:classappend="${#fields.hasErrors('startDate')?'is-invalid':''}"
-                                           type="date" class="form-control " id="planStartDate" name="startDate"
-                                           placeholder="Start date" required/>
+                                    <input th:field="*{startDate}" type="date"  id="planStartDate" name="startDate"
+                                           th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('startDate') ? 'is-invalid' : 'is-valid'))}"
+                                           class="form-control" placeholder="Start date" required="required"
+                                           aria-describedby="startDateFeedback"/>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('startDate'))}"
+                                         id="startDateFeedback"
+                                         th:class="${(#fields.hasErrors('startDate') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('startDate') ? #fields.errors('startDate').get(0).toString() : 'Looks good')}">
+                                    </div>
                                 </div>
                                 <div class="col-md-2 mb-2">
                                     <label for="planExpireDate">Expire date</label>
-                                    <input th:field="*{expireDate}"
-                                           th:classappend="${#fields.hasErrors('expireDate')?'is-invalid':''}"
-                                           type="date" class="form-control " id="planExpireDate" name="expireDate"
-                                           placeholder="Expire date" required/>
+                                    <input th:field="*{expireDate}" type="date" id="planExpireDate" name="expireDate"
+                                           th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('expireDate') ? 'is-invalid' : 'is-valid'))}"
+                                           class="form-control" placeholder="Expire date" required="required"
+                                           aria-describedby="expireDateFeedback"/>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('expireDate'))}"
+                                         id="expireDateFeedback"
+                                         th:class="${(#fields.hasErrors('expireDate') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('expireDate') ? #fields.errors('expireDate').get(0).toString() : 'Looks good')}">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-row col-md-8">

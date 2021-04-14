@@ -10,11 +10,11 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 public class CoachRegisterBindingModel extends UserRegisterBindingModel{
-    @NotBlank
+    @NotBlank(message = "Must select a sport.")
     private String sportId;
-    @Size(min = 10)
-    @NotBlank
+    @NotBlank(message = "Description can not be empty")
+    @Size(min = 10, message = "Description can not be less than 10 characters.")
     private String description;
-    @URL
+    @URL(message = "Please provide a valid URL address.")
     private String socialMediaUrl;
 }

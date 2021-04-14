@@ -2,10 +2,7 @@ package com.eltosheva.sporthouse.services.Impl;
 
 import com.eltosheva.sporthouse.models.entities.*;
 import com.eltosheva.sporthouse.models.enums.RoleEnum;
-import com.eltosheva.sporthouse.models.service.CoachServiceModel;
-import com.eltosheva.sporthouse.models.service.CoachTeamServiceModel;
-import com.eltosheva.sporthouse.models.service.SportsmanServiceModel;
-import com.eltosheva.sporthouse.models.service.UserServiceModel;
+import com.eltosheva.sporthouse.models.service.*;
 import com.eltosheva.sporthouse.repositories.RoleRepository;
 import com.eltosheva.sporthouse.repositories.SportRepository;
 import com.eltosheva.sporthouse.repositories.UserRepository;
@@ -100,7 +97,7 @@ public class UserServiceImpl implements UserService {
     public List<CoachTeamServiceModel> getAllCoaches() {
         return userRepository.findAll()
                  .stream()
-                .filter(user -> user.isCoach() && !user.isAdmin())
+                .filter(user -> user.isCoach() && !user.isAdmin() && user.getIsActive())
                 .map(user -> {
                     CoachTeamServiceModel coach = modelMapper.map(user, CoachTeamServiceModel.class);
                     coach.setSportName(user.getSport().getName());
@@ -110,11 +107,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserServiceModel> getAllUsers() {
+    public List<UserManagementServiceModel> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .filter(user -> !user.isAdmin())
-                .map(user -> modelMapper.map(user, UserServiceModel.class))
+                .filter(user -> !user.getEmail().equals(SecurityContextHolder.getContext().getAuthentication().getName()))
+                .map(user -> modelMapper.map(user, UserManagementServiceModel.class))
                 .collect(Collectors.toList());
     }
 

@@ -56,6 +56,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductStoreServiceModel> productServiceModels = new ArrayList<>();
         productRepository
                 .findAll()
+                .stream().filter(product -> product.getIsActive())
                 .forEach(product -> {
                     ProductStoreServiceModel productServiceModel = new ProductStoreServiceModel();
                     modelMapper.map(product, productServiceModel);
@@ -93,7 +94,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductServiceModel> getTopThree() {
         return productRepository.findAll()
                 .stream()
-                .filter(product -> product instanceof SubscriptionProduct)
+                .filter(product -> product instanceof SubscriptionProduct && product.getIsActive())
                 .sorted(Comparator.comparing(Product::getPrice).reversed())
                 .limit(3)
                 .map(s ->  {

@@ -22,27 +22,27 @@
                             <div class="form-row">
                                 <div class="col-md-6 mb-2">
                                     <label for="productName">Name</label>
-                                    <input th:field="*{productName}"
-                                           th:classappend="${#fields.hasErrors('productName')?'is-invalid':''}"
-                                           type="text" class="form-control" id="productName"
+                                    <input th:field="*{productName}" type="text" class="form-control" id="productName"
+                                           th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('productName') ? 'is-invalid' : 'is-valid'))}"
                                            name="productName" aria-describedby="productNameFeedback"
-                                           placeholder="Accessory name" required/>
-                                    <div th:if="${#fields.hasErrors('productName')}"
-                                         th:errors="*{productName}" id="productNameFeedback"
-                                         class="invalid-feedback">
+                                           placeholder="Accessory name" required="required"/>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('productName'))}"
+                                         id="productNameFeedback"
+                                         th:class="${(#fields.hasErrors('productName') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('productName') ? #fields.errors('productName').get(0).toString() : 'Looks good')}">
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-2">
                                     <label for="productAvailableQuantity">Quantity</label>
                                     <input th:field="*{productAvailableQuantity}"
-                                           th:classappend="${#fields.hasErrors('productAvailableQuantity')?'is-invalid':''}"
+                                           th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('productAvailableQuantity') ? 'is-invalid' : 'is-valid'))}"
                                            type="number" class="form-control" id="productAvailableQuantity"
-                                           name="productAvailableQuantity"
-                                           aria-describedby="productAvailableQuantityFeedback"
-                                           placeholder="Quantity" required/>
-                                    <div th:if="${#fields.hasErrors('productAvailableQuantity')}"
-                                         th:errors="*{productAvailableQuantity}" id="productAvailableQuantityFeedback"
-                                         class="invalid-feedback">
+                                           name="productAvailableQuantity" placeholder="Quantity" required="required"
+                                           aria-describedby="productAvailableQuantityFeedback"/>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('productAvailableQuantity'))}"
+                                         id="productAvailableQuantityFeedback"
+                                         th:class="${(#fields.hasErrors('productAvailableQuantity') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('productAvailableQuantity') ? #fields.errors('productAvailableQuantity').get(0).toString() : 'Looks good')}">
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-2">
@@ -51,14 +51,14 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroupPrepend33">&#36;</span>
                                         </div>
-                                        <input th:field="*{productPrice}"
-                                               th:classappend="${#fields.hasErrors('productPrice')?'is-invalid':''}"
+                                        <input th:field="*{productPrice}" name="productPrice" placeholder="Price"
+                                               th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('productPrice') ? 'is-invalid' : 'is-valid'))}"
                                                type="number" step="0.1" class="form-control" id="productPrice"
-                                               name="productPrice" placeholder="Price"
-                                               aria-describedby="productPriceFeedback" required/>
-                                        <div th:if="${#fields.hasErrors('productPrice')}"
-                                             th:errors="*{productPrice}" id="productPriceFeedback"
-                                             class="invalid-feedback">
+                                               aria-describedby="productPriceFeedback" required="required"/>
+                                        <div th:if="${(!isFirstTime and #fields.hasErrors('productPrice'))}"
+                                             id="productPriceFeedback"
+                                             th:class="${(#fields.hasErrors('productPrice') ? 'invalid-feedback' : 'valid-feedback')}"
+                                             th:text="${(#fields.hasErrors('productPrice') ? #fields.errors('productPrice').get(0).toString() : 'Looks good')}">
                                         </div>
                                     </div>
                                 </div>
@@ -68,45 +68,66 @@
                                     <div class="row">
                                         <div class="col-md-12 mb-2 ml-auto">
                                             <label for="productImageUrl">Image</label>
-                                            <input th:field="*{productImageUrl}"
-                                                   th:classappend="${#fields.hasErrors('productImageUrl')?'is-invalid':''}"
-                                                   type="url" class="form-control" id="productImageUrl"
-                                                   name="productImageUrl"
+                                            <input th:field="*{productImageUrl}" type="url" class="form-control"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('productImageUrl') ? 'is-invalid' : 'is-valid'))}"
+                                                   id="productImageUrl" name="productImageUrl"
                                                    aria-describedby="productImageUrlFeedback"
-                                                   placeholder="Item image URL"
-                                                   required/>
-                                            <div th:if="${#fields.hasErrors('productImageUrl')}"
-                                                 th:errors="*{productImageUrl}" id="productImageUrlFeedback"
-                                                 class="invalid-feedback">
+                                                   placeholder="Item image URL" required="required"/>
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('productImageUrl'))}"
+                                                 id="productImageUrlFeedback"
+                                                 th:class="${(#fields.hasErrors('productImageUrl') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('productImageUrl') ? #fields.errors('productImageUrl').get(0).toString() : 'Looks good')}">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 mb-2">
                                             <label for="status">Status</label>
-                                            <select class="custom-select" id="status" name="isActive" required>
+                                            <select class="custom-select" id="status" name="isActive"
+                                                    required="required"
+                                                    th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('isActive') ? 'is-invalid' : 'is-valid'))}"
+                                                    aria-describedby="statusFeedback">
                                                 <option value="" selected>Status...</option>
-                                                <option th:value="false">Inactive</option>
-                                                <option th:value="true">Active</option>
+                                                <option th:value="false" th:selected="(*{isActive} == false)">Inactive</option>
+                                                <option th:value="true" th:selected="(*{isActive} == true)">Active</option>
                                             </select>
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('isActive'))}"
+                                                 id="statusFeedback"
+                                                 th:class="${(#fields.hasErrors('isActive') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('isActive') ? #fields.errors('isActive').get(0).toString() : 'Looks good')}">
+                                            </div>
                                         </div>
                                         <div class="col-md-5 mb-2">
                                             <label for="productSportId">Sport</label>
-                                            <select class="custom-select" id="productSportId"
-                                                    name="productSportId" required>
+                                            <select class="custom-select" id="productSportId" name="productSportId"
+                                                    required="required" aria-describedby="sportIdFeedback"
+                                                    th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('productSportId') ? 'is-invalid' : 'is-valid'))}">
                                                 <option value="" selected>Choice Sport</option>
                                                 <option th:each="s : ${sports}" th:value="${s.id}"
                                                         th:text="${s.name}"
                                                         th:selected="${s.getId()} == *{productSportId}">
                                                 </option>
                                             </select>
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('productSportId'))}"
+                                                 id="sportIdFeedback"
+                                                 th:class="${(#fields.hasErrors('productSportId') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('productSportId') ? #fields.errors('productSportId').get(0).toString() : 'Looks good')}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <label for="productDescription">Description</label>
-                                    <textarea class="form-control" id="productDescription" name="productDescription"
-                                              placeholder="Description" rows="5" required></textarea>
+                                    <textarea th:field="*{productDescription}" class="form-control"
+                                              id="productDescription" name="productDescription"
+                                              th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('productDescription') ? 'is-invalid' : 'is-valid'))}"
+                                              placeholder="Description" rows="5" required="required"
+                                              aria-describedby="descriptionFeedback"></textarea>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('productDescription'))}"
+                                         id="descriptionFeedback"
+                                         th:class="${(#fields.hasErrors('productDescription') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('productDescription') ? #fields.errors('productDescription').get(0).toString() : 'Looks good')}">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-row">

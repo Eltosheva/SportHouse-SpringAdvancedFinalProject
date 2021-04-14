@@ -41,16 +41,18 @@ public class  PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public List<PlaceServiceModel> getPlaces() {
+    public List<PlaceServiceModel> getPlaces(Boolean showOnlyActive) {
         List<PlaceServiceModel> placeServiceModels = new ArrayList<>();
         placeRepository
                 .findAll()
-                .forEach(place -> {
-                    PlaceServiceModel placeServiceModel = new PlaceServiceModel();
-                    modelMapper.map(place, placeServiceModel);
-                    placeServiceModels.add(placeServiceModel);
-                });
+                .stream().filter(place -> !showOnlyActive || place.getIsActive())
+                .forEach(place -> placeServiceModels.add(modelMapper.map(place, PlaceServiceModel.class)));
         return placeServiceModels;
+    }
+
+    @Override
+    public List<PlaceServiceModel> getPlaces() {
+        return getPlaces(false);
     }
 
     @Override

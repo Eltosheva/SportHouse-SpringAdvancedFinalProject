@@ -23,24 +23,26 @@
                             <div class="form-row">
                                 <div class="col-md-6 mb-2">
                                     <label for="placeName">Name</label>
-                                    <input th:field="*{name}" th:errorclass="is-invalid"
-                                           type="text" class="form-control" id="placeName" name="name"
-                                           aria-describedby="placeNameFeedback" placeholder="Hall name" required/>
-                                    <div th:if="${#fields.hasErrors('name')}"
-                                         th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
+                                    <input th:field="*{name}" type="text" class="form-control" id="placeName"
+                                           th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('name') ? 'is-invalid' : 'is-valid'))}"
+                                           name="name" aria-describedby="placeNameFeedback" placeholder="Hall name"
+                                           required="required"/>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('name'))}"
                                          id="placeNameFeedback"
-                                         class="invalid-feedback">
+                                         th:class="${(#fields.hasErrors('name') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('name') ? #fields.errors('name').get(0).toString() : 'Looks good')}">
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-2 ml-auto">
                                     <label for="placeImageUrl">Image</label>
-                                    <input th:field="*{imageUrl}" th:errorclass="is-invalid"
-                                           type="url" class="form-control" id="placeImageUrl" name="imageUrl"
-                                           aria-describedby="placeImageUrlFeedback" placeholder="Hall image URL"
-                                           required/>
-                                    <div th:if="${#fields.hasErrors('imageUrl')}"
-                                         th:classappend="${#fields.hasErrors('imageUrl')?'is-invalid':''}"
-                                         id="placeImageUrlFeedback" class="invalid-feedback">
+                                    <input th:field="*{imageUrl}" type="url" class="form-control" id="placeImageUrl"
+                                           th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('imageUrl') ? 'is-invalid' : 'is-valid'))}"
+                                           name="imageUrl" aria-describedby="placeImageUrlFeedback"
+                                           placeholder="Hall image URL" required="required"/>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('imageUrl'))}"
+                                         id="placeImageUrlFeedback"
+                                         th:class="${(#fields.hasErrors('imageUrl') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('imageUrl') ? #fields.errors('imageUrl').get(0).toString() : 'Looks good')}">
                                     </div>
                                 </div>
                             </div>
@@ -49,65 +51,79 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-2">
                                             <label for="hallCity">City</label>
-                                            <input th:field="*{city}" th:errorclass="is-invalid"
-                                                   type="text" class="form-control" id="hallCity" name="city"
-                                                   aria-describedby="hallCityFeedback" placeholder="City" required/>
-                                            <div th:if="${#fields.hasErrors('city')}"
-                                                 th:classappend="${#fields.hasErrors('city')?'is-invalid':''}"
-                                                 id="hallCityFeedback" class="invalid-feedback">
+                                            <input th:field="*{city}" type="text" class="form-control" id="hallCity"
+                                                   name="city" aria-describedby="hallCityFeedback" placeholder="City"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('city') ? 'is-invalid' : 'is-valid'))}"
+                                                   required="required"/>
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('city'))}"
+                                                 id="hallCityFeedback"
+                                                 th:class="${(#fields.hasErrors('city') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('city') ? #fields.errors('city').get(0).toString() : 'Looks good')}">
                                             </div>
                                         </div>
                                         <div class="col-md-8 mb-2">
                                             <label for="hallAddress">Address</label>
-                                            <input th:field="*{address}" th:errorclass="is-invalid"
-                                                   type="text" class="form-control" id="hallAddress" name="address"
+                                            <input th:field="*{address}" type="text" class="form-control"
+                                                   id="hallAddress" name="address" required="required"
                                                    aria-describedby="hallAddressFeedback" placeholder="Address"
-                                                   required/>
-                                            <div th:if="${#fields.hasErrors('address')}"
-                                                 th:classappend="${#fields.hasErrors('address')?'is-invalid':''}"
-                                                 id="hallAddressFeedback" class="invalid-feedback">
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('address') ? 'is-invalid' : 'is-valid'))}"/>
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('address'))}"
+                                                 id="hallAddressFeedback"
+                                                 th:class="${(#fields.hasErrors('address') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('address') ? #fields.errors('address').get(0).toString() : 'Looks good')}">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 mb-2">
                                             <label for="hallPhone">Phone</label>
-                                            <input th:field="*{phone}" th:errorclass="is-invalid"
-                                                   type="text" class="form-control" id="hallPhone" name="phone"
-                                                   aria-describedby="hallPhoneFeedback" placeholder="Phone"/>
-                                            <div th:if="${#fields.hasErrors('phone')}"
-                                                 th:classappend="${#fields.hasErrors('phone')?'is-invalid':''}"
-                                                 id="hallPhoneFeedback" class="invalid-feedback">
+                                            <input th:field="*{phone}" type="text" class="form-control" id="hallPhone"
+                                                   name="phone" aria-describedby="hallPhoneFeedback" placeholder="Phone"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('phone') ? 'is-invalid' : 'is-valid'))}"
+                                                    required="required"/>
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('phone'))}"
+                                                 id="hallPhoneFeedback"
+                                                 th:class="${(#fields.hasErrors('phone') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('phone') ? #fields.errors('phone').get(0).toString() : 'Looks good')}">
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-2">
                                             <label for="hallWorkFrom">Work from</label>
-                                            <input th:field="*{workFrom}" th:errorclass="is-invalid"
-                                                   type="time" class="custom-select" id="hallWorkFrom" name="workFrom"
-                                                   aria-describedby="hallWorkFromFeedback" placeholder="Work from"
-                                                   required/>
-                                            <div th:if="${#fields.hasErrors('workFrom')}"
-                                                 th:classappend="${#fields.hasErrors('workFrom')?'is-invalid':''}"
-                                                 id="hallWorkFromFeedback" class="invalid-feedback">
+                                            <input th:field="*{workFrom}" type="time" class="custom-select"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('workFrom') ? 'is-invalid' : 'is-valid'))}"
+                                                   id="hallWorkFrom" name="workFrom" placeholder="Work from"
+                                                   aria-describedby="hallWorkFromFeedback" required="required"/>
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('workFrom'))}"
+                                                 id="hallWorkFromFeedback"
+                                                 th:class="${(#fields.hasErrors('workFrom') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('workFrom') ? #fields.errors('workFrom').get(0).toString() : 'Looks good')}">
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-2">
                                             <label for="hallWorkTo">Work to</label>
-                                            <input th:field="*{workTo}" th:errorclass="is-invalid"
-                                                   type="time" class="custom-select" id="hallWorkTo" name="workTo"
-                                                   aria-describedby="hallWorkToFeedback" placeholder="Work to"
-                                                   required/>
-                                            <div th:if="${#fields.hasErrors('workTo')}"
-                                                 th:classappend="${#fields.hasErrors('workTo')?'is-invalid':''}"
-                                                 id="hallWorkToFeedback" class="invalid-feedback">
+                                            <input th:field="*{workTo}" type="time" class="custom-select"
+                                                   id="hallWorkTo" name="workTo" aria-describedby="hallWorkToFeedback"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('workFrom') ? 'is-invalid' : 'is-valid'))}"
+                                                   placeholder="Work to" required="required"/>
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('workTo'))}"
+                                                 id="hallWorkToFeedback"
+                                                 th:class="${(#fields.hasErrors('workTo') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('workTo') ? #fields.errors('workTo').get(0).toString() : 'Looks good')}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <label for="hallDescription">Description</label>
-                                    <textarea class="form-control" id="hallDescription" name="description"
+                                    <textarea th:field="*{description}" id="hallDescription" name="description"
+                                              aria-describedby="descriptionFeedback" class="form-control"
+                                              th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('description') ? 'is-invalid' : 'is-valid'))}"
                                               placeholder="Description" rows="5" required></textarea>
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('description'))}"
+                                         id="descriptionFeedback"
+                                         th:class="${(#fields.hasErrors('description') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('description') ? #fields.errors('description').get(0).toString() : 'Looks good')}">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -139,9 +155,9 @@
                                 <td colspan="12">Empty cart</td>
                             </tr>
                             <tr th:each="h : ${halls}" th:data-id="${h.id}">
-                                <input type="hidden" th:id="${'imageUrl_' + h.id}" th:value="${h.imageUrl}" />
-                                <input type="hidden" th:id="${'description_' + h.id}" th:value="${h.description}" />
-                                <input type="hidden" th:id="${'status_' + h.id}" th:value="${h.isActive}" />
+                                <input type="hidden" th:id="${'imageUrl_' + h.id}" th:value="${h.imageUrl}"/>
+                                <input type="hidden" th:id="${'description_' + h.id}" th:value="${h.description}"/>
+                                <input type="hidden" th:id="${'status_' + h.id}" th:value="${h.isActive}"/>
                                 <td th:text="${h.name}" th:id="${'name_' + h.id}">Arena Armeec</td>
                                 <td th:text="${h.city}" th:id="${'city_' + h.id}">Sofia</td>
                                 <td th:text="${h.address}" th:id="${'address_' + h.id}">Carigradsko shose 1</td>

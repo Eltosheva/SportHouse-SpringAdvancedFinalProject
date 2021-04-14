@@ -3,9 +3,11 @@ package com.eltosheva.sporthouse.web;
 import com.eltosheva.sporthouse.models.bindingModels.CoachProfileBindingModel;
 import com.eltosheva.sporthouse.models.bindingModels.CoachRegisterBindingModel;
 import com.eltosheva.sporthouse.models.bindingModels.ProfileBindingModel;
+import com.eltosheva.sporthouse.models.bindingModels.ScheduleBindingModel;
 import com.eltosheva.sporthouse.models.service.CoachServiceModel;
-import com.eltosheva.sporthouse.models.service.UserServiceModel;
 import com.eltosheva.sporthouse.repositories.UserRepository;
+import com.eltosheva.sporthouse.services.PlaceService;
+import com.eltosheva.sporthouse.services.ScheduleService;
 import com.eltosheva.sporthouse.services.SportService;
 import com.eltosheva.sporthouse.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -29,23 +31,42 @@ public class CoachController {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final ScheduleService scheduleService;
+    private final PlaceService placeService;
 
-    public CoachController(SportService sportService, UserService userService, ModelMapper modelMapper, PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public CoachController(SportService sportService, UserService userService,
+                           ModelMapper modelMapper, PasswordEncoder passwordEncoder,
+                           UserRepository userRepository, ScheduleService scheduleService, PlaceService placeService) {
         this.sportService = sportService;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.scheduleService = scheduleService;
+        this.placeService = placeService;
     }
 
     @RequestMapping(path="/schedules", method = RequestMethod.GET)
-    public String manageCoachSchedule() { return "coach/schedule";}
+    public String manageCoachSchedule(Model model) {
+        if (!model.containsAttribute("scheduleBindingModel")) {
+            model.addAttribute("scheduleBindingModel", new ScheduleBindingModel());
+            model.addAttribute("isFirstTime", true);
+        }else {
+            model.addAttribute("isFirstTime", false);
+        }
+        model.addAttribute("schedules", scheduleService.findAllByUsers_email());
+        model.addAttribute("places", placeService.getPlaces(true));
+        return "coach/schedule";
+    }
 
     @GetMapping("/register")
     public String coachRegisterPage(Model model, HttpSession httpSession) {
         if (!model.containsAttribute("coachRegisterBindingModel")) {
             model.addAttribute("coachRegisterBindingModel", new CoachRegisterBindingModel());
             model.addAttribute("isWrongConfirmPassword", false);
+            model.addAttribute("isFirstTime", true);
+        } else {
+            model.addAttribute("isFirstTime", false);
         }
 
         if (!model.containsAttribute("errMessage")) {

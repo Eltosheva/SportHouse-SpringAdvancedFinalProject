@@ -44,6 +44,9 @@ public class UserController {
         if (!model.containsAttribute("sportsmanRegisterBindingModel")){
             model.addAttribute("sportsmanRegisterBindingModel", new SportsmanRegisterBindingModel());
             model.addAttribute("isWrongConfirmPassword", false);
+            model.addAttribute("isFirstTime", true);
+        } else {
+            model.addAttribute("isFirstTime", false);
         }
         if (!model.containsAttribute("errMessage")) {
             model.addAttribute("errMessage", "");

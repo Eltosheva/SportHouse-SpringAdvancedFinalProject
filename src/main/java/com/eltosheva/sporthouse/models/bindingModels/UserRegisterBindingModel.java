@@ -22,9 +22,9 @@ public abstract class UserRegisterBindingModel {
     private String confirmPassword;
     @Email(message = "Incorrect email address.")
     private String email;
-    @Size(min = 10, max = 10, message = "Phone number must be at least 10 numbers.")
+    @Size(min = 8, message = "Phone number must be at least 8 numbers.")
     private String phoneNum;
-    @URL
+    @URL(message = "Must be valid URL address.")
     private String profilePictureUrl;
 
 }

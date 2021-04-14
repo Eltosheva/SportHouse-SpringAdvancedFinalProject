@@ -38,8 +38,8 @@ public class AppConstants {
     public static final String HOST = "smtp.gmail.com";
     public static final int PORT = 587;
     public static final String PROTOCOL = "smtp";
-    public static final String USERNAME = "elisaveta.tosheva@gmail.com";
-    public static final String PASSWORD = "9005et124438";
+    public static final String USERNAME = "email";
+    public static final String PASSWORD = "password";
     public static final String EMAIL_SENDING_FROM = "sales@sporthouse.com";
 
     public static final String EMAIL_TEMPLATE_ENCODING = "UTF-8";

@@ -31,11 +31,14 @@
                                             <label for="firstName">
                                                 <h4>First name</h4>
                                             </label>
-                                            <input th:field="*{firstName}" th:errorclass="bg-danger" type="text" name="firstName"
-                                                   id="firstName"
-                                                   class="form-control"
-                                                   placeholder="First name"
-                                                   required />
+                                            <input th:field="*{firstName}" class="form-control" type="text"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('firstName') ? 'is-invalid' : 'is-valid'))}"
+                                                   id="firstName" name="firstName" required="required"
+                                                   placeholder="First name" aria-describedby="firstNameFeedback" />
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('firstName'))}" id="firstNameFeedback"
+                                                 th:class="${(#fields.hasErrors('firstName') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('firstName') ? #fields.errors('firstName').get(0).toString() : 'Looks good')}">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-5 col-md-6">
@@ -43,11 +46,14 @@
                                             <label for="lastName">
                                                 <h4>Last name</h4>
                                             </label>
-                                            <input th:field="*{lastName}" th:errorclass="bg-danger" type="text" name="lastName"
-                                                   id="lastName"
-                                                   class="form-control"
-                                                   placeholder="Last name"
-                                                   required />
+                                            <input th:field="*{lastName}" type="text" id="lastName" name="lastName"
+                                                   class="form-control" required="required"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('lastName') ? 'is-invalid' : 'is-valid'))}"
+                                                   placeholder="Last name" aria-describedby="lastNameFeedback" />
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('lastName'))}" id="lastNameFeedback"
+                                                 th:class="${(#fields.hasErrors('lastName') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('lastName') ? #fields.errors('lastName').get(0).toString() : 'Looks good')}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -60,9 +66,14 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">@</div>
                                             </div>
-                                            <input th:field="*{email}" th:errorclass="bg-danger" type="text" name="email"
-                                                   class="form-control"
-                                                   id="email" placeholder="Email">
+                                            <input th:field="*{email}" type="text" name="email"
+                                                   class="form-control" required="required"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('email') ? 'is-invalid' : 'is-valid'))}"
+                                                   aria-describedby="emailFeedback" id="email" placeholder="Email">
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('email'))}" id="emailFeedback"
+                                                 th:class="${(#fields.hasErrors('email') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('email') ? #fields.errors('email').get(0).toString() : 'Looks good')}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -76,10 +87,14 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><span class="fas fa-phone"></span></div>
                                                 </div>
-                                                <input th:field="*{phoneNum}" th:errorclass="bg-danger" type="text"
-                                                       name="phoneNum"
-                                                       id="phone" class="form-control"
-                                                       placeholder="Enter phone" />
+                                                <input th:field="*{phoneNum}" type="text"
+                                                       name="phoneNum" id="phone" class="form-control" required="required"
+                                                       th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('phoneNum') ? 'is-invalid' : 'is-valid'))}"
+                                                       aria-describedby="phoneFeedback" placeholder="Enter phone" />
+                                                <div th:if="${(!isFirstTime and #fields.hasErrors('phoneNum'))}" id="phoneFeedback"
+                                                     th:class="${(#fields.hasErrors('phoneNum') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                     th:text="${(#fields.hasErrors('phoneNum') ? #fields.errors('phoneNum').get(0).toString() : 'Looks good')}">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -90,10 +105,14 @@
                                             <label for="age">
                                                 <h4>Age</h4>
                                             </label>
-                                            <input th:field="*{age}" th:errorclass="bg-danger" type="number" name="age"
-                                                   id="age" step="1"
-                                                   class="form-control"
-                                                   placeholder="Age" />
+                                            <input th:field="*{age}" type="number" name="age"
+                                                   id="age" step="1" class="form-control" required="required"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('age') ? 'is-invalid' : 'is-valid'))}"
+                                                   placeholder="Age" aria-describedby="ageFeedback" />
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('age'))}" id="ageFeedback"
+                                                 th:class="${(#fields.hasErrors('age') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('age') ? #fields.errors('age').get(0).toString() : 'Looks good')}">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-5 col-md-6">
@@ -101,10 +120,14 @@
                                             <label for="target_weight">
                                                 <h4>Target weight</h4>
                                             </label>
-                                            <input th:field="*{targetWeight}" th:errorclass="bg-danger" type="number" name="targetWeight"
-                                                   id="target_weight"
-                                                   step="0.1" class="form-control"
-                                                   placeholder="Weight" />
+                                            <input th:field="*{targetWeight}" type="number" name="targetWeight"
+                                                   id="target_weight" step="0.1" class="form-control" required="required"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('targetWeight') ? 'is-invalid' : 'is-valid'))}"
+                                                   aria-describedby="targetWeightFeedback" placeholder="Weight" />
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('targetWeight'))}" id="targetWeightFeedback"
+                                                 th:class="${(#fields.hasErrors('targetWeight') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('targetWeight') ? #fields.errors('targetWeight').get(0).toString() : 'Looks good')}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -117,10 +140,14 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><span class="fas fa-globe"></span></div>
                                             </div>
-                                            <input th:field="*{profilePictureUrl}" th:errorclass="bg-danger" type="text"
-                                                   name="profilePictureUrl"
-                                                   class="form-control" id="prof_picture_url"
-                                                   placeholder="URL">
+                                            <input th:field="*{profilePictureUrl}" type="text"
+                                                   name="profilePictureUrl" class="form-control" id="prof_picture_url"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('profilePictureUrl') ? 'is-invalid' : 'is-valid'))}"
+                                                   aria-describedby="profileUrlFeedback" placeholder="URL">
+                                        </div>
+                                        <div th:if="${(!isFirstTime and #fields.hasErrors('profilePictureUrl'))}" id="profileUrlFeedback"
+                                             th:class="${(#fields.hasErrors('profilePictureUrl') ? 'invalid-feedback' : 'valid-feedback')}"
+                                             th:text="${(#fields.hasErrors('profilePictureUrl') ? #fields.errors('profilePictureUrl').get(0).toString() : 'Looks good')}">
                                         </div>
                                     </div>
                                 </div>
@@ -130,10 +157,14 @@
                                             <label for="password">
                                                 <h4>Password</h4>
                                             </label>
-                                            <input th:errorclass="bg-danger" type="password" name="password"
-                                                   id="password"
-                                                   class="form-control"
-                                                   placeholder="Password" />
+                                            <input type="password" name="password"
+                                                   id="password" class="form-control" required="required"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('password') ? 'is-invalid' : 'is-valid'))}"
+                                                   aria-describedby="passwordFeedback" placeholder="Password" />
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('password'))}" id="passwordFeedback"
+                                                 th:class="${(#fields.hasErrors('password') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('password') ? #fields.errors('password').get(0).toString() : 'Looks good')}">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-5 col-md-6">
@@ -141,10 +172,14 @@
                                             <label for="confirm_password">
                                                 <h4>Confirm Password</h4>
                                             </label>
-                                            <input th:errorclass="bg-danger" type="password" name="confirmPassword"
-                                                   id="confirm_password"
-                                                   class="form-control"
-                                                   placeholder="Confirm Password" />
+                                            <input type="password" name="confirmPassword"
+                                                   id="confirm_password" class="form-control" required="required"
+                                                   th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('confirmPassword') ? 'is-invalid' : 'is-valid'))}"
+                                                   aria-describedby="confPasswordFeedback" placeholder="Confirm Password" />
+                                            <div th:if="${(!isFirstTime and #fields.hasErrors('confirmPassword'))}" id="confPasswordFeedback"
+                                                 th:class="${(#fields.hasErrors('confirmPassword') ? 'invalid-feedback' : 'valid-feedback')}"
+                                                 th:text="${(#fields.hasErrors('confirmPassword') ? #fields.errors('confirmPassword').get(0).toString() : 'Looks good')}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

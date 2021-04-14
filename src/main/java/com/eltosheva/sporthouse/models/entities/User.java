@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +56,7 @@ public class User extends BaseEntity {
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Subscription> subscriptions= new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @ManyToMany(mappedBy = "users")
     private Set<Schedule> schedules = new HashSet<>();
 
     @OneToOne
