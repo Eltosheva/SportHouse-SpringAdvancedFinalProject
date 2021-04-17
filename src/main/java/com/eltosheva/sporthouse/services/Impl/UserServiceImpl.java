@@ -62,11 +62,15 @@ public class UserServiceImpl implements UserService {
             user.setAge(userServiceModel.getAge());
             user.setTargetWeight(userServiceModel.getTargetWeight());
             user.setProfilePictureUrl(userServiceModel.getProfilePictureUrl());
-        } else if (user.isCoach()) {
+        } else if (user.isCoach() && !user.isAdmin()) {
             user.setSocialMediaUrl(userServiceModel.getSocialMediaUrl());
             user.setDescription(userServiceModel.getDescription());
             Sport coachSport = sportRepository.findById(((CoachServiceModel) userServiceModel).getSportId()).orElseThrow(IllegalArgumentException::new);
             user.setSport(coachSport);
+        }
+        if(user.isAdmin()) {
+            Sport adminSport = sportRepository.findById(((AdminServiceModel) userServiceModel).getSportId()).orElseThrow(IllegalArgumentException::new);
+            user.setSport(adminSport);
         }
 
         userRepository.saveAndFlush(user);
@@ -161,6 +165,7 @@ public class UserServiceImpl implements UserService {
             appAdmin.setAvailableTraining(0);
             appAdmin.setProfilePictureUrl("https://ih1.redbubble.net/image.161080070.3717/flat,750x1000,075,f.jpg");
             appAdmin.updateRoleSet(List.of(admin, coach, user));
+            appAdmin.setSport(sportRepository.findAll().stream().findFirst().get());
 
             userRepository.save(appAdmin);
         }

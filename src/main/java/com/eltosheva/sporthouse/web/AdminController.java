@@ -3,7 +3,9 @@ package com.eltosheva.sporthouse.web;
 import com.eltosheva.sporthouse.jobs.SchedulerService;
 import com.eltosheva.sporthouse.models.bindingModels.*;
 import com.eltosheva.sporthouse.models.service.*;
+import com.eltosheva.sporthouse.repositories.UserRepository;
 import com.eltosheva.sporthouse.services.*;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(path = "/admin")
+@AllArgsConstructor
 public class AdminController {
 
     private final ModelMapper modelMapper;
@@ -26,20 +29,9 @@ public class AdminController {
     private final SubscriptionService subscriptionService;
     private final SchedulerService schedulerService;
     private final UserService userService;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
-
-    public AdminController(ModelMapper modelMapper, ProductService productService, SportService sportService, PlaceService placeService, SubscriptionService subscriptionService, SchedulerService schedulerService, UserService userService, PasswordEncoder passwordEncoder, RoleService roleService) {
-        this.modelMapper = modelMapper;
-        this.productService = productService;
-        this.sportService = sportService;
-        this.placeService = placeService;
-        this.subscriptionService = subscriptionService;
-        this.schedulerService = schedulerService;
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.roleService = roleService;
-    }
 
     @RequestMapping(path = "/sports", method = RequestMethod.GET)
     public String manageSportsPage(Model model) {
@@ -206,38 +198,41 @@ public class AdminController {
         return "redirect:/admin/users";
     }
     @GetMapping("/profile")
-    public String coachProfilePage(Model model) {
-
-        model.addAttribute("user", userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()));
+    public String adminProfilePage(Model model) {
+        AdminServiceModel admin = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                .map(user ->  modelMapper.map(user, AdminServiceModel.class))
+                .orElse(null);
+        model.addAttribute("user", admin);
+        model.addAttribute("sports", sportService.getSports());
 
         return "profile";
     }
 
     @PostMapping("/profile")
-    public String coachProfileCorrection(@Valid @ModelAttribute ProfileBindingModel profileBindingModel,
+    public String adminProfileCorrection(@Valid @ModelAttribute AdminProfileBindingModel adminProfileBindingModel,
                                          BindingResult bindingResult,
                                          RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("profileBindingModel",
-                    profileBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.profileBindingModel",
+            redirectAttributes.addFlashAttribute("adminProfileBindingModel",
+                    adminProfileBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.adminProfileBindingModel",
                     bindingResult);
             return "redirect:/coach/profile";
         }
 
-        String validation = validateUserData(profileBindingModel);
+        String validation = validateUserData(adminProfileBindingModel);
         if(!"".equals(validation)) {
-            redirectAttributes.addFlashAttribute("profileBindingModel",
-                    profileBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.profileBindingModel",
+            redirectAttributes.addFlashAttribute("adminProfileBindingModel",
+                    adminProfileBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.adminProfileBindingModel",
                     bindingResult);
             redirectAttributes.addFlashAttribute("errorMessage", validation);
             return "redirect:/coach/profile";
         }
 
-        UserServiceModel userServiceModel = modelMapper.map(profileBindingModel, UserServiceModel.class);
-        if(!"".equals(profileBindingModel.getNewPassword())) {
-            userServiceModel.setPassword(passwordEncoder.encode(profileBindingModel.getNewPassword()));
+        UserServiceModel userServiceModel = modelMapper.map(adminProfileBindingModel, AdminServiceModel.class);
+        if(!"".equals(adminProfileBindingModel.getNewPassword())) {
+            userServiceModel.setPassword(passwordEncoder.encode(adminProfileBindingModel.getNewPassword()));
         } else {
             userServiceModel.setPassword("");
         }

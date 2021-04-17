@@ -7,6 +7,7 @@ import com.eltosheva.sporthouse.models.service.ScheduleListServiceModel;
 import com.eltosheva.sporthouse.models.service.ScheduleServiceModel;
 import com.eltosheva.sporthouse.repositories.PlaceRepository;
 import com.eltosheva.sporthouse.repositories.ScheduleRepository;
+import com.eltosheva.sporthouse.repositories.SportRepository;
 import com.eltosheva.sporthouse.repositories.UserRepository;
 import com.eltosheva.sporthouse.services.ScheduleService;
 import com.eltosheva.sporthouse.utils.DateHelper;
@@ -27,6 +28,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final PlaceRepository placeRepository;
     private final ModelMapper modelMapper;
+    private final SportRepository sportRepository;
 
     @Transactional
     @Override
@@ -57,6 +59,10 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .forEach(
                     schedule -> {
                         ScheduleServiceModel model = modelMapper.map(schedule, ScheduleServiceModel.class);
+                        if(schedule.getUser().getSport() != null) {
+                            model.setSportId(schedule.getUser().getSport().getId());
+                            model.setSportName(schedule.getUser().getSport().getName());
+                        }
                         String date = DateHelper.dateToString(model.getDate());
                         if (!schedulesMap.containsKey(date)) {
                             schedulesMap.put(date, new ArrayList<>());

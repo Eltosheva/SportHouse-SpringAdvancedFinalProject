@@ -17,8 +17,8 @@ public class SportHouseApplicationInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        userService.initUsers();
         sportService.initSports();
         placeService.initPlaces();
+        userService.initUsers();
     }
 }

@@ -11,6 +11,7 @@ import com.eltosheva.sporthouse.services.PlaceService;
 import com.eltosheva.sporthouse.services.ScheduleService;
 import com.eltosheva.sporthouse.services.SportService;
 import com.eltosheva.sporthouse.services.UserService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +26,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(path = "/coach")
+@AllArgsConstructor
 public class CoachController {
 
     private final SportService sportService;
@@ -34,18 +36,6 @@ public class CoachController {
     private final UserRepository userRepository;
     private final ScheduleService scheduleService;
     private final PlaceService placeService;
-
-    public CoachController(SportService sportService, UserService userService,
-                           ModelMapper modelMapper, PasswordEncoder passwordEncoder,
-                           UserRepository userRepository, ScheduleService scheduleService, PlaceService placeService) {
-        this.sportService = sportService;
-        this.userService = userService;
-        this.modelMapper = modelMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-        this.scheduleService = scheduleService;
-        this.placeService = placeService;
-    }
 
     @RequestMapping(path="/schedules", method = RequestMethod.GET)
     public String manageCoachSchedule(Model model) {
