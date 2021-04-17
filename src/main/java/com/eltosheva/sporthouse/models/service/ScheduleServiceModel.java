@@ -20,4 +20,5 @@ public class ScheduleServiceModel {
     private String sportId;
     private String sportName;
     private Place place;
+    private Boolean isActive;
 }

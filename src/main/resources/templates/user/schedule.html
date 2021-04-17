@@ -11,7 +11,7 @@
                 <h2>My Schedule</h2>
                 <hr/>
                 <div class="filter-result">
-                    <p class="mb-30 ff-montserrat">Total Job Openings : 89</p>
+                    <h3 class="mb-3 ff-montserrat">My remaining trainings : <span th:text="${remainingTrainings}"></span></h3>
 
                     <div th:each="schedule : ${schedulesList}">
                         <div th:replace="fragments/schedule_row_fragment :: schedule_row (${schedule})"></div>

@@ -141,6 +141,9 @@ public class UserServiceImpl implements UserService {
         userSchedule.setUser(user);
         userSchedule.setScheduleId(id);
         userScheduleRepository.saveAndFlush(userSchedule);
+
+        user.setAvailableTraining(user.getAvailableTraining() - 1);
+        userRepository.saveAndFlush(user);
     }
 
     @Override

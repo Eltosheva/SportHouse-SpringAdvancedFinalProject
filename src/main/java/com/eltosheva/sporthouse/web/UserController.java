@@ -71,13 +71,14 @@ public class UserController {
     }
 
     @GetMapping("/subscriptions")
-    public String userSubscriptionsPage() {
+    public String userSubscriptionsPage(){
         return "subscriptions";
     }
 
     @GetMapping("/schedules")
     public String userSchedulesPage(Model model) {
         model.addAttribute("schedulesList", userScheduleService.findAllUserSchedules());
+        model.addAttribute("remainingTrainings", userService.getTrainingsCount());
         return "user/schedule";
     }
 

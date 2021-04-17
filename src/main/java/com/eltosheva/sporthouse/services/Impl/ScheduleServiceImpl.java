@@ -5,10 +5,7 @@ import com.eltosheva.sporthouse.models.entities.Schedule;
 import com.eltosheva.sporthouse.models.entities.User;
 import com.eltosheva.sporthouse.models.service.ScheduleListServiceModel;
 import com.eltosheva.sporthouse.models.service.ScheduleServiceModel;
-import com.eltosheva.sporthouse.repositories.PlaceRepository;
-import com.eltosheva.sporthouse.repositories.ScheduleRepository;
-import com.eltosheva.sporthouse.repositories.SportRepository;
-import com.eltosheva.sporthouse.repositories.UserRepository;
+import com.eltosheva.sporthouse.repositories.*;
 import com.eltosheva.sporthouse.services.ScheduleService;
 import com.eltosheva.sporthouse.utils.DateHelper;
 import lombok.AllArgsConstructor;
@@ -28,7 +25,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final PlaceRepository placeRepository;
     private final ModelMapper modelMapper;
-    private final SportRepository sportRepository;
+    private final UserScheduleRepository userScheduleRepository;
 
     @Transactional
     @Override
@@ -63,6 +60,11 @@ public class ScheduleServiceImpl implements ScheduleService {
                             model.setSportId(schedule.getUser().getSport().getId());
                             model.setSportName(schedule.getUser().getSport().getName());
                         }
+                        if(userScheduleRepository.findByScheduleId(schedule.getId()).orElse(null) != null
+                            || userRepository.getTrainingCount(SecurityContextHolder.getContext().getAuthentication().getName()) == 0) {
+                            model.setIsActive(false);
+                        }
+
                         String date = DateHelper.dateToString(model.getDate());
                         if (!schedulesMap.containsKey(date)) {
                             schedulesMap.put(date, new ArrayList<>());
