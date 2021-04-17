@@ -1,15 +1,12 @@
 package com.eltosheva.sporthouse.models.entities;
 
-import jdk.jfr.Timestamp;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "schedules")
@@ -22,26 +19,20 @@ public class Schedule extends BaseEntity{
     private LocalDate date;
 
     @Column(name = "start_time")
-    @Timestamp("HH:mm")
-    private Time startTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime startTime;
 
     @Column(name = "end_time")
-    @Timestamp("HH:mm")
-    private Time endTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime endTime;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @ManyToMany
-    @JoinTable(name = "schedules_users",
-            joinColumns = @JoinColumn(name = "schedule_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users;
+    @OneToOne
+    private User user;
 
-    @ManyToMany
-    @JoinTable(name = "place_schedule",
-        joinColumns = { @JoinColumn(name = "schedule_id", referencedColumnName = "id")},
-        inverseJoinColumns = { @JoinColumn(name = "place_id", referencedColumnName = "id")})
-    private Set<Place> places;
-
+    @ManyToOne
+    @JoinColumn(name = "place_id")
+    private Place place;
 }

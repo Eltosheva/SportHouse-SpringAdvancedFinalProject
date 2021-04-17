@@ -6,17 +6,16 @@ import com.eltosheva.sporthouse.models.bindingModels.UserProfileBindingModel;
 import com.eltosheva.sporthouse.models.service.SportsmanServiceModel;
 import com.eltosheva.sporthouse.models.service.UserServiceModel;
 import com.eltosheva.sporthouse.services.UserOrderHistoryService;
+import com.eltosheva.sporthouse.services.UserScheduleService;
 import com.eltosheva.sporthouse.services.UserService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -24,20 +23,14 @@ import javax.validation.Valid;
 
 @RequestMapping("/user")
 @Controller
+@AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final UserOrderHistoryService userOrderHistoryService;
     private final PasswordEncoder passwordEncoder;
-
-    public UserController(UserService userService, ModelMapper modelMapper,
-                          UserOrderHistoryService userOrderHistoryService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.modelMapper = modelMapper;
-        this.userOrderHistoryService = userOrderHistoryService;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final UserScheduleService userScheduleService;
 
     @GetMapping("/register")
     public String userRegisterPage(Model model, HttpSession httpSession) {
@@ -83,7 +76,8 @@ public class UserController {
     }
 
     @GetMapping("/schedules")
-    public String userSchedulesPage() {
+    public String userSchedulesPage(Model model) {
+        model.addAttribute("schedulesList", userScheduleService.findAllUserSchedules());
         return "user/schedule";
     }
 
@@ -168,4 +162,9 @@ public class UserController {
         return "/user/subscriptions";
     }
 
+    @RequestMapping(path = "/schedule/add", method = RequestMethod.POST)
+    public String changePlaceStatus(@RequestParam String scheduleId) {
+        userService.addTrainingToSchedule(scheduleId);
+        return "redirect:/user/schedules";
+    }
 }

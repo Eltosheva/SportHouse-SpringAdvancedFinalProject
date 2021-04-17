@@ -49,8 +49,8 @@
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <label for="sportDescription">Description</label>
-                                    <textarea class="form-control" id="sportDescription" name="description"
-                                              th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('imageUrl') ? 'is-invalid' : 'is-valid'))}"
+                                    <textarea th:field="*{description}" class="form-control" id="sportDescription" name="description"
+                                              th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('description') ? 'is-invalid' : 'is-valid'))}"
                                               aria-describedby="descriptionFeedback"
                                               placeholder="Description" rows="5" required="required"></textarea>
                                     <div th:if="${(!isFirstTime and #fields.hasErrors('description'))}"

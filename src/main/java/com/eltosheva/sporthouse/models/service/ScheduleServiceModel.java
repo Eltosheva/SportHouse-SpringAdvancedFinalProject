@@ -1,21 +1,20 @@
 package com.eltosheva.sporthouse.models.service;
 
 import com.eltosheva.sporthouse.models.entities.Place;
-import com.eltosheva.sporthouse.models.entities.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
 import java.time.LocalDate;
-import java.util.Set;
+import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
 public class ScheduleServiceModel {
+    private String id;
     private LocalDate date;
-    private Time startTime;
-    private Time endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private String description;
-    private Set<User> users;
-    private Place places;
+    private String placeId;
+    private Place place;
 }

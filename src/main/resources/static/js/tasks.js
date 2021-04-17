@@ -13,6 +13,7 @@ $(function() {
             success: function(res) {
                 if (res.valid) {
                     alert("run success!");
+                    location.reload();
                 } else {
                     alert(res.msg);
                 }

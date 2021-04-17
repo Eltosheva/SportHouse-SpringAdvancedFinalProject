@@ -5,6 +5,7 @@ import com.eltosheva.sporthouse.models.bindingModels.CoachRegisterBindingModel;
 import com.eltosheva.sporthouse.models.bindingModels.ProfileBindingModel;
 import com.eltosheva.sporthouse.models.bindingModels.ScheduleBindingModel;
 import com.eltosheva.sporthouse.models.service.CoachServiceModel;
+import com.eltosheva.sporthouse.models.service.ScheduleServiceModel;
 import com.eltosheva.sporthouse.repositories.UserRepository;
 import com.eltosheva.sporthouse.services.PlaceService;
 import com.eltosheva.sporthouse.services.ScheduleService;
@@ -51,12 +52,27 @@ public class CoachController {
         if (!model.containsAttribute("scheduleBindingModel")) {
             model.addAttribute("scheduleBindingModel", new ScheduleBindingModel());
             model.addAttribute("isFirstTime", true);
-        }else {
+        } else {
             model.addAttribute("isFirstTime", false);
         }
-        model.addAttribute("schedules", scheduleService.findAllByUsers_email());
+        model.addAttribute("schedules", scheduleService.findAllByUser_email());
         model.addAttribute("places", placeService.getPlaces(true));
         return "coach/schedule";
+    }
+
+    @RequestMapping(path = "/schedules", method = RequestMethod.POST)
+    public String manageCoachSchedule(@Valid @ModelAttribute ScheduleBindingModel scheduleBindingModel,
+                                      BindingResult bindingResult,
+                                      RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("scheduleBindingModel", scheduleBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.scheduleBindingModel",
+                    bindingResult);
+            return "redirect:/coach/schedules";
+        }
+
+        scheduleService.addRecord(modelMapper.map(scheduleBindingModel, ScheduleServiceModel.class));
+        return "redirect:/coach/schedules";
     }
 
     @GetMapping("/register")

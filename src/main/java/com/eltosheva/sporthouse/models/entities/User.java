@@ -1,11 +1,11 @@
 package com.eltosheva.sporthouse.models.entities;
 import com.eltosheva.sporthouse.models.enums.RoleEnum;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,12 +52,6 @@ public class User extends BaseEntity {
     
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
-
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private Set<Subscription> subscriptions= new HashSet<>();
-
-    @ManyToMany(mappedBy = "users")
-    private Set<Schedule> schedules = new HashSet<>();
 
     @OneToOne
     private Sport sport;

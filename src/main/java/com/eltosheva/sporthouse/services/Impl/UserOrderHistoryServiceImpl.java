@@ -72,7 +72,7 @@ public class UserOrderHistoryServiceImpl implements UserOrderHistoryService {
         if (trainingCounter > 0) {
             User user = userRepository.findByEmail(email).orElse(null);
             if (user != null) {
-                user.setAvailableTraining(user.getAvailableTraining() + trainingCounter);
+                user.setAvailableTraining(user.getAvailableTraining() == null ? trainingCounter : user.getAvailableTraining() + trainingCounter);
                 userRepository.saveAndFlush(user);
             }
         }
@@ -88,8 +88,8 @@ public class UserOrderHistoryServiceImpl implements UserOrderHistoryService {
         ctx.setVariable("totalProductPrice", historyList.stream()
                 .map(UserOrderHistory::getTotalPrice).reduce(BigDecimal.ZERO, BigDecimal::add));
         ctx.setVariable("userData", userRepository.findByEmail(email).get());
-        ctx.setVariable("sendDate",new SimpleDateFormat("dd.MM.yyyy").format(new Date()));
-        ctx.setVariable("sendDateTime",new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
+        ctx.setVariable("sendDate", new SimpleDateFormat("dd.MM.yyyy").format(new Date()));
+        ctx.setVariable("sendDateTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
 
         try {
             mailService.sendSimpleMail(email, "Title", ctx);
@@ -105,16 +105,16 @@ public class UserOrderHistoryServiceImpl implements UserOrderHistoryService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         userOrderHistoryRepository.findAll().stream()
-            .forEach(o -> {
-                if(!o.getUser().getEmail().equals(email))
-                    return;
-                UserOrderHistoryServiceModel uhsm =
-                    modelMapper.map(o, UserOrderHistoryServiceModel.class);
-                if (!orderMap.containsKey(uhsm.getOrderId())) {
-                    orderMap.put(uhsm.getOrderId(), new ArrayList<>());
-                }
-                orderMap.get(uhsm.getOrderId()).add(uhsm);
-            });
+                .forEach(o -> {
+                    if (!o.getUser().getEmail().equals(email))
+                        return;
+                    UserOrderHistoryServiceModel uhsm =
+                            modelMapper.map(o, UserOrderHistoryServiceModel.class);
+                    if (!orderMap.containsKey(uhsm.getOrderId())) {
+                        orderMap.put(uhsm.getOrderId(), new ArrayList<>());
+                    }
+                    orderMap.get(uhsm.getOrderId()).add(uhsm);
+                });
 
         orderMap.entrySet().forEach(entry -> {
             UserOrdersServiceModel userOrdersServiceModel = new UserOrdersServiceModel();
@@ -137,7 +137,7 @@ public class UserOrderHistoryServiceImpl implements UserOrderHistoryService {
 
         userOrderHistoryRepository.findAll().stream()
                 .forEach(o -> {
-                    if(!o.getUser().getEmail().equals(email))
+                    if (!o.getUser().getEmail().equals(email))
                         return;
                     Product product = productRepository.findById(o.getProductId()).orElse(null);
                     if (!(product instanceof SubscriptionProduct)) return;

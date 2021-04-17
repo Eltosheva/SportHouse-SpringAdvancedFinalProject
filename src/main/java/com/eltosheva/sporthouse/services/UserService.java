@@ -24,4 +24,6 @@ public interface UserService {
     List<UserManagementServiceModel> getAllUsers();
     void changeStatus(String email);
     Integer getTrainingsCount ();
+
+    void addTrainingToSchedule(String id);
 }

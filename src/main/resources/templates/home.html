@@ -1,47 +1,61 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="fragments/fragment :: head"></head>
-    <body>
-        <wrapper class="d-flex flex-column">
-            <header th:replace="fragments/fragment :: nav"></header>
-            <main class="flex-fill align-content-center bg-blur my-main">
-                <div class="row" id="body-row">
-                    <div th:replace="fragments/fragment :: sidebar"></div>
-                    <div class="col p-4">
-                        <h1>Home Page</h1>
-                        <hr/>
-                        <div id="carouselExampleIndicators" class="carousel slide mt-3 mb-3" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                                <th:block th:each="place, rowStat : ${places}">
-                                    <li data-target="#carouselExampleIndicators" th:attr="data-slide-to=${rowStat.index}" th:class="${rowStat.index == 0 ? 'active' : ''}"></li>
-                                </th:block>
-                            </ol>
-                            <div class="carousel-inner">
-                                <th:block th:each="place, rowStat : ${places}">
-                                    <div th:class="${rowStat.index == 0 ? 'carousel-item active' : 'carousel-item'}">
-                                        <img class="d-block w-100 img-responsive" th:src="${place.getImageUrl()}" width="640" height="360" alt="">
-                                        <div class="carousel-caption d-none d-md-block" id="carousel-text-bg">
-                                            <h5 th:text="${place.name}"></h5>
-                                            <p>Address: <span th:text="${place.city}"></span>,
-                                                <span th:text="${place.address}"></span>,
-                                                Phone: <span th:text="${place.phone}"></span></p>
-                                        </div>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragment :: head"></head>
+<body>
+<wrapper class="d-flex flex-column">
+    <header th:replace="fragments/fragment :: nav"></header>
+    <main class="flex-fill align-content-center bg-blur my-main">
+        <div class="row" id="body-row">
+            <div th:replace="fragments/fragment :: sidebar"></div>
+            <div class="col p-4">
+                <h1>Home Page</h1>
+                <hr/>
+                <th:block sec:authorize="hasRole('COACH') || hasRole('ADMIN')">
+                    <div id="carouselExampleIndicators" class="carousel slide mt-3 mb-3" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <th:block th:each="place, rowStat : ${places}">
+                                <li data-target="#carouselExampleIndicators" th:attr="data-slide-to=${rowStat.index}"
+                                    th:class="${rowStat.index == 0 ? 'active' : ''}"></li>
+                            </th:block>
+                        </ol>
+                        <div class="carousel-inner">
+                            <th:block th:each="place, rowStat : ${places}">
+                                <div th:class="${rowStat.index == 0 ? 'carousel-item active' : 'carousel-item'}">
+                                    <img class="d-block w-100 img-responsive" th:src="${place.getImageUrl()}"
+                                         width="640" height="360" alt="">
+                                    <div class="carousel-caption d-none d-md-block" id="carousel-text-bg">
+                                        <h5 th:text="${place.name}"></h5>
+                                        <p>Address: <span th:text="${place.city}"></span>,
+                                            <span th:text="${place.address}"></span>,
+                                            Phone: <span th:text="${place.phone}"></span></p>
                                     </div>
-                                </th:block>
-                            </div>
-                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
+                                </div>
+                            </th:block>
                         </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                           data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                           data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
                     </div>
-                </div>
-            </main>
-            <footer th:replace="fragments/fragment :: footer"></footer>
-        </wrapper>
-    </body>
+                </th:block>
+                <th:block sec:authorize="hasRole('USER') && !hasRole('ADMIN')">
+                    <div th:replace="fragments/schedule_home :: main_schedule_view (${places}, ${sports})"></div>
+                </th:block>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="fragments/fragment :: footer"></footer>
+    <link rel="stylesheet" href="/css/schedule.css" type="text/css"/>
+    <th:block sec:authorize="hasRole('USER') && !hasRole('ADMIN')">
+        <script type="text/javascript" th:src="@{js/schedules.js}"></script>
+    </th:block>
+</wrapper>
+</body>
 </html>

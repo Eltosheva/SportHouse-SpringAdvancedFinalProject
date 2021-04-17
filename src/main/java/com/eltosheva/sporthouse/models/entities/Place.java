@@ -7,8 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "places")
@@ -49,10 +47,4 @@ public class Place extends BaseEntity {
     @Expose
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Sport> sports = new HashSet<>();
-
-    @ManyToMany(mappedBy = "places", fetch = FetchType.LAZY)
-    private Set<Schedule> schedules = new HashSet<>();
 }

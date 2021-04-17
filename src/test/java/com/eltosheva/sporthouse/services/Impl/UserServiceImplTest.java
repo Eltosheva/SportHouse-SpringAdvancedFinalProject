@@ -9,6 +9,7 @@ import com.eltosheva.sporthouse.models.service.UserServiceModel;
 import com.eltosheva.sporthouse.repositories.RoleRepository;
 import com.eltosheva.sporthouse.repositories.SportRepository;
 import com.eltosheva.sporthouse.repositories.UserRepository;
+import com.eltosheva.sporthouse.repositories.UserScheduleRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,11 +38,13 @@ class UserServiceImplTest {
     private PasswordEncoder passwordEncoder;
     @Mock
     private SportRepository sportRepository;
+    @Mock
+    private UserScheduleRepository userScheduleRepository;
 
     @BeforeEach
     void setup() {
         userService = new UserServiceImpl(userRepository, new ModelMapper(),
-                roleRepository, passwordEncoder, sportRepository);
+                roleRepository, passwordEncoder, sportRepository, userScheduleRepository);
     }
 
     @Test

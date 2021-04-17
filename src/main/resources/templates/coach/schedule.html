@@ -12,30 +12,30 @@
                 <hr/>
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
-                        <form th:object="${scheduleBindingModel}" method="post" th:action="@{/coach/schedule}">
+                        <form th:object="${scheduleBindingModel}" method="post" th:action="@{/coach/schedules}">
                             <input type="hidden" name="id" id="id" value=""/>
                             <div class="form-row">
                                 <div class="col-md-4"></div>
                                 <div class="col-md-2 mb-2">
                                     <label for="placeId">Hall</label>
-                                    <select class="custom-select" id="placeId" name="places"
+                                    <select class="custom-select" id="placeId" name="placeId"
                                             required="required" aria-describedby="placeIdFeedback"
-                                            th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('places') ? 'is-invalid' : 'is-valid'))}">
+                                            th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('placeId') ? 'is-invalid' : 'is-valid'))}">
                                         <option value="" selected>Choice Hall</option>
                                         <option th:each="p : ${places}" th:value="${p.id}"
                                                 th:text="${p.name}"
-                                                th:selected="${p.getId()} == *{places}">
+                                                th:selected="${p.getId()} == *{placeId}">
                                         </option>
                                     </select>
-                                    <div th:if="${(!isFirstTime and #fields.hasErrors('places'))}"
+                                    <div th:if="${(!isFirstTime and #fields.hasErrors('placeId'))}"
                                          id="placeIdFeedback"
-                                         th:class="${(#fields.hasErrors('places') ? 'invalid-feedback' : 'valid-feedback')}"
-                                         th:text="${(#fields.hasErrors('places') ? #fields.errors('places').get(0).toString() : 'Looks good')}">
+                                         th:class="${(#fields.hasErrors('placeId') ? 'invalid-feedback' : 'valid-feedback')}"
+                                         th:text="${(#fields.hasErrors('placeId') ? #fields.errors('placeId').get(0).toString() : 'Looks good')}">
                                     </div>
                                 </div>
                                 <div class="col-md-2 mb-2">
                                     <label for="date">Date</label>
-                                    <input type="date" class="form-control" id="date"
+                                    <input th:field="*{date}" type="date" class="form-control" id="date"
                                            name="date" placeholder="Date" required="required"
                                            th:classappend="${(isFirstTime ? '' : (#fields.hasErrors('date') ? 'is-invalid' : 'is-valid'))}"
                                            aria-describedby="dateFeedback"/>
@@ -95,10 +95,15 @@
                         </form>
                     </div>
                 </div>
+                <hr/>
+                <div th:each="schedule : ${schedules}">
+                    <div th:replace="fragments/schedule_row_fragment :: schedule_row (${schedule})"></div>
+                </div>
             </div>
         </div>
     </main>
     <footer th:replace="fragments/fragment :: footer"></footer>
+    <link rel="stylesheet" href="/css/schedule.css" type="text/css"/>
 </wrapper>
 </body>
 </html>
