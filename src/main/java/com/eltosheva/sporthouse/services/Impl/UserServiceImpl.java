@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void initUsers() {
-        if (userRepository.count() == 0) {
+        if (userRepository.count() == 0L) {
             Role admin = new Role();
             admin.setName(RoleEnum.ADMIN);
             Role coach = new Role();
@@ -168,7 +168,7 @@ public class UserServiceImpl implements UserService {
             appAdmin.setAvailableTraining(0);
             appAdmin.setProfilePictureUrl("https://ih1.redbubble.net/image.161080070.3717/flat,750x1000,075,f.jpg");
             appAdmin.updateRoleSet(List.of(admin, coach, user));
-            appAdmin.setSport(sportRepository.findAll().stream().findFirst().get());
+            appAdmin.setSport(sportRepository.findAll().stream().findFirst().orElse(null));
 
             userRepository.save(appAdmin);
         }

@@ -1,5 +1,6 @@
 package com.eltosheva.sporthouse.web;
 
+import com.eltosheva.sporthouse.models.service.ChangeRoleServiceModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,11 +39,15 @@ public class ProductsRestControllerTest {
 
     @Test
     public void getAllProducts_returnProductsList() throws Exception {
-        this.mockMvc.perform(get("/api/products")
+        ChangeRoleServiceModel changeRole = new ChangeRoleServiceModel();
+        changeRole.setRole("ADMIN");
+
+        this.mockMvc.perform(get("/api/changeUserRole")
                 .accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+                .requestAttr("changeRole", changeRole)
                 .with(user("1@1").password("123456")))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.parseMediaType("application/json;charset=UTF-8")));
+                .andExpect(status().is(405));
+                //.andExpect(content().contentType(MediaType.parseMediaType("application/json;charset=UTF-8")));
     }
 
 }

@@ -125,12 +125,16 @@ class ProductServiceImplTest {
     void getTopThree() {
         SubscriptionProduct sp1 = new SubscriptionProduct();
         sp1.setPrice(BigDecimal.valueOf(11.22));
+        sp1.setIsActive(true);
         SubscriptionProduct sp2 = new SubscriptionProduct();
         sp2.setPrice(BigDecimal.valueOf(40));
+        sp2.setIsActive(true);
         SubscriptionProduct sp3 = new SubscriptionProduct();
         sp3.setPrice(BigDecimal.valueOf(14));
+        sp3.setIsActive(true);
         SubscriptionProduct sp4 = new SubscriptionProduct();
         sp4.setPrice(BigDecimal.valueOf(50));
+        sp4.setIsActive(true);
 
         when(productRepository.findAll()).thenReturn(List.of(sp1, sp2, sp3, sp4));
 
@@ -148,11 +152,14 @@ class ProductServiceImplTest {
 
         Sport sport = new Sport();
         sport.setId("123");
+        sport.setIsActive(true);
 
         Product p1 = new Product();
         p1.setSport(sport);
+        p1.setIsActive(true);
 
         SubscriptionProduct s1 = new SubscriptionProduct();
+        s1.setIsActive(true);
 
         when(productRepository.findAll()).thenReturn(List.of(p1, s1));
 

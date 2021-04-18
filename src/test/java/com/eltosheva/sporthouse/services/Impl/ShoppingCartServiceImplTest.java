@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -26,6 +27,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,7 +80,6 @@ class ShoppingCartServiceImplTest {
         when(userRepository.findByEmail("1@1")).thenReturn(Optional.of(new User()));
         shoppingCartServiceImpl.addProductToCart(shoppingCartServiceModel);
         verify(productRepository, times(1)).saveAndFlush(product);
-//        verify(shoppingCartRepository, times(1)).saveAndFlush(ShoppingCart.class);
     }
 
     @Test
@@ -95,8 +96,8 @@ class ShoppingCartServiceImplTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> shoppingCartServiceImpl.addProductToCart(shoppingCartServiceModel));
     }
 
-    @Ignore
-    @Test
+   /* @Test
+    @Ignore("Test is not ready yet")
     @WithMockUser(username = USER_EMAIL)
     void getAllUserProductsFromCart() {
 
@@ -104,30 +105,64 @@ class ShoppingCartServiceImplTest {
         SecurityContext secCont = Mockito.mock(SecurityContext.class);
         Mockito.when(secCont.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(secCont);
-        Mockito.when(auth.getName()).thenReturn(USER_EMAIL);
+        when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(new Authentication() {
+            @Override
+            public Collection<? extends GrantedAuthority> getAuthorities() {
+                return null;
+            }
+
+            @Override
+            public Object getCredentials() {
+                return null;
+            }
+
+            @Override
+            public Object getDetails() {
+                return null;
+            }
+
+            @Override
+            public Object getPrincipal() {
+                return null;
+            }
+
+            @Override
+            public boolean isAuthenticated() {
+                return false;
+            }
+
+            @Override
+            public void setAuthenticated(boolean b) throws IllegalArgumentException {
+
+            }
+
+            @Override
+            public String getName() {
+                return "1@1";
+            }
+        });
 
         Mockito.when(emf.createEntityManager()).thenReturn(em);
 
         EntityManager entityManager = Mockito.mock(EntityManager.class);
 
-        TypedQuery<Object[]> query = (TypedQuery<Object[]>) Mockito.mock(TypedQuery.class);
-
-        Mockito.when(entityManager.createQuery("select s.price as price, s.quantity as quantity, " +
-                " s.totalPrice as totalPrice, p.name as name, p.imageUrl as imageUrl, s.id as id"+
-                " from ShoppingCart s inner join Product p on s.productId = p.id" +
-                " inner join User u on s.user.id = u.id where u.email = ?1 ")).thenReturn(query);
-
         List<Object[]> expected = new ArrayList<>();
         expected.add(new Object[] { 12.2, 1, 12.2, "pro1", "", "id1"});
         expected.add(new Object[] { 3.4, 2, 6.8, "pro2", "", "id2" });
 
-        Mockito.when(query.getResultList()).thenReturn(expected);
+        when(entityManager.createQuery("select s.price as price, s.quantity as quantity, " +
+                " s.totalPrice as totalPrice, p.name as name, p.imageUrl as imageUrl, s.id as id"+
+                " from ShoppingCart s inner join Product p on s.productId = p.id" +
+                " inner join User u on s.user.id = u.id where u.email = ?1 ", Object[].class)
+                .setParameter(1, "1@1")
+                .getResultList())
+                .thenReturn(expected);
 
         List<ShoppingCartServiceModel> cartList = shoppingCartServiceImpl.getAllUserProductsFromCart();
 
         assertEquals(expected.size(), cartList.size());
         assertEquals(2, cartList.size());
-    }
+    }*/
 
     @Test
     void removeProductById_illegalCartId() {

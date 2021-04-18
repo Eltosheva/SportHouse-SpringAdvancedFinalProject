@@ -66,7 +66,7 @@ public class CoachController {
     }
 
     @GetMapping("/register")
-    public String coachRegisterPage(Model model, HttpSession httpSession) {
+    public String coachRegisterPage(Model model) {
         if (!model.containsAttribute("coachRegisterBindingModel")) {
             model.addAttribute("coachRegisterBindingModel", new CoachRegisterBindingModel());
             model.addAttribute("isWrongConfirmPassword", false);

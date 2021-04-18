@@ -70,11 +70,6 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @GetMapping("/subscriptions")
-    public String userSubscriptionsPage(){
-        return "subscriptions";
-    }
-
     @GetMapping("/schedules")
     public String userSchedulesPage(Model model) {
         model.addAttribute("schedulesList", userScheduleService.findAllUserSchedules());
